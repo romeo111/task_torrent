@@ -22,6 +22,10 @@ Projects publish Drop Packs. Contributors choose Chunks, execute them using thei
 
 OpenOnco is the first pilot case. Its initial packs focus on biomarker evidence mapping, drug evidence mapping, citation verification, disease page improvement, and dataset normalization. OpenOnco work must avoid patient-specific advice and treatment recommendations.
 
+- Pilot framing: [`docs/openonco-first-case.md`](docs/openonco-first-case.md)
+- Operational rules (sidecar workflow, source allowlist, reviewer routing, machine-checkable acceptance criteria): [`docs/openonco-pilot-workflow.md`](docs/openonco-pilot-workflow.md)
+- First pack: [`packs/openonco/civic-bma-reconstruction-1drop.md`](packs/openonco/civic-bma-reconstruction-1drop.md)
+
 ## General Platform
 
 TaskTorrent is not limited to oncology. The same pack, chunk, skill, and review model can support civic tech, public datasets, documentation, education, open research, and other public-interest projects.

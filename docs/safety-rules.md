@@ -22,6 +22,26 @@ Every clinical claim must include source links. Claims without sources should be
 
 Contributors must not invent sources, infer source support without checking, or use placeholder citations as if they are real.
 
+## Source Allowlist (OpenOnco pilot)
+
+For OpenOnco packs, only these source types are allowed:
+
+- **CIViC** (CC0) — primary actionability source.
+- **ClinicalTrials.gov** (public domain) — trial protocols and outcomes.
+- **PubMed abstracts and PMC Open Access full-text** — confirm OA license per article.
+- **DailyMed and openFDA** (public domain) — FDA-curated drug labels and AE data.
+- **ESMO / ASCO open guidelines** — cite section + version.
+- **NCCN guidelines** — cite by reference only (no guideline text in the repo).
+- **WHO Classification of Tumours** — cite by reference only.
+- **МОЗ України** orders — Ukrainian Ministry of Health protocols.
+
+Banned for the pilot:
+
+- **OncoKB** — ToS conflicts with OpenOnco's free public / non-commercial CHARTER §2.
+- **SNOMED CT** and **MedDRA** — license-gated.
+
+Paywalled full-text journal articles: abstract-only support is acceptable when the chunk explicitly authorizes it; mark `support_status: unclear` if abstract is insufficient. See `docs/openonco-pilot-workflow.md` §"Source allowlist" for the maintained version of this table.
+
 ## Maintainer Review Required
 
 All AI-generated outputs require maintainer review before publication or merge. A pull request, file, or report is a draft until maintainers approve it.
