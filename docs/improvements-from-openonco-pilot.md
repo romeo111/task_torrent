@@ -123,6 +123,32 @@ post_execution_metrics:
 
 Aggregate across chunks → calibrate future Drop estimates.
 
+### 8b. Audit-chunks need explicit triage-pass gate
+
+**Observation:** the OpenOnco pilot's two audit-style chunks (`rec-wording-audit-claim-bearing`, `ua-translation-review-batch`) produced **findings**, not **fixes**. Their output sidecars list per-finding context with `suggested_correction` / `suggested_rewording` fields that are explicitly meta-descriptions ("Replace X with Y such as Z"; "Requires full UA rewrite by bilingual clinician"), not literal drop-in replacements. This is the contributor agent doing the right thing — refusing to ship wrong fixes — but it means the chunk's value is **0 until a maintainer walks the triage queue**.
+
+In the OpenOnco pilot:
+- rec-wording-audit: 870 findings (216 minor + 425 moderate + 229 critical) → maintainer triage pending
+- ua-translation: 1858 findings (1486 untranslated_fragment, 1334 critical) → maintainer triage pending
+
+The chunk merges to `contributions/`, looks like progress, but no hosted-content quality has changed yet. Same dynamic as #9 (merged-vs-applied) but specific to audit chunks where mechanical apply is impossible.
+
+**Proposed change:** add `audit_followthrough` to chunk-spec required fields when `output_type: report-only` AND audit-style:
+
+```yaml
+audit_followthrough:
+  triage_method: maintainer-queue | expert-queue | scripted-bulk-apply
+  triage_rate_committed: <findings per week, maintainer's commit>
+  triage_queue_path: contributions/<chunk-id>/triage-queue-<severity>.md
+  triage_status_tracker: link or path
+```
+
+When opening an audit chunk, maintainer commits to a triage rate. If after the chunk closes the triage rate drops below committed, the system flags it as "audit chunk shipped but unrealized" — same warning state as #9's merged-but-not-applied.
+
+This prevents the "we ran 4 audit chunks and got 4000+ findings sitting in a backlog!" anti-pattern.
+
+**Implementation hint:** TaskTorrent reference repo ships a `scripts/triage_queue_generator.py` that turns audit-report YAMLs into walkable maintainer markdown (one finding per section, current field value fetched, three checkboxes per row). OpenOnco pilot has a working version at `cancer-autoresearch/scripts/tasktorrent/triage_audit_findings.py`.
+
 ## Strategic changes
 
 ### 9. Track merged-vs-applied
@@ -194,6 +220,7 @@ Tier 1 (do first):
 - #3 Trusted-agent path (governance distinction)
 
 Tier 2 (do second):
+- #8b audit-followthrough gate (audit-chunks specifically — without it, findings = backlog, value = 0)
 - #9 merged-vs-applied tracking (reframes "completion")
 - #10 review profiles (codifies expert-time costs)
 - #11 active-cap as derived value
