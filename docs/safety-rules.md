@@ -6,7 +6,7 @@ TaskTorrent contributors must not provide medical advice. Outputs should be stru
 
 ## No Treatment Recommendations
 
-OpenOnco and similar health-related packs must not ask contributors to decide the best treatment, rank treatments, or write recommendation wording.
+OpenOnco and similar health-related chunks must not ask contributors to decide the best treatment, rank treatments, or write recommendation wording.
 
 Allowed work includes evidence mapping, citation verification, data normalization, and clearly sourced summaries for review.
 
@@ -24,7 +24,7 @@ Contributors must not invent sources, infer source support without checking, or 
 
 ## Source Allowlist (OpenOnco pilot)
 
-For OpenOnco packs, only these source types are allowed:
+For OpenOnco chunks, only these source types are allowed:
 
 - **CIViC** (CC0) — primary actionability source.
 - **ClinicalTrials.gov** (public domain) — trial protocols and outcomes.

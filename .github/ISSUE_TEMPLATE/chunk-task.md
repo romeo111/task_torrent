@@ -1,21 +1,22 @@
 ---
 name: Chunk Task
-about: Define one executable chunk from a Drop Pack
+about: Define one executable chunk for a contributor
 title: "[Chunk] "
-labels: ["chunk-task", "needs-contributor"]
+labels: ["chunk-task", "status-active"]
 assignees: ""
 ---
 
-## Parent Pack
+## Chunk Spec
 
-<!-- e.g. openonco-civic-bma-reconstruction-1drop -->
+<!-- Link to the chunk spec in chunks/<project>/<chunk-id>.md -->
 
 ## Chunk ID
 
-<!-- e.g. openonco-civic-bma-reconstruction-c1 -->
+<!-- e.g. civic-bma-reconstruct-all -->
 
-## Objective
+## Topic Labels
 
+<!-- e.g. civic-evidence, mechanical+judgment -->
 
 ## Drop Estimate
 
@@ -25,21 +26,21 @@ assignees: ""
 
 ## Branch Naming Convention
 
-<!-- For OpenOnco: tasktorrent/<pack-id>/<chunk-id> -->
+`tasktorrent/<chunk-id>`
 
 ## Sidecar Output Path
 
 <!-- All output goes here. PRs touching files outside this path are auto-rejected. -->
 
 ```
-contributions/<pack-id>/<chunk-id>/
+contributions/<chunk-id>/
 ```
 
-## Chunk Manifest
+## Task Manifest
 
 <!-- Explicit list of stable entity IDs (or filename ranges) this chunk owns.
      The contributor must ALSO commit this manifest as
-     contributions/<pack-id>/<chunk-id>/chunk_manifest.txt. -->
+     contributions/<chunk-id>/task_manifest.txt. -->
 
 ```
 <entity_id_1>
@@ -72,9 +73,9 @@ contributions/<pack-id>/<chunk-id>/
 
 ## Acceptance Criteria (machine-checkable)
 
-- [ ] PR branch name matches `tasktorrent/<pack-id>/<chunk-id>`.
-- [ ] `git diff --name-only main..HEAD` lists only files under `contributions/<pack-id>/<chunk-id>/`.
-- [ ] `chunk_manifest.txt` is committed and matches the manifest in this issue.
+- [ ] PR branch name matches `tasktorrent/<chunk-id>`.
+- [ ] `git diff --name-only main..HEAD` lists only files under `contributions/<chunk-id>/`.
+- [ ] `task_manifest.txt` is committed and matches the manifest in this issue.
 - [ ] Every sidecar's `_contribution.target_entity_id` is in the chunk manifest.
 - [ ] Every sidecar passes Pydantic validation (after `_contribution:` strip).
 - [ ] `pytest tests/` passes on the contributor branch.

@@ -12,7 +12,7 @@ In OpenOnco, every citation is an entry in the `Source` entity table (`SRC-*` st
 
 The chunk issue gives you:
 
-- **Pack ID + Chunk ID**
+- **Chunk ID**
 - **Chunk manifest** — explicit list of `(entity_id, claim_locator, source_id)` triples to check, with row counts. Format:
   ```
   entity_id: BMA-EGFR-T790M-NSCLC
@@ -27,11 +27,11 @@ You must not check `(entity, claim, source)` triples that are not in the manifes
 
 ## Output Schema
 
-Submit one report file per chunk to `contributions/<pack-id>/<chunk-id>/citation-report.yaml`. Schema:
+Submit one report file per chunk to `contributions/<chunk-id>/citation-report.yaml`. Schema:
 
 ```yaml
 _contribution:
-  pack_id: openonco-citation-verification-1drop
+
   chunk_id: openonco-citation-verification-c1
   contributor: github-username
   submission_date: "YYYY-MM-DD"
@@ -76,11 +76,11 @@ rows:
 
 ## Source Stub (when proposing a new Source)
 
-Submit to `contributions/<pack-id>/<chunk-id>/source_stub_<proposed_id>.yaml`. Maintainers ingest source stubs through the separate `SOURCE_INGESTION_SPEC.md` §8/§20 review flow — license classification is a gate, not a formality.
+Submit to `contributions/<chunk-id>/source_stub_<proposed_id>.yaml`. Maintainers ingest source stubs through the separate `SOURCE_INGESTION_SPEC.md` §8/§20 review flow — license classification is a gate, not a formality.
 
 ```yaml
 _contribution:
-  pack_id: <pack>
+
   chunk_id: <chunk>
   contributor: github-username
   target_action: new

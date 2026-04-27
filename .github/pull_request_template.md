@@ -1,10 +1,6 @@
-## Pack
+## Chunk ID
 
-<!-- e.g. openonco-civic-bma-reconstruction-1drop -->
-
-## Chunk
-
-<!-- e.g. openonco-civic-bma-reconstruction-c1 -->
+<!-- e.g. civic-bma-reconstruct-all -->
 
 ## Linked Chunk Issue
 
@@ -24,7 +20,7 @@
 
 ## Output Type
 
-- [ ] BMA sidecar(s) under `contributions/<pack>/<chunk>/`
+- [ ] BMA sidecar(s) under `contributions/<chunk-id>/`
 - [ ] Biomarker (BIO-*) sidecar(s)
 - [ ] Drug (DRUG-*) sidecar(s)
 - [ ] Indication (IND-*) sidecar(s)
@@ -48,9 +44,9 @@
 
 ## Machine-Checkable Validation
 
-- [ ] Branch name matches `tasktorrent/<pack-id>/<chunk-id>`
-- [ ] `git diff --name-only main..HEAD` lists only `contributions/<pack-id>/<chunk-id>/...` files
-- [ ] `chunk_manifest.txt` committed and matches the chunk issue's manifest
+- [ ] Branch name matches `tasktorrent/<chunk-id>`
+- [ ] `git diff --name-only main..HEAD` lists only `contributions/<chunk-id>/...` files
+- [ ] `task_manifest.txt` committed and matches the chunk issue's manifest
 - [ ] All `_contribution.target_entity_id` values are in the chunk manifest
 - [ ] All sidecars pass Pydantic validation (after `_contribution:` strip)
 - [ ] `pytest tests/` passes on this branch

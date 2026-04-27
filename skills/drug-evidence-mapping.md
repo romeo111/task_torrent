@@ -23,7 +23,7 @@ LLMs are not the clinical decision-maker (CHARTER §8.3). Contributors draft evi
 
 The chunk issue gives you:
 
-- **Pack ID + Chunk ID**
+- **Chunk ID**
 - **Chunk manifest** — explicit DRUG-* / IND-* IDs (or a filename range) the chunk owns.
 - **Disease scope** (e.g. `DIS-NSCLC`)
 - **Drug scope** (e.g. specific DRUG-* IDs, a drug class, or a biomarker context like "EGFR-TKI 3rd-gen")
@@ -32,11 +32,11 @@ The chunk issue gives you:
 
 ## Output Schema (Drug candidate)
 
-Submit one YAML file per Drug candidate to `contributions/<pack-id>/<chunk-id>/drug_<drug_id>.yaml`:
+Submit one YAML file per Drug candidate to `contributions/<chunk-id>/drug_<drug_id>.yaml`:
 
 ```yaml
 _contribution:
-  pack_id: <pack>
+
   chunk_id: <chunk>
   contributor: github-username
   target_action: upsert | new
@@ -83,11 +83,11 @@ notes_patient: null
 
 Indications are claim-bearing — they carry the actual treatment recommendation. Drafting an Indication is **higher-risk** than drafting a Drug or BMA. **For the pilot, Indication drafts must set `_contribution.target_action: new` and include explicit two-Clinical-Co-Lead-signoff flagging in `_contribution.notes_for_reviewer`.** Maintainers will not merge Indication drafts without two-Clinical-Co-Lead signoff (CHARTER §6.1).
 
-Submit to `contributions/<pack-id>/<chunk-id>/ind_<indication_id>.yaml`:
+Submit to `contributions/<chunk-id>/ind_<indication_id>.yaml`:
 
 ```yaml
 _contribution:
-  pack_id: <pack>
+
   chunk_id: <chunk>
   contributor: github-username
   target_action: new | upsert

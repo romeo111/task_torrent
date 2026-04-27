@@ -8,20 +8,21 @@ Deliverables:
 
 - Planning repository
 - Initial docs
-- Draft pack format
+- Draft chunk format
 - Draft skill specs
 - GitHub issue and PR templates
 
-## Phase 1: Manual Drop Packs
+## Phase 1: Manual Chunks
 
-Publish manually written Drop Packs and Chunks. Contributors select work manually and submit outputs through GitHub.
+Publish manually written chunk specs. Contributors select active chunks manually and submit outputs through GitHub.
 
 Deliverables:
 
-- First OpenOnco packs
-- Stable chunk IDs
+- First OpenOnco chunks (active subset of `chunks/openonco/`)
+- Stable chunk IDs and disjoint manifests
 - Manual review instructions
 - Maintainer-owned acceptance criteria
+- Per-chunk re-verification spec (compute + sample threshold)
 
 ## Phase 2: GitHub Workflow
 
@@ -29,22 +30,23 @@ Use GitHub issues, pull requests, labels, and templates as the primary execution
 
 Deliverables:
 
-- Help Pack issue template
 - Chunk Task issue template
 - Pull request template
-- Recommended labels
+- Topic labels (`civic-evidence`, `citation-verify`, `audit`, `ua-translate`, `evidence-draft`, `source-ingest`)
+- Status labels (`status-active`, `status-in-review`, `status-closed`)
 - Review checklist
 
 ## Phase 3: Validation Automation
 
-Add lightweight validation for structured outputs. This may include schema checks, broken-link checks, required-field checks, and duplicate ID detection.
+Add lightweight validation for structured outputs. This may include schema checks, broken-link checks, required-field checks, manifest-overlap detection, and banned-source blocking.
 
 Deliverables:
 
 - Output schemas
 - Validation scripts or actions
 - Citation link checks
-- Duplicate detection reports
+- Manifest-overlap checker (blocks opening a new active chunk that collides with a currently-active one)
+- AI-tool / AI-model metadata audit script
 
 ## Phase 4: Contributor Dashboard
 
@@ -53,7 +55,7 @@ Create a dashboard that helps contributors enter capacity, choose preferred pace
 Deliverables:
 
 - Capacity-to-Drop estimator
-- Pack recommendations
+- Chunk recommendations by topic label
 - Chunk status view
 - Contributor history
 
@@ -64,6 +66,6 @@ Add API and deeper automation only after the manual workflow is validated. Autom
 Deliverables:
 
 - Project demand API
-- Pack registry
+- Chunk registry
 - Tool integrations
 - Automated status sync

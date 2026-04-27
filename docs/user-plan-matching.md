@@ -1,53 +1,56 @@
-# User Plan Matching
+# Contributor Capacity Matching
 
-## User Entry
+This doc covers how a contributor selects a chunk that fits their tooling. In the current MVP, matching is manual: contributors browse the chunk shelf and self-select. This document describes the eventual matching model for Phase 4.
 
-TaskTorrent asks contributors for practical capacity inputs:
+## Capacity inputs (eventual)
 
-- AI tool
-- Hourly limit
-- Daily limit
-- Weekly limit
-- Preferred pace
-- Topic preference
+When a contributor signs up via the (future) dashboard, they provide:
 
-The goal is not to collect private billing data. The goal is to estimate how much structured AI work the contributor can safely run.
+- AI tool (Claude Code, Codex, Cursor, ChatGPT, other)
+- Model in use (claude-opus-4-7, gpt-5-mini, etc.)
+- Daily / weekly token budget (estimated)
+- Topic preference (optional)
+- Skill confidence (optional, e.g. "comfortable with citation verification but new to evidence drafting")
 
-## Capacity Conversion
+The goal is to estimate available Drop capacity, not to collect billing data.
 
-1 Drop is about 100k tokens of structured AI effort.
+## Capacity conversion
 
-Capacity conversion should estimate available tokens over time and convert them into Drop capacity.
+1 Drop ≈ 100k tokens of structured AI effort.
 
-Examples:
+- 100k tokens/day ≈ 1 Drop/day
+- 1M tokens/week ≈ 10 Drops/week
+- 5M tokens/week ≈ 50 Drops/week (high-tier Pro contributor)
 
-- 20k usable tokens per day = 0.2 Drop/day.
-- 100k usable tokens per week = 1 Drop/week.
-- 30k usable tokens in one work session = 0.3 Drop/session.
+## Chunk-size policy
 
-## Pack And Chunk Recommendation
+Chunks in TaskTorrent are minimum ~1M tokens (~10 Drops) to keep infrastructure overhead proportional to work value. A contributor whose weekly budget is < 10 Drops cannot complete a full chunk in one cycle.
 
-Recommendations should match the contributor's capacity to the smallest useful unit of work.
+Options for sub-chunk-sized contributors (Phase 4):
 
-- Users with less than 0.15 Drop available should receive prep, review, or micro-verification tasks if available.
-- Users with 0.15 to 0.3 Drop available should receive one Chunk.
-- Users with 0.5 Drop available should receive two compatible Chunks or one larger review task.
-- Users with 1 Drop available should receive a full Drop Pack only if they can complete and submit it cleanly.
+- Co-execution: pair with another contributor on the same chunk (one drafts, one reviews — both names on `_contribution.contributor`).
+- Maintainer-curated mini-tasks: not yet defined; would require a different ceremony tier.
 
-## Topic Preference
+## Topic preference
 
-If a contributor selects a topic preference, TaskTorrent should prioritize matching packs in that topic.
+Topic preferences match against chunk labels (`civic-evidence`, `citation-verify`, `audit`, `evidence-draft`, `ua-translate`, `source-ingest`). If multiple topic-matching chunks are active, the demand queue ranks by maintainer priority.
 
-If the contributor has no preference, route them to the project demand queue. The demand queue should rank work by maintainer priority, review readiness, safety, and available chunk clarity.
+If no preference given, contributor sees all active chunks ordered by Drop estimate (smallest first) so they can pick what fits.
 
-## Fast Mode
+## Fast / Gradual mode
 
-Fast mode recommends the largest safe chunk or pack that fits the user's stated capacity. It should still avoid assigning work that cannot be reviewed.
+- **Fast mode** assigns the largest available chunk that fits the contributor's capacity.
+- **Gradual mode** prefers chunks with `audit` or `report-only` labels (lower clinical risk) before claim-bearing work.
 
-## Gradual Mode
+Both modes stay within the current active-chunk cap (2 in OpenOnco pilot).
 
-Gradual mode recommends smaller chunks first, usually 0.15 to 0.2 Drop. It is best for new contributors, sensitive domains, or projects with strict review rules.
+## Manual selection (current MVP)
 
-## Default Mode
+For the MVP no automated matching exists. Contributors:
 
-Default mode routes by demand queue first, then capacity fit, then topic preference. It should recommend a chunk that is likely to be completed, reviewed, and merged.
+1. Browse `chunks/<project>/` for spec.
+2. Filter open `[Chunk]` issues by topic label.
+3. Self-assign.
+4. Open PR when done.
+
+This is sufficient at pilot scale. Phase 4 brings automation when contributor count and chunk count make manual selection tedious.

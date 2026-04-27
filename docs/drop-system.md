@@ -8,25 +8,34 @@ A Drop is an estimate for planning and matching work. It helps projects describe
 
 ## Terms
 
-## Drop
+### Drop
 
-A Drop is the base effort unit. Example: "This pack costs 1 Drop."
+The base effort unit. Example: "This chunk costs about 0.6 Drop."
 
-## Drop Pack
+### Chunk
 
-A Drop Pack is one complete work package worth about 1 Drop. It contains a mission, chunks, scope, required skills, output format, safety rules, and review expectations.
+A Chunk is one concrete, complete, LLM-essential task — the executable primitive of TaskTorrent. One contributor, one PR, one review. A Chunk has:
 
-## Chunk
+- a stable chunk ID
+- a mission and scope
+- a manifest of entities or files in scope
+- a required skill
+- an output schema (sidecar files, structured reports)
+- explicit acceptance and rejection criteria
+- a Drop estimate sized to the real work, not to a fixed slot
+- a maintainer-named reviewer
 
-A Chunk is part of a Drop Pack. Most chunks should be about 0.15 to 0.3 Drop so contributors can complete useful work without taking on a full pack.
+Chunks do **not** have to be 0.15–0.3 Drop. A small audit might be 0.1; a large evidence-drafting task might be 1.5. Estimates are per-chunk.
 
-## Drop Capacity
+### Drop Capacity
 
-Drop capacity is the estimated amount of structured AI work a contributor can run over a time period. Example: "User capacity: 0.2 Drop/day."
+Drop capacity is the estimated amount of structured AI work a contributor can run over a time period. Example: "User capacity: 1 Drop/day."
 
-## Drops Contributed
+Capacity matching is informational, not gating: contributors self-select chunks that fit their tooling.
 
-Drops contributed is a planning estimate for completed, submitted, and reviewed effort. It should not imply payment, ownership, or entitlement.
+### Drops Contributed
+
+A planning estimate for completed, submitted, and reviewed effort. Not payment, ownership, or entitlement.
 
 ## What Drop Is Not
 
@@ -36,14 +45,13 @@ Drop is only an effort measurement unit.
 
 ## Examples
 
-- "This pack costs 1 Drop."
-- "User capacity: 0.2 Drop/day."
-- "OpenOnco needs 12 Drops."
+- "This chunk costs about 0.6 Drop."
+- "User capacity: 1 Drop/day."
+- "OpenOnco shelf has ~22 Drops of open chunks."
 
 ## Planning Rules
 
 - Use Drops to estimate work, not to price work.
-- Keep each Drop Pack near 1 Drop.
-- Keep each Chunk small enough for user-side execution.
-- Treat estimates as approximate.
+- Size each chunk to a single coherent task. A chunk that needs to be split is two chunks.
 - Track review status separately from effort estimate.
+- An estimate is approximate. Contributors and maintainers may refine after first execution.

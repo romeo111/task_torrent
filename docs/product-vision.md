@@ -8,21 +8,21 @@ At the same time, many users have spare AI capacity in tools they already pay fo
 
 ## Solution
 
-TaskTorrent creates a planning and packaging layer for distributed AI work. Projects publish standardized Drop Packs that define mission, scope, chunks, required skills, output schema, safety rules, and review expectations.
+TaskTorrent creates a planning and review layer for distributed AI work. Projects publish standardized **Chunks** — concrete, complete, LLM-essential tasks — that define mission, scope, manifest, output schema, allowed sources, and verification spec.
 
-Contributors pick chunks that match their available capacity, run the work with their own AI tools, and submit structured outputs through GitHub pull requests or files. Maintainers review, merge, reject, or request changes.
+Contributors pick chunks that match their tooling, run the work with their own AI tools, and submit structured outputs through GitHub pull requests. Maintainers verify mechanically, sample-check semantically, and merge or reject.
 
 ## Torrent Metaphor
 
-TaskTorrent borrows the coordination metaphor from torrents, not the file-sharing mechanism. A large project need is split into smaller pieces, many contributors can work in parallel, and maintainers assemble useful reviewed outputs over time.
+TaskTorrent borrows the coordination metaphor from torrents, not the file-sharing mechanism. A project's work surface is split into chunks; many contributors can work in parallel on different chunks; maintainers assemble useful reviewed outputs over time.
 
-The key idea is swarm execution with structured review:
+Key ideas:
 
-- Projects publish demand.
+- Projects publish demand as standardized chunk specs.
 - Contributors bring local AI capacity.
-- Packs define the work.
-- Chunks make work parallel.
-- Review keeps quality under maintainer control.
+- Chunks are the unit of dispatch.
+- Manifests partition work so chunks are non-overlapping.
+- Output-based verification keeps quality under maintainer control without requiring trust in the contributor's process.
 
 ## Why Now
 
@@ -30,6 +30,6 @@ AI coding and research tools are widely available, but most projects still lack 
 
 ## Long-Term Vision
 
-TaskTorrent should become a general platform for matching project needs with contributor AI capacity. Over time it can support dashboards, validation automation, demand queues, contributor profiles, pack discovery, and API integrations.
+TaskTorrent should become a general platform for matching project needs with contributor AI capacity. Over time it can support dashboards, validation automation, demand queues, contributor profiles, chunk discovery, and API integrations.
 
 The long-term goal is not autonomous publishing. It is a safer work distribution system where AI-assisted contributors produce structured drafts, maintainers retain authority, and useful public-interest projects get more help.

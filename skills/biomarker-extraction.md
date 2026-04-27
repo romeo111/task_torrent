@@ -22,7 +22,7 @@ If the schema files change, they win. Don't invent fields.
 
 The chunk issue gives you:
 
-- **Pack ID + Chunk ID** (e.g. `openonco-civic-bma-reconstruction-c1`)
+- **Chunk ID** (e.g. `civic-bma-reconstruct-all`)
 - **Chunk manifest** — the explicit list of BMA-* IDs (or BMA filename range) the chunk owns. You must not write outputs for entities outside this manifest.
 - **Disease scope** (e.g. `DIS-NSCLC`)
 - **Biomarker scope** (e.g. `BIO-EGFR-T790M`, or a gene-level scope like "all BIO-KRAS-*")
@@ -31,19 +31,21 @@ The chunk issue gives you:
 
 ## Output Schema (BMA candidate)
 
-Submit one YAML file per BMA candidate to `contributions/<pack-id>/<chunk-id>/bma_<biomarker>_<variant>_<disease>.yaml`. The file content mirrors the real `BiomarkerActionability` schema, plus a wrapper block that maintainers strip on merge:
+Submit one YAML file per BMA candidate to `contributions/<chunk-id>/bma_<biomarker>_<variant>_<disease>.yaml`. The file content mirrors the real `BiomarkerActionability` schema, plus a wrapper block that maintainers strip on merge:
 
 ```yaml
 # wrapper — stripped on merge into knowledge_base/hosted/content/biomarker_actionability/
 _contribution:
-  pack_id: openonco-civic-bma-reconstruction-1drop
-  chunk_id: openonco-civic-bma-reconstruction-c1
+  chunk_id: civic-bma-reconstruct-all
   contributor: github-username
   submission_date: "YYYY-MM-DD"
   target_action: upsert       # upsert | new | flag_duplicate
   target_entity_id: BMA-EGFR-T790M-NSCLC   # required for upsert/flag_duplicate
   duplicate_of: null          # set when target_action=flag_duplicate
-  ai_tool: claude-code | codex | cursor | chatgpt | other
+  ai_tool: codex              # required: claude-code | codex | cursor | chatgpt | other
+  ai_model: gpt-5-mini        # required: short model name
+  ai_model_version: "2026-03" # optional: snapshot/build/checkpoint string
+  ai_session_notes: ""        # optional: free-form generation-method notes
   notes_for_reviewer: "Reconstructed evidence_sources from CIViC EID12345; ESCAT tier unchanged."
 
 # BMA payload — fields match knowledge_base/schemas/biomarker_actionability.py
@@ -81,16 +83,18 @@ notes: |
 
 ## Output Schema (Biomarker candidate)
 
-Submit to `contributions/<pack-id>/<chunk-id>/bio_<biomarker_id>.yaml` when proposing a new or updated `Biomarker`:
+Submit to `contributions/<chunk-id>/bio_<biomarker_id>.yaml` when proposing a new or updated `Biomarker`:
 
 ```yaml
 _contribution:
-  pack_id: <pack>
   chunk_id: <chunk>
   contributor: github-username
   target_action: new | upsert
   target_entity_id: BIO-KRAS-G12C
   ai_tool: <tool>
+  ai_model: <model>
+  ai_model_version: ""
+  ai_session_notes: ""
   notes_for_reviewer: ""
 
 id: BIO-KRAS-G12C

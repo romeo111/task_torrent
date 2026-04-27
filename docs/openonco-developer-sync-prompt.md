@@ -1,5 +1,7 @@
 # OpenOnco Developer Sync Prompt
 
+> **Historical artifact (2026-04-27).** This was the original sync prompt drafted before the chunks-only model was adopted. It still references "Drop Packs"; the current model uses standalone Chunks (see `docs/chunk-system.md` and `docs/openonco-pilot-workflow.md`). The questions below remain useful as a maintainer-alignment checklist; the workflow answers in `docs/openonco-first-case.md` supersede the original prompt's assumptions.
+
 Use this prompt to align OpenOnco maintainers and developers on the TaskTorrent pilot before creating execution issues.
 
 ```text
