@@ -2,7 +2,13 @@
 
 ## Pack ID
 
-openonco-lung-egfr-evidence-1drop
+`openonco-lung-egfr-evidence-1drop`
+
+## Status
+
+**Phase 2 candidate, lower priority.** EGFR/lung is one of the most-published areas in oncology and OpenOnco already has solid coverage there. The CIViC BMA reconstruction pack (`openonco-civic-bma-reconstruction-1drop`) covers the post-pivot evidence_sources work for EGFR BMAs as Pack 1. This pack remains useful for downstream Indication drafting and resistance-mechanism mapping, but should not open until Pack 1 closes and the pilot has demonstrated reviewer throughput.
+
+When this pack does open, the chunks below need the same treatment as the pancreatic-biomarkers pack: partition by stable `BMA-*` / `IND-*` ID, not by topic, and use sidecar output (`contributions/openonco-lung-egfr-evidence-1drop/<chunk-id>/`).
 
 ## Mission
 
