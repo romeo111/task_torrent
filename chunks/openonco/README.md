@@ -4,7 +4,7 @@ This directory holds chunk specs for the OpenOnco pilot. Each chunk is one concr
 
 ## Active-cap
 
-At most **2 chunks** carry `status: active` (open `[Chunk]` issues) at any time during the pilot.
+At most **10 chunks** carry `status: active` (open `[Chunk]` issues) at any time during the pilot. (Raised from initial 2 after the first wave validated the pipeline.)
 
 ## Current shelf (~70 Drops total)
 

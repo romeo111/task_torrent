@@ -7,7 +7,7 @@ If anything here conflicts with the OpenOnco repo's `CLAUDE.md`, `specs/CHARTER.
 ## Chunk size and active-cap
 
 - **Minimum chunk size: ~1M tokens (~10 Drops).** Smaller tasks should be done by maintainers directly or as scripts — TaskTorrent ceremony only pays for itself at chunk-scale work.
-- **Maximum active chunks: 2.** A third chunk does not get a `[Chunk]` issue until one of the first two closes (merge or rejection). Other chunks sit in `chunks/openonco/` as queued — visible on the shelf but not claimable.
+- **Maximum active chunks: 10.** Raised from initial 2 after the first wave validated the pipeline (4 chunks merged cleanly in one day). At 10 active, cap is effectively non-binding for the current 7-chunk shelf — re-tighten if review throughput becomes the bottleneck.
 - **One chunk = one contributor = one PR = one review.**
 
 This bounds reviewer load: at any moment, at most 2 large submissions can be on the maintainer's plate.
@@ -173,11 +173,11 @@ OpenOnco specs are in Ukrainian and stay Ukrainian. Many entities have `*_ua` co
 
 - A response on every chunk PR within 7 working days.
 - A single rejection comment template per failure mode.
-- Active chunk count capped at 2 during the pilot.
+- Active chunk count capped at 10 during the pilot.
 
 ## Pilot success criteria
 
-The pilot is "successful enough to expand" if, across the first 2 chunks:
+The pilot is "successful enough to expand" if, across the first wave of chunks:
 
 - Both PRs pass machine-checkable gates after at most 1 cycle of feedback.
 - Computational re-verify (where applicable) shows ≥ 95% agreement with contributor output.
