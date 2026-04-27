@@ -17,7 +17,7 @@ Day-to-day rules — sidecar workflow, source allowlist, reviewer routing, parti
 - **Shelf: 7 chunks pre-drafted, ~84 Drops total work surface.**
 - One chunk = one contributor = one PR = one review.
 
-The sequencing rule (no second active chunk until first closes) is replaced by an explicit active-cap of 2. Two chunks may run in parallel if their manifests are disjoint.
+The sequencing rule (no second active chunk until first closes) is replaced by an explicit active-cap of 10 (raised from initial 2 after the first wave validated the pipeline). Up to 10 chunks may run in parallel if their manifests are disjoint.
 
 ## Chunk shelf
 
@@ -48,7 +48,7 @@ The first two chunks are the proposed pilot wave. Others sit in queue.
 | Minimum reviewable fields? | Per skill spec: `_contribution.{chunk_id, contributor, target_action, target_entity_id, ai_tool, ai_model}` plus the schema's required fields plus a chunk-level `task_manifest.txt`. |
 | Duplicate handling? | Detect by 4-tuple `(disease, biomarker, drug, alteration)`. Mark canonical via `target_action: flag_duplicate` + `duplicate_of: <stable-id>`. Never silently drop. |
 | Existing labels / branch rules / PR conventions? | Branch `tasktorrent/<chunk-id>`. Never commit to `master`/`main`. Pre-commit hooks always run; no `--no-verify`. No `git add -A`/`git add .`. |
-| What helps maintainers without growing review burden? | Sidecar isolation + computational re-verification + sample-based human re-verify + active-cap of 2. |
+| What helps maintainers without growing review burden? | Sidecar isolation + computational re-verification + sample-based human re-verify + active-cap (currently 10). |
 
 ## Why "Pack" no longer appears
 
