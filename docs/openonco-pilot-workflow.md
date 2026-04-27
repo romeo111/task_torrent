@@ -88,10 +88,26 @@ If the source you need has no `SRC-*` entity yet, file a `source_stub.yaml` unde
 
 Sidecar PRs merge to `main` after one maintainer review. The clinical signoff gate fires at the upsert step that merges sidecars into `knowledge_base/hosted/content/` — that step is run by maintainers, not contributors.
 
+## AI tool + model metadata (required, non-blocking on accept/reject)
+
+Every sidecar's `_contribution` wrapper carries:
+
+- `ai_tool` — short tool name (`claude-code`, `codex`, `cursor`, `chatgpt`, `other`). Required.
+- `ai_model` — short model identifier (`claude-opus-4-7`, `gpt-5-mini`, `gemini-2.5-pro`, `deepseek-v3`, etc.). Required.
+- `ai_model_version` — optional snapshot/build/checkpoint string (e.g. `"2026-03"`, `"20251020"`).
+- `ai_session_notes` — optional free-form notes about the generation session (retries, prompt strategy, manual edits applied).
+
+**Why required:** model metadata is the audit signal that makes "external computation" recoverable. If a class of bug is later attributed to a specific model (e.g. hallucinated `SRC-*` IDs from model X before date Y), maintainers can re-verify the affected sidecars without re-checking the entire corpus. It also enables longitudinal quality metrics ("Pack 1 first-pass success rate by model") that help route future chunks.
+
+**Why non-blocking:** verification gates (Pydantic validation, source resolution, CIViC EID existence, banned-source check, clinical signoff) check the **output**, not the **input**. A wrong `evidence_sources` block is wrong regardless of which model produced it. Acceptance must not be conditioned on model — that would create the wrong incentive (clinicians shortcutting review for "trusted" models). Missing model metadata produces a maintainer warning, not a rejection.
+
+**Privacy:** do not include raw prompts, API keys, account identifiers, or proprietary system-prompt content in `ai_session_notes`. The field is for auditability of generation method, not provenance of intellectual property.
+
 ## Machine-checkable acceptance criteria
 
 A chunk PR is auto-rejected if any of these fail:
 
+- Any sidecar is missing `_contribution.ai_tool` or `_contribution.ai_model` (required metadata).
 - `pytest tests/` does not pass on the contributor branch.
 - `python -m knowledge_base.validation.validate` rejects any sidecar payload (after the maintainer-run script strips `_contribution:`).
 - `git diff --name-only main..HEAD` lists any file outside `contributions/<pack-id>/<chunk-id>/`.

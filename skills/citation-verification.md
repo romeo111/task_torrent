@@ -36,6 +36,9 @@ _contribution:
   contributor: github-username
   submission_date: "YYYY-MM-DD"
   ai_tool: claude-code | codex | cursor | chatgpt | other
+  ai_model: claude-opus-4-7   # required: short model name
+  ai_model_version: ""        # optional: snapshot/build string
+  ai_session_notes: ""        # optional: free-form
   notes_for_reviewer: ""
 
 rows:
@@ -86,6 +89,9 @@ _contribution:
   target_action: new
   target_entity_id: SRC-CIVIC-EID-12345
   ai_tool: <tool>
+  ai_model: <model>
+  ai_model_version: ""
+  ai_session_notes: ""
   notes_for_reviewer: >
     Source needed by row c1-007. License: CC0 (CIViC). No hosting needed
     (HostingMode.REFERENCED).

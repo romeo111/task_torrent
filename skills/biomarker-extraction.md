@@ -43,7 +43,10 @@ _contribution:
   target_action: upsert       # upsert | new | flag_duplicate
   target_entity_id: BMA-EGFR-T790M-NSCLC   # required for upsert/flag_duplicate
   duplicate_of: null          # set when target_action=flag_duplicate
-  ai_tool: claude-code | codex | cursor | chatgpt | other
+  ai_tool: codex              # required: claude-code | codex | cursor | chatgpt | other
+  ai_model: gpt-5-mini        # required: short model name (e.g. claude-opus-4-7, gpt-5-mini, gemini-2.5-pro)
+  ai_model_version: "2026-03" # optional: snapshot/build/checkpoint string when known
+  ai_session_notes: ""        # optional: free-form (e.g. "ran 3 retries; final accepted manually")
   notes_for_reviewer: "Reconstructed evidence_sources from CIViC EID12345; ESCAT tier unchanged."
 
 # BMA payload — fields match knowledge_base/schemas/biomarker_actionability.py
@@ -91,6 +94,9 @@ _contribution:
   target_action: new | upsert
   target_entity_id: BIO-KRAS-G12C
   ai_tool: <tool>
+  ai_model: <model>           # required
+  ai_model_version: ""        # optional
+  ai_session_notes: ""        # optional
   notes_for_reviewer: ""
 
 id: BIO-KRAS-G12C

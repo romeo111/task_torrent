@@ -42,6 +42,9 @@ _contribution:
   target_action: upsert | new
   target_entity_id: DRUG-OSIMERTINIB
   ai_tool: <tool>
+  ai_model: <model>           # required (e.g. claude-opus-4-7, gpt-5-mini, gemini-2.5-pro)
+  ai_model_version: ""        # optional snapshot/build string
+  ai_session_notes: ""        # optional free-form notes
   notes_for_reviewer: ""
 
 id: DRUG-OSIMERTINIB
@@ -93,6 +96,9 @@ _contribution:
   target_action: new | upsert
   target_entity_id: IND-NSCLC-2L-EGFR-T790M-OSIMERTINIB
   ai_tool: <tool>
+  ai_model: <model>
+  ai_model_version: ""
+  ai_session_notes: ""
   notes_for_reviewer: >
     Drafted from CIViC EID12345 + NCCN NSCLC v3.2025 §EGFR. ESCAT IA.
     Awaiting two Clinical Co-Lead signoffs per CHARTER §6.1.

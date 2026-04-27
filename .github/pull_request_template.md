@@ -22,6 +22,19 @@
 - [ ] ChatGPT
 - [ ] Other:
 
+## AI Model
+
+<!-- Required. Short model name (e.g. claude-opus-4-7, gpt-5-mini, gemini-2.5-pro,
+     deepseek-v3). Captured for audit / regression-triage / model-deprecation
+     sweeps — does NOT affect accept/reject decisions, which are based on
+     output verification only. -->
+
+Model:
+
+Model version (optional):
+
+Session notes (optional, e.g. "ran 3 retries; final accepted"):
+
 ## Output Type
 
 - [ ] BMA sidecar(s) under `contributions/<pack>/<chunk>/`
@@ -48,6 +61,7 @@
 
 ## Machine-Checkable Validation
 
+- [ ] `_contribution.ai_tool` and `_contribution.ai_model` filled on every sidecar
 - [ ] Branch name matches `tasktorrent/<pack-id>/<chunk-id>`
 - [ ] `git diff --name-only main..HEAD` lists only `contributions/<pack-id>/<chunk-id>/...` files
 - [ ] `chunk_manifest.txt` committed and matches the chunk issue's manifest

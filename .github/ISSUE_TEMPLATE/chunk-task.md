@@ -65,6 +65,13 @@ contributions/<pack-id>/<chunk-id>/
 - Skill spec: `skills/<skill>.md`
 - Pilot workflow: `docs/openonco-pilot-workflow.md`
 
+## AI tool + model metadata (required on every sidecar)
+
+Each sidecar's `_contribution` wrapper must include `ai_tool` (e.g. `codex`)
+and `ai_model` (e.g. `gpt-5-mini`). This is captured for audit and
+regression-triage; it does not affect accept/reject. See
+`docs/openonco-pilot-workflow.md` §"AI tool + model metadata" for details.
+
 ## Output Format
 
 <!-- One YAML file per entity in the manifest, using the schema's wrapper +
@@ -72,6 +79,7 @@ contributions/<pack-id>/<chunk-id>/
 
 ## Acceptance Criteria (machine-checkable)
 
+- [ ] Every sidecar has `_contribution.ai_tool` and `_contribution.ai_model` set.
 - [ ] PR branch name matches `tasktorrent/<pack-id>/<chunk-id>`.
 - [ ] `git diff --name-only main..HEAD` lists only files under `contributions/<pack-id>/<chunk-id>/`.
 - [ ] `chunk_manifest.txt` is committed and matches the manifest in this issue.
