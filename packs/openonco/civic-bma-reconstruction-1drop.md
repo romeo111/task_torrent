@@ -40,13 +40,17 @@ Sidecar BMA YAMLs at `contributions/openonco-civic-bma-reconstruction-1drop/<chu
 
 Partitioned by biomarker gene to ensure no two chunks touch the same BMA file. Each chunk's `chunk_manifest.txt` lists explicit `BMA-*` IDs.
 
-| Chunk ID | Scope | Drop Estimate | Manifest (illustrative — final list set when chunk issue opens) |
+Manifests below verified against `cancer-autoresearch` `feat/civic-primary` @ `0b53a5c` on 2026-04-27 — every listed `BMA-*` ID is a real file in `knowledge_base/hosted/content/biomarker_actionability/` with `actionability_review_required: true`. **28 BMA files total.**
+
+| Chunk ID | Scope | Drop Estimate | Manifest |
 | --- | --- | ---: | --- |
-| `openonco-civic-bma-reconstruction-c1` | EGFR family | 0.25 | `BMA-EGFR-T790M-NSCLC`, `BMA-EGFR-EXON19DEL-NSCLC`, `BMA-EGFR-L858R-NSCLC`, `BMA-EGFR-EXON20INS-NSCLC`, `BMA-EGFR-C797S-NSCLC` |
-| `openonco-civic-bma-reconstruction-c2` | ALK / ROS1 fusions | 0.20 | `BMA-ALK-EML4-V1-NSCLC`, `BMA-ALK-EML4-V3-NSCLC`, `BMA-ROS1-FUSION-NSCLC`, `BMA-ROS1-G2032R-NSCLC` |
-| `openonco-civic-bma-reconstruction-c3` | KRAS / BRAF / MET | 0.20 | `BMA-KRAS-G12C-NSCLC`, `BMA-BRAF-V600E-NSCLC`, `BMA-MET-EXON14-NSCLC`, `BMA-MET-AMPLIFICATION-NSCLC` |
-| `openonco-civic-bma-reconstruction-c4` | RET / NTRK / HER2 | 0.20 | `BMA-RET-FUSION-NSCLC`, `BMA-NTRK-FUSION-NSCLC`, `BMA-HER2-EXON20-NSCLC`, `BMA-HER2-AMPLIFICATION-NSCLC` |
-| `openonco-civic-bma-reconstruction-c5` | Citation cleanup pass + wrap-up report | 0.15 | All BMA files modified by c1–c4 — re-verify each `evidence_sources[*]` against CIViC, emit `citation-report.yaml` |
+| `openonco-civic-bma-reconstruction-c1` | EGFR family (6) | 0.25 | `BMA-EGFR-T790M-NSCLC`, `BMA-EGFR-L858R-NSCLC`, `BMA-EGFR-EX19DEL-NSCLC`, `BMA-EGFR-EX20INS-NSCLC`, `BMA-EGFR-C797S-NSCLC`, `BMA-EGFR-G719X-NSCLC` |
+| `openonco-civic-bma-reconstruction-c2` | ALK + ROS1 (10) | 0.25 | `BMA-ALK-EML4-V1-NSCLC`, `BMA-ALK-EML4-V3-NSCLC`, `BMA-ALK-FUSION-NSCLC`, `BMA-ALK-G1202R-NSCLC`, `BMA-ALK-L1196M-NSCLC`, `BMA-ROS1-FUSION-NSCLC`, `BMA-ROS1-CD74-NSCLC`, `BMA-ROS1-EZR-NSCLC`, `BMA-ROS1-SLC34A2-NSCLC`, `BMA-ROS1-G2032R-NSCLC` |
+| `openonco-civic-bma-reconstruction-c3` | KRAS family (5) | 0.20 | `BMA-KRAS-G12C-NSCLC`, `BMA-KRAS-G12D-NSCLC`, `BMA-KRAS-G13D-NSCLC`, `BMA-KRAS-Q61-NSCLC`, `BMA-KRAS-A146T-NSCLC` |
+| `openonco-civic-bma-reconstruction-c4` | BRAF + MET + RET + NTRK (7) | 0.20 | `BMA-BRAF-V600E-NSCLC`, `BMA-BRAF-CLASS3-NSCLC`, `BMA-MET-EX14-NSCLC`, `BMA-MET-AMP-NSCLC`, `BMA-RET-FUSION-NSCLC`, `BMA-RET-CCDC6-NSCLC`, `BMA-RET-KIF5B-NSCLC`, `BMA-NTRK-FUSION-NSCLC` |
+| `openonco-civic-bma-reconstruction-c5` | Citation cleanup pass + wrap-up report | 0.10 | All BMA files modified by c1–c4 — re-verify each `evidence_sources[*]` against CIViC, emit `citation-report.yaml` |
+
+(c4 is 8 IDs; counted as 7 in the scope label which lumps RET-CCDC6 + RET-KIF5B under "RET". Final count in `chunk_manifest.txt` is authoritative.)
 
 ## Per-chunk procedure
 
