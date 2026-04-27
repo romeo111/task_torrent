@@ -2,7 +2,41 @@
 
 ## Status
 
-`queued`
+`completed` (merged via cancer-autoresearch PR #21, 2026-04-27)
+
+## Economic Profile
+
+```yaml
+compute_profile: llm-essential
+llm_essential_pct: 70
+script_alternative:
+  exists: no
+  path: null
+  rationale: >
+    Drafting new BMA candidates requires: search CIViC for relevant EIDs,
+    read NCCN section references, synthesize evidence_summary from
+    multiple sources, map ESCAT tier from evidence portfolio, decide
+    regulatory_approval entries, name recommended_combinations only when
+    cited. Each step is judgment + synthesis. No script does this.
+
+verification_method: full-expert-review
+verification_cost:
+  maintainer_hours: 1
+  colead_hours: 5      # 26 new BMAs × ~12 min Co-Lead read each
+  expert_specialty: ""
+
+break_even_test: MARGINAL
+break_even_rationale: >
+  Drafts are useful starting points (Co-Lead reviews + edits faster than
+  drafting from scratch — maybe ~50% time saving). But 100% Co-Lead
+  review is mandatory because output is claim-bearing. Net value depends
+  on draft quality: if Co-Leads accept ≥ 70% of drafts with minor edits,
+  net positive; if rejection rate is high, net negative. Track
+  acceptance rate after first batch upserts.
+
+compute_classification: llm-essential
+output_type: mixed   # bma_*.yaml entity-sidecars + blocker-report.yaml
+```
 
 ## Topic Labels
 

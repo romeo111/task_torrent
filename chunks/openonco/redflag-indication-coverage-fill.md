@@ -2,7 +2,38 @@
 
 ## Status
 
-`queued`
+`completed` (merged via cancer-autoresearch PR #21, 2026-04-27)
+
+## Economic Profile
+
+```yaml
+compute_profile: llm-essential
+llm_essential_pct: 80
+script_alternative:
+  exists: no
+  path: null
+  rationale: >
+    For each (disease, redflag) cell, requires clinical-judgment about
+    applicability + sourced rationale for not_applicable cases. Pure
+    LLM/clinician work, not scriptable.
+
+verification_method: full-expert-review
+verification_cost:
+  maintainer_hours: 2
+  colead_hours: 10     # 100% Co-Lead read for applicable cells (claim-bearing)
+  expert_specialty: ""
+
+break_even_test: MARGINAL
+break_even_rationale: >
+  Same dynamics as bma-drafting: drafts save Co-Lead drafting time but
+  100% review is mandatory. Net value depends on accept-rate. Higher
+  Co-Lead burden than bma-drafting due to claim-bearing applicable
+  cells requiring 2-of-3 signoff. Track accept-rate; reconsider scope
+  if rejection rate > 30%.
+
+compute_classification: llm-essential
+output_type: mixed   # ind_*.yaml entity-sidecars + rfx_*.yaml report-style declarations
+```
 
 ## Topic Labels
 

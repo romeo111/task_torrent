@@ -2,7 +2,39 @@
 
 ## Status
 
-`queued`
+`completed` (merged via cancer-autoresearch PR #21, 2026-04-27)
+
+## Economic Profile
+
+```yaml
+compute_profile: mixed
+llm_essential_pct: 50
+script_alternative:
+  exists: partial
+  path: null
+  rationale: >
+    URL resolution, basic metadata extraction (title, authors, journal,
+    DOI) is scriptable. License classification — reading terms-of-use
+    pages and mapping to SPDX-id, deciding commercial_use_allowed /
+    redistribution_allowed booleans — requires reading and judgment.
+    Hybrid script + LLM-classification step would be ideal; current
+    chunk does both via LLM.
+
+verification_method: sample
+verification_cost:
+  maintainer_hours: 2   # 20% license-accuracy sample (this is high-stakes)
+  colead_hours: 0       # stubs not claim-bearing
+  expert_specialty: ""
+
+break_even_test: PASS
+break_even_rationale: >
+  License classification at scale (42 stubs) is genuinely tedious and
+  error-prone manually. LLM accelerates it. Sample-verify at 20%
+  (8 stubs) catches systematic license errors. Net positive.
+
+compute_classification: mixed
+output_type: entity-sidecar
+```
 
 ## Topic Labels
 

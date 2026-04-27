@@ -2,7 +2,39 @@
 
 ## Status
 
-`queued`
+`completed` (merged via cancer-autoresearch PR #17, 2026-04-27)
+
+## Economic Profile
+
+```yaml
+compute_profile: mixed
+llm_essential_pct: 70
+script_alternative:
+  exists: partial
+  path: null
+  rationale: >
+    Regex pass for forbidden phrases ("best", "preferred", "first choice")
+    is a lower bound — catches obvious cases but misses paraphrases and
+    semantic violations ("naturally drifts toward", "treatment of choice
+    in this scenario"). LLM extends regex floor. Could be hybrid script
+    (regex pre-filter) + LLM (semantic catch); current chunk does both
+    in one pass.
+
+verification_method: mixed
+verification_cost:
+  maintainer_hours: 1   # regex cross-check (must show 0 misses) + 5% sample
+  colead_hours: 0       # report-only
+  expert_specialty: ""
+
+break_even_test: PASS
+break_even_rationale: >
+  Regex cross-check is automated lower-bound test. Sample re-verify is
+  fast. Findings drive subsequent maintainer rewording PRs (separate
+  workstream). Solid net positive.
+
+compute_classification: mixed
+output_type: report-only
+```
 
 ## Topic Labels
 

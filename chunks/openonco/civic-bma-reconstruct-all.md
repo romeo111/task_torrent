@@ -2,7 +2,40 @@
 
 ## Status
 
-`queued` (proposed first active chunk)
+`completed` (merged via cancer-autoresearch PR #14, 2026-04-27)
+
+> **⚠️ ECONOMIC LESSON: this chunk should NOT have been a chunk.** Retroactive analysis after first-wave pilot completion: 95% mechanical work that `scripts/reconstruct_bma_evidence_via_civic.py` (already in repo, used by parallel session for 37 BMAs in commit `e31ebd1`) does in minutes. Codex spent ~1M tokens on what a script does in seconds. **`break_even_test: FAIL`** — listed for institutional memory; do NOT re-open as a chunk for additional tumor types. Run the script.
+
+## Economic Profile
+
+```yaml
+compute_profile: mechanical
+llm_essential_pct: 5
+script_alternative:
+  exists: yes
+  path: scripts/reconstruct_bma_evidence_via_civic.py
+  rationale: >
+    Schema-mechanical procedure: query CIViC matcher, build EvidenceSourceRef,
+    drop SRC-ONCOKB, write sidecar. The matcher is already a Python function.
+    The 5% LLM judgment (actionability_review_required flag, notes_for_reviewer
+    text) is templatable. Phase 3-N proved this with 37 BMAs scripted.
+
+verification_method: automated
+verification_cost:
+  maintainer_hours: 1   # mechanical CIViC EID re-verify
+  colead_hours: 20      # 399 BMA × ~3 min Co-Lead read at upsert time
+  expert_specialty: ""
+
+break_even_test: FAIL
+break_even_rationale: >
+  Script alternative would have done equivalent work in minutes with
+  deterministic output. Chunk-pipeline cost (~hours of contributor time
+  + maintainer review + 20h deferred Co-Lead time) far exceeds value.
+  Should have been a maintainer-run script.
+
+compute_classification: mechanical
+output_type: entity-sidecar
+```
 
 ## Topic Labels
 

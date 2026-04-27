@@ -7,10 +7,22 @@ If anything here conflicts with the OpenOnco repo's `CLAUDE.md`, `specs/CHARTER.
 ## Chunk size and active-cap
 
 - **Minimum chunk size: ~1M tokens (~10 Drops).** Smaller tasks should be done by maintainers directly or as scripts — TaskTorrent ceremony only pays for itself at chunk-scale work.
-- **Maximum active chunks: 10.** Raised from initial 2 after the first wave validated the pipeline (4 chunks merged cleanly in one day). At 10 active, cap is effectively non-binding for the current 7-chunk shelf — re-tighten if review throughput becomes the bottleneck.
+- **Maximum active chunks: 10.** Raised from initial 2 after the first wave validated the pipeline.
 - **One chunk = one contributor = one PR = one review.**
 
-This bounds reviewer load: at any moment, at most 2 large submissions can be on the maintainer's plate.
+## Break-even gate (mandatory before opening a chunk)
+
+Every chunk-task issue must have a chunk spec with a filled-in **Economic Profile** (`compute_profile`, `script_alternative`, `verification_cost`, `break_even_test`). See `docs/chunk-system.md` §"Economic Profile" for the schema.
+
+**Decision rules at issue-open time:**
+
+- `break_even_test: PASS` — open the issue.
+- `break_even_test: MARGINAL` — open but track. If actual review hours exceed 1.5× estimate, downgrade subsequent chunks of this type to FAIL.
+- `break_even_test: FAIL` — **do NOT open the issue.** Run the script alternative or defer.
+
+**Why this gate exists.** The OpenOnco pilot's first chunk (`civic-bma-reconstruct-all`, ~399 BMA mechanical reconstruction) burned ~1M contributor tokens on work that `scripts/reconstruct_bma_evidence_via_civic.py` does in minutes. The pipeline's verification-and-upsert cost (~20 Co-Lead hours deferred) means the chunk is net-negative even though tokens were "free." The break-even gate prevents repeating that mistake.
+
+**Maintainer's economic responsibility.** A maintainer who opens a chunk-task issue is signing for: (a) the verification cost will be paid, and (b) the contribution value will exceed that cost. If you cannot defend both, write a script.
 
 ## Sidecar workflow (do not edit hosted content directly)
 

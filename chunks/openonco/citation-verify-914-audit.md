@@ -2,7 +2,39 @@
 
 ## Status
 
-`queued` (proposed second active chunk)
+`completed` (merged via cancer-autoresearch PR #15, 2026-04-27)
+
+## Economic Profile
+
+```yaml
+compute_profile: llm-essential
+llm_essential_pct: 70
+script_alternative:
+  exists: partial
+  path: null
+  rationale: >
+    URL resolution + EID-existence checks are scriptable (HTTP HEAD,
+    snapshot lookup). The core work — reading PubMed abstracts / NCCN
+    sections / openFDA pages and judging whether they directly support
+    a specific clinical claim — is semantic NLU. Topic-adjacency vs
+    direct-support distinction requires reading; no script does that.
+
+verification_method: sample
+verification_cost:
+  maintainer_hours: 2   # 10% sample (91 of 914 rows) re-read
+  colead_hours: 0       # report-only, no hosted-content edit
+  expert_specialty: ""
+
+break_even_test: PASS
+break_even_rationale: >
+  914 semantic-support judgments at 10% sample-verify gives ~91 manual
+  checks. Each check ~1 min. ~2 maintainer-hours total to validate the
+  batch. Contributor doing equivalent work would have taken days. Clear
+  net win.
+
+compute_classification: llm-essential
+output_type: report-only
+```
 
 ## Topic Labels
 

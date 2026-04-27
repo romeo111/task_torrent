@@ -2,7 +2,38 @@
 
 ## Status
 
-`queued`
+`completed` (merged via cancer-autoresearch PR #17, 2026-04-27)
+
+## Economic Profile
+
+```yaml
+compute_profile: llm-essential
+llm_essential_pct: 70
+script_alternative:
+  exists: partial
+  path: null
+  rationale: >
+    Regex detection of untranslated English fragments inside *_ua fields
+    is scriptable lower bound. Calque / clinical-drift / coverage-loss
+    judgments require bilingual semantic reading. Native UA + working
+    medical EN is the irreducible-human-or-LLM requirement.
+
+verification_method: sample
+verification_cost:
+  maintainer_hours: 1   # untranslated-fragment auto-detect cross-check
+  colead_hours: 1       # 15% Ukrainian-clinician sample
+  expert_specialty: "Ukrainian-fluent clinician"
+
+break_even_test: PASS
+break_even_rationale: >
+  1251 fields reviewed. Sample-verify by Ukrainian clinician feasible at
+  15%. Output drives translation-correction maintainer workstream. The
+  bilingual-clinician requirement is real but rate is hours not days.
+  Net positive — scripted scanning would miss too much semantic drift.
+
+compute_classification: llm-essential
+output_type: report-only
+```
 
 ## Topic Labels
 

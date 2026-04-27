@@ -14,6 +14,9 @@ In the MVP, every Chunk spec must include:
 - Manifest (entities, files, or rows in scope)
 - Allowed sources
 - Output format (sidecar paths, report shape)
+- **Economic Profile** (NEW — see §"Economic Profile" below; this is a hard gate, not a formality)
+- **Compute Classification** (NEW — `mechanical` / `llm-essential` / `mixed`)
+- **Output Type** (NEW — `entity-sidecar` / `report-only` / `mixed`)
 - Safety checklist
 - Acceptance criteria (machine-checkable + semantic)
 - Rejection criteria
@@ -24,6 +27,73 @@ In the MVP, every Chunk spec must include:
 A Chunk is **one concrete and complete task that requires meaningful LLM compute** — semantic reading, synthesis, judgment, or evidence drafting. Mechanical work that a Python script can do should be a script, not a chunk.
 
 One chunk = one contributor = one PR = one review.
+
+## Economic Profile (the break-even gate)
+
+**Chunks that fail the break-even test must not be opened as chunks.** If verification cost exceeds the value of contributor work, the chunk is a net-negative even when contributor tokens are free.
+
+The economic value equation:
+
+```
+Chunk Net Value = (Contributor work value)
+                - (Maintainer review hours × maintainer rate)
+                - (Co-Lead review hours × Co-Lead rate)
+                - (Pipeline ceremony cost: issue + PR + CI + comments)
+                + (Token savings vs in-house execution)
+```
+
+Every chunk spec must declare:
+
+```yaml
+## Economic Profile
+
+compute_profile: mechanical | llm-essential | mixed
+llm_essential_pct: <0–100>          # honest estimate of work that genuinely needs LLM
+script_alternative:
+  exists: yes | no | partial
+  path: scripts/foo.py | null       # if a script could replace
+  rationale: >                      # one-paragraph: why script is/isn't sufficient
+
+verification_method: automated | sample | full-expert-review | mixed
+verification_cost:
+  maintainer_hours: <number>        # estimated mechanical validation + sample review
+  colead_hours: <number>            # estimated clinical signoff (0 for report-only chunks)
+  expert_specialty: ""              # e.g. "Ukrainian-fluent clinician" if needed
+
+break_even_test: PASS | MARGINAL | FAIL
+break_even_rationale: >             # one paragraph: how the chunk earns its keep
+```
+
+**Decision rules:**
+
+- `break_even_test: PASS` — open the chunk.
+- `break_even_test: MARGINAL` — open the chunk but track actual review hours; if exceeded, downgrade to FAIL.
+- `break_even_test: FAIL` — **do not open**. Either:
+  - Write a script (`scripts/foo.py`) and run it as a maintainer task.
+  - Defer until economics improve (e.g. partial automation appears, or expert review becomes cheaper).
+  - Drop the work scope.
+
+A chunk MARKED FAIL on its spec page should remain visible as a "considered, declined" entry — institutional memory prevents re-proposal.
+
+## Compute Classification
+
+`compute_profile`:
+
+- **mechanical** — work that a Python script with access to the repo + standard libraries could do equivalently. LLM is being used because nobody wrote the script, not because it's needed. **Default response: write the script.**
+- **llm-essential** — work requires semantic NLU, synthesis from multi-source narrative, judgment, bilingual review, or other LLM-only capability. **Open as chunk.**
+- **mixed** — partial mechanical (regex / scrape / parse) + partial semantic. **Decide based on `llm_essential_pct`:** ≥ 50% → chunk; < 50% → script + selective LLM step.
+
+`llm_essential_pct` is an honest estimate: of the work to be done, what percentage genuinely needs LLM? If you can't articulate the percentage, you haven't thought about it enough.
+
+## Output Type
+
+`output_type`:
+
+- **entity-sidecar** — sidecars target specific entities for upsert into hosted content. Validator routes target_action gates here.
+- **report-only** — sidecars are reports / audits / findings. No upsert path. Validator skips target_action requirement.
+- **mixed** — chunk produces both entity-sidecars and report-only files (e.g. drafts + a wrap-up report).
+
+The validator uses `output_type` to route gates (target_action requirement, banned-source check, manifest-scope check).
 
 ## Chunk Size
 
