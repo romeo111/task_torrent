@@ -128,6 +128,10 @@ findings:
 - Severity tags inconsistent (e.g. "patients should switch to X" tagged `minor`).
 - Rewording suggestions invent clinical claims not present in original.
 
+## Claim Method
+
+`trusted-agent-wip-branch-first` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1.

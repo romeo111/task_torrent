@@ -110,6 +110,10 @@ Plus `task_manifest.txt`, `_contribution_meta.yaml`.
 - Recommendation wording.
 - Invented CIViC EIDs.
 
+## Claim Method
+
+`trusted-agent-wip-branch-first` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1.

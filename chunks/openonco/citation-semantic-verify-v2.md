@@ -163,6 +163,10 @@ Plus `task_manifest.txt` (914 finding IDs) and `_contribution_meta.yaml`.
 - `finding_id` mismatch with v1 report.
 - PR includes files outside `contributions/citation-semantic-verify-v2/`.
 
+## Claim Method
+
+`trusted-agent-wip-branch-first` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1, at PR merge.
