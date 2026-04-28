@@ -135,6 +135,26 @@ Plus 4 lexical near-misses (e.g. PAPILLON → CHRYSALIS).
 **What:** `pip install -e .` errored with "Multiple top-level packages discovered" because `contributions/` (added by TaskTorrent bootstrap) is a sibling of the actual Python package. KB validator CI broke. Fix: explicit `[tool.setuptools.packages.find]` include/exclude in `pyproject.toml`.
 **Drives:** Proposal #17 (TaskTorrent bootstrap should ship pyproject patch / mention this in onboarding doc).
 
+### L-20 — MARGINAL chunks need pre-flight upstream-audit threshold
+**When:** 2026-04-28, executing `drug-class-normalization` chunk (MARGINAL economic profile).
+**What:** chunk-spec assumed 216 hosted Drug entities had inconsistent `drug_class` formatting (capitalization drift, mixed abbreviations, generation-tag variants). Reality: bulk-extract + cluster check found **200 unique drug_class strings across 216 drugs, ZERO clusters with multiple distinct phrasings**. Existing data was already canonical-style. Chunk produced zero actionable normalizations.
+
+**Token economy:** pre-execution estimate 150k tokens; actual 15k (10× lower) because audit short-circuited before per-entity LLM judgment was needed. Honest result: chunk's MARGINAL profile retroactively becomes FAIL — work didn't exist to do.
+
+**Pattern:** speculative-cleanup chunks (taxonomy normalization, dataset-consistency audits, "we suspect there's drift") need a pre-flight count of expected violations BEFORE chunk-issue opens. Without it, contributor token-burn happens to discover "nothing to do."
+
+**Drives:** Proposal #20 (pre-flight upstream-audit threshold for MARGINAL/cleanup chunks):
+
+(a) chunk-spec adds optional `expected_violations` field — minimum count of detectable violations the chunk-spec author expects.
+
+(b) Maintainer runs upstream audit script before `status-active` promotion. Counts actual violations.
+
+(c) If actual count < `expected_violations` × 0.3 (30% threshold), chunk goes to `status-withdrawn` instead of opening. Contributor never burns tokens.
+
+(d) MARGINAL chunks are most-affected by this rule (since their net-value depends on suggestion accept rate). PASS chunks with strong upstream signal (e.g., 914 audit findings already exist for citation-verify) less affected.
+
+(e) For drug-class-normalization specifically: retroactively withdraw chunk-spec; document data is already clean.
+
 ### L-19 — claim coordination has invisible-window risk
 **When:** Pilot wave 5 question, post-citation-verify-v2.
 **What:** Current claim model has gaps:
@@ -210,6 +230,8 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 
 **#17 pyproject setuptools-find patch** in TaskTorrent bootstrap onboarding doc — when adding `contributions/` at top-level, projects need to update their build config.
 
+**#20 Pre-flight upstream-audit threshold** for MARGINAL/cleanup chunks. Add `expected_violations` field to chunk-spec; maintainer counts actual violations before `status-active`; if < 30% of expected, withdraw chunk. Prevents chunks like drug-class-normalization that produce zero actionable findings. See L-20 sub-proposals.
+
 **#19 Claim-coordination hardening** — WIP-branch-first for trusted agents; auto-release stale claims after 14 days; cross-chunk manifest overlap check at issue-open; explicit `claim_method` in chunk-spec; 24h assignment SLA for formal flow. See L-19 sub-proposals (a)-(e).
 
 **#18 Chunk volume-impact declaration.** Chunk specs that mutate hosted content at scale (bulk upsert, mass entity creation, rebuild of references) should declare expected `volume_impact` (bundle-size delta, entity-count delta, render-budget delta). Maintainer-side apply step runs project's volume gates BEFORE writing to hosted; surfaces budget breaks as actionable warnings rather than as silent CI failures on the next unrelated PR. OpenOnco's bundle-size budget (3MB) was unrelated to chunk safety but blocked the apply PR — a `volume_impact` declaration would have caught it at apply-time.
@@ -230,6 +252,7 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 | 2026-04-28 | L-18 (volume-impact declaration) | Bundle-size 3MB budget broke after BMA upsert apply (cumulative Phase 3-N + 399 BMA) |
 | 2026-04-28 | L-19 (claim coordination) | Maintainer raised parallel-work risk; gap analysis surfaced 5 mitigations |
 | 2026-04-28 | L-19 implementation in flight | (a)+(d) docs/schema landed via this branch; (b)+(c)+(e) in cancer-autoresearch PR |
+| 2026-04-28 | L-20 (pre-flight upstream-audit threshold) | drug-class-normalization chunk found 0 actionable normalizations on 216 Drugs (data already clean); MARGINAL retroactively → FAIL |
 
 When new lessons land, append a row + add the L-N section above + update Tier proposals as needed.
 
