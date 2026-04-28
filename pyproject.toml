@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tasktorrent"
+version = "0.4.0.dev0"
+description = "Coordination protocol for distributed AI-assisted contribution work."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "TaskTorrent contributors" }]
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[project.scripts]
+tasktorrent-init = "tasktorrent.init:main"
+tasktorrent-lint = "tasktorrent.lint_chunk_spec:main"
+
+[tool.setuptools.packages.find]
+include = ["tasktorrent*"]
+exclude = ["tests*", "OpenOnco_*", "pytest_tmp_*", "chunks*", "skills*", "docs*"]
+
+[tool.setuptools.package-data]
+tasktorrent = ["_scaffold/*", "_scaffold/**/*"]

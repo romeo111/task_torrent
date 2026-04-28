@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor
+.vscode/
+.idea/
+
+# Working scratch areas (do not commit)
+OpenOnco_*/
+pytest_tmp_*/

@@ -1,0 +1,45 @@
+# TaskTorrent consumer config — see https://github.com/romeo111/task_torrent/blob/main/docs/protocol-v0.4-design.md
+
+# Required
+version: v0.4                        # task_torrent rules version this repo targets
+consumer_name: {{CONSUMER_NAME}}     # short identifier, lowercase, no spaces
+
+# Sources this consumer rejects regardless of chunk-spec. Merged with chunk-spec disallowed_sources.
+banned_sources: []
+# Example for a non-commercial consumer:
+# banned_sources:
+#   - SRC-ONCOKB
+#   - SRC-SNOMED
+#   - SRC-MEDDRA
+
+# Active-cap — see Proposal #11
+active_cap:
+  mode: fixed                        # `fixed` or `derived`
+  fixed: 10
+  # Used when mode: derived
+  # review_capacity_hours_per_week: 40
+  # avg_chunk_review_hours: 4
+
+# Trust model — see protocol-v0.4-design.md Gap 1
+trust_tier_thresholds:
+  T0_to_T1:
+    merged_chunks: 3
+    rejections_window_days: 90
+    rejections_max: 0
+
+trust_registry:
+  honor: false                       # default: every consumer earns its own trust
+  min_consumer_count: 2              # only honor if contributor is T1 in ≥N other consumers
+
+# Volume gates — Proposal #18
+volume_gates:
+  # bundle_size_mb: 3
+  # entity_count: 10000
+
+# Where the consumer's KB lives, relative to repo root.
+# Optional — only needed if you have a structured KB that chunks can upsert into.
+# kb_root: knowledge_base/hosted/content/
+
+# Where contributions and chunk-specs live (defaults shown).
+contributions_root: contributions/
+chunks_root: chunks/
