@@ -135,6 +135,14 @@ Plus 4 lexical near-misses (e.g. PAPILLON → CHRYSALIS).
 **What:** `pip install -e .` errored with "Multiple top-level packages discovered" because `contributions/` (added by TaskTorrent bootstrap) is a sibling of the actual Python package. KB validator CI broke. Fix: explicit `[tool.setuptools.packages.find]` include/exclude in `pyproject.toml`.
 **Drives:** Proposal #17 (TaskTorrent bootstrap should ship pyproject patch / mention this in onboarding doc).
 
+### L-18 — high-volume contribution can break unrelated CI gates (bundle size)
+**When:** OpenOnco pilot post-wave 4, applying 399 BMA upsert.
+**What:** OpenOnco's `test_engine_bundle_*` tests cap engine bundle at 3MB. Phase 3-N's BMA reconstruction (37 BMAs × ~250 lines each) plus contributor's full 399-BMA upsert pushed the bundle over the limit, failing 5 pre-existing tests. The contribution itself was correct; the side-effect of cumulative volume hit a project-side budget that wasn't surfaced as a chunk-spec acceptance criterion.
+
+**Pattern:** chunks that mutate bulk-volume properties (size, count, refs) of hosted content can trip project-internal budgets (bundle size, render budget, token budget for downstream consumers) that aren't part of TaskTorrent's per-chunk acceptance gates.
+
+**Drives:** Proposal #18 (chunk-spec authors should declare `volume_impact` budget impact when chunk modifies hosted content at scale: `bundle_size_delta`, `entity_count_delta`, etc. + maintainer-side budget gates run on apply, not on contributor PR).
+
 ---
 
 ## Proposed system changes
@@ -183,6 +191,8 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 
 **#17 pyproject setuptools-find patch** in TaskTorrent bootstrap onboarding doc — when adding `contributions/` at top-level, projects need to update their build config.
 
+**#18 Chunk volume-impact declaration.** Chunk specs that mutate hosted content at scale (bulk upsert, mass entity creation, rebuild of references) should declare expected `volume_impact` (bundle-size delta, entity-count delta, render-budget delta). Maintainer-side apply step runs project's volume gates BEFORE writing to hosted; surfaces budget breaks as actionable warnings rather than as silent CI failures on the next unrelated PR. OpenOnco's bundle-size budget (3MB) was unrelated to chunk safety but blocked the apply PR — a `volume_impact` declaration would have caught it at apply-time.
+
 ---
 
 ## Living changelog
@@ -196,6 +206,7 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 | 2026-04-28 | L-15 (trial-name false positives) | trial extraction script flagged "CROSS" across 16 unrelated domains |
 | 2026-04-28 | L-16 (reverify templates) | reverify_bma_civic + reverify_citation_replace_source written as maintainer infra |
 | 2026-04-28 | L-17 (setuptools flat-layout) | KB validator CI broke on PR #22 due to `contributions/` at top-level |
+| 2026-04-28 | L-18 (volume-impact declaration) | Bundle-size 3MB budget broke after BMA upsert apply (cumulative Phase 3-N + 399 BMA) |
 
 When new lessons land, append a row + add the L-N section above + update Tier proposals as needed.
 
