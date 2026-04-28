@@ -182,6 +182,32 @@ Plus 4 lexical near-misses (e.g. PAPILLON → CHRYSALIS).
 
 **Drives:** Proposal #18 (chunk-spec authors should declare `volume_impact` budget impact when chunk modifies hosted content at scale: `bundle_size_delta`, `entity_count_delta`, etc. + maintainer-side budget gates run on apply, not on contributor PR).
 
+### L-21 — no version pinning between rules-repo and consumer-repo
+**When:** 2026-04-28, OpenOnco maintainer raised the question after L-19 landed.
+**What:** TaskTorrent rules live in `task_torrent` (chunk-system.md, skill specs, issue-template, schema fields like `claim_method`). Validators, sidecars, and CI live in the consumer repo (e.g., cancer-autoresearch). The two repos reference each other only via raw GitHub URLs at `main` HEAD. There is no version stamp on either side.
+
+**Failure modes:**
+- task_torrent adds a required field (e.g., `claim_method` — landed 2026-04-28) → consumer's validator silently accepts pre-update sidecars that lack it; new sidecars referencing the field fail validation in older consumer-CI.
+- Two contributors looking at "main" on different days see different rules; their sidecars both pass local validation but diverge.
+- A second consumer repo onboards (any other social service) and pins implicitly to whatever `main` is at onboarding moment; first task_torrent breaking change silently cracks them.
+- Rollback is impossible — there's no "the rules at time T" reference; only `main` HEAD now.
+
+**Risk profile:** breakage is silent until a chunk fails to validate or two contributors disagree on what's required. With one consumer (OpenOnco) and one trusted-agent (Codex), drift is detectable by hand. With N consumers, drift is invisible and costly.
+
+**Drives:** Proposal #21 (version-pinning + release tags):
+
+(a) **task_torrent tags releases** with semver-ish: `v0.3` for current pilot rules; bump on any breaking schema change to chunk-spec, issue-template, validator contract, or skill specs.
+
+(b) **Sidecar declares target version.** Every `_contribution_meta.yaml` includes `tasktorrent_version: <tag>` (e.g., `v0.3`). Validator either accepts the declared version or returns explicit migration message (`this contribution targets v0.2; current rules are v0.3 — see MIGRATION.md`).
+
+(c) **Consumer pins in repo config.** Each consumer repo declares the tasktorrent version it operates against (e.g., `.tasktorrent.yaml: version: v0.3`). Validator and CI use the pinned version. Bumping the version is a deliberate PR with the diff visible.
+
+(d) **Rules-doc URLs reference the tag**, not `main`. Issue templates link to `task_torrent/blob/v0.3/skills/<skill>.md`, not `blob/main/...`. Stale links are tolerable — rules at the tag are frozen.
+
+(e) **Migration table.** task_torrent's release notes for vN → vN+1 include a migration line per breaking change (`field X was added`, `vocabulary Y narrowed`). Consumers see the diff before bumping.
+
+**Cost:** one new `_contribution_meta.yaml` field, one consumer-side config file, git tags on task_torrent, release notes discipline. No new infrastructure. Effort ~half-day.
+
 ---
 
 ## Proposed system changes
@@ -195,6 +221,8 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 **#2 Permissive-by-default validator.** Ship reference validator with extensible `TARGET_ACTIONS` (split into write/review buckets), flexible `MANIFEST_FORMAT` (accept `id` or `id::path::filename`), conditional banned-source check (hard for write, soft for review), `target_entity_id` fallback to payload `id` for review actions.
 
 **#3 Trusted-agent contribution path.** Two contribution flows: open (formal issue-claim) + trusted-agent (push branches directly). Same validator gates apply to both.
+
+**#21 Version pinning between rules-repo and consumer.** task_torrent tags releases (`v0.3`); every sidecar's `_contribution_meta.yaml` declares `tasktorrent_version: <tag>`; consumer repo pins in `.tasktorrent.yaml`; issue-template + skill-doc links resolve against the tag, not `main`; release notes carry a per-version migration table. Cheap, prevents silent drift across N consumers. See L-21 sub-proposals (a)-(e).
 
 ### Tier 2
 
@@ -253,6 +281,7 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 | 2026-04-28 | L-19 (claim coordination) | Maintainer raised parallel-work risk; gap analysis surfaced 5 mitigations |
 | 2026-04-28 | L-19 implementation in flight | (a)+(d) docs/schema landed via this branch; (b)+(c)+(e) in cancer-autoresearch PR |
 | 2026-04-28 | L-20 (pre-flight upstream-audit threshold) | drug-class-normalization chunk found 0 actionable normalizations on 216 Drugs (data already clean); MARGINAL retroactively → FAIL |
+| 2026-04-28 | L-21 (cross-repo version pinning) | OpenOnco maintainer flagged that task_torrent rules + consumer validator have no version stamp; `claim_method` schema bump (L-19 a+d) had no version signal — drift would have been silent across multiple consumers |
 
 When new lessons land, append a row + add the L-N section above + update Tier proposals as needed.
 
