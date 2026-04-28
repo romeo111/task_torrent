@@ -38,6 +38,25 @@ OpenOnco is the first pilot case. Its chunks focus on biomarker evidence reconst
 
 TaskTorrent is not limited to oncology. The same chunk-shelf model can support civic tech, public datasets, documentation, education, open research, and other public-interest projects.
 
+## Tooling (v0.4)
+
+A lightweight Python package ships with the v0.4 protocol design (see [`docs/protocol-v0.4-design.md`](docs/protocol-v0.4-design.md)):
+
+```bash
+pip install -e .
+```
+
+Two commands:
+
+- **`tasktorrent-lint <chunk-spec.md>`** — validates a chunk-spec against schema (required sections, valid `claim_method`, parseable Economic Profile, concrete manifest, etc.). Wire into your consumer repo's CI to catch under-specified chunks before they open.
+- **`tasktorrent-init <consumer-name>`** — scaffolds a TaskTorrent integration into a consumer repo: `.tasktorrent.yaml` config, an example chunk-spec, and an onboarding note. Idempotent; pass `--force` to overwrite.
+
+Run the linter against your chunks:
+
+```bash
+python -m tasktorrent.lint_chunk_spec --all chunks/
+```
+
 ## MVP Boundary
 
-This repository is for planning only. It contains docs, chunk specs, skill specs, and GitHub templates. It does not include production app code, token transfer, or automation that publishes AI output without maintainer review.
+This repository now contains: docs, chunk specs, skill specs, GitHub templates, AND a lightweight tooling package (linter + scaffold). It does not include production app code, token transfer, or automation that publishes AI output without maintainer review.

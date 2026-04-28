@@ -35,10 +35,12 @@ This blocks N>1 consumers because each consumer must hand-curate its trusted-age
 | Tier | Eligibility | Claim flow | Review depth |
 |---|---|---|---|
 | **T0** anonymous / first-time | New GitHub identity for this consumer | `formal-issue` only | Full end-to-end review per PR |
-| **T1** track-record contributor | ≥3 merged chunks for this consumer, zero rejections in last 90 days | `formal-issue` OR `trusted-agent-wip-branch-first` | Sample-based review; reverify scripts run; full review on flagged outputs |
+| **T1** track-record contributor | ≥3 merged chunks for this consumer, **zero safety / source-policy violations**, zero rejections in last 90 days | `formal-issue` OR `trusted-agent-wip-branch-first` | Sample-based review; reverify scripts run; full review on flagged outputs |
 | **T2** co-maintainer | Manually granted by existing maintainers | Either flow + can open chunks + can run apply scripts | Self-review allowed for mechanical chunks; semantic chunks require second maintainer |
 
 Tiers are **per-consumer-repo**, not portable by default.
+
+**T0 → T1 weighting (owner decision 2026-04-28):** docs-only or otherwise low-risk chunks count at **half-weight** toward the threshold. A consumer that wants stricter promotion can override the default to require 5 chunks instead of 3. Safety / source-policy violations are **always disqualifying** regardless of merged-chunk count.
 
 ### Trust ledger
 
@@ -272,17 +274,65 @@ Total: ~one week of focused work to get the protocol from "OpenOnco's coordinati
 
 ---
 
-## Open questions (for owner / multi-consumer review)
+## Owner-resolved decisions (2026-04-28)
 
-1. **Trust registry custody.** If task_torrent maintains a cross-repo trust registry, who's accountable for its accuracy? Per-consumer maintainers report? Bot scrapes PR-merge events?
+The four open questions below were resolved by the task_torrent owner during PR #18 review. The resolutions are protocol commitments for v0.4.
 
-2. **Contributor cost transparency.** Should the protocol surface token cost / $-spent estimates per chunk? Today the externality (contributor pays compute) is invisible to consumers. Adding a `cost_estimate` field in chunk-spec + a `cost_actual` field in `_contribution_meta.yaml` would make the economy visible — useful for planning but maybe scope-creep for v0.4.
+### 1. Trust-registry custody — per-consumer authoritative
 
-3. **Dispute resolution.** What's the appeal path when a maintainer rejects a PR the contributor believes was correct? Today: nothing. v0.4 could add: rejection codes + optional appeal-issue + lessons captured in MIGRATION.md / improvement plan.
+**Decision:** per-consumer ledgers (`.tasktorrent/contributors.yaml` in each consumer repo) are authoritative. The cross-repo registry, if maintained, is **generated** from opted-in consumer ledgers, **reviewed** by task_torrent maintainers before publication, and **never honored by default** (consumers opt in via `trust_registry.honor: true`).
 
-4. **Active-cap derivation formula.** Proposal #11 (active-cap as derived value) needs a real formula. The straw-man in `.tasktorrent.yaml` above (`review_capacity / avg_chunk_review`) ignores chunk-type heterogeneity. May need per-review-profile weighting.
+This means: a consumer cannot poison another consumer's trust signal by editing the cross-repo file directly — that file is downstream of consumer ledgers. task_torrent maintainers are the moderation layer.
 
-These are flagged for discussion, not designed in this draft.
+### 2. Contributor cost transparency — optional fields, not required gates
+
+**Decision:** add now as optional fields, do not gate on them.
+
+- Chunk-spec: optional `cost_estimate` block (`tokens`, `model`, optional `usd`).
+- `_contribution_meta.yaml`: optional `cost_actual` block (same shape).
+
+Tokens / model / $ supplied voluntarily by contributor. Surface them in dashboards but never reject a PR for omitting them. Avoids burdening early contributors while building a dataset for future Drop-estimate calibration.
+
+### 3. Dispute resolution — rejection codes + appeal path
+
+**Decision:** every maintainer rejection comment includes a `rejection_code:` line drawn from the controlled vocabulary below. Contributor may open an appeal issue tagged `tasktorrent-appeal` with the rejection code; appeal triages within 7 days; resolution captured in changelog.
+
+**Rejection-code vocabulary:**
+
+| Code | Meaning |
+|---|---|
+| `schema` | Output failed Pydantic / format validation |
+| `manifest` | Sidecar entity ID outside the chunk's manifest |
+| `source-policy` | Banned source used, or licensing classification wrong |
+| `quality` | Output formally valid but content-incorrect |
+| `safety` | Crosses safety boundary (medical advice, patient data, etc.) |
+| `scope` | Outside the chunk's stated scope; partial-completion that disclaims the rest |
+| `economics` | Token cost vastly above estimate without justification |
+| `duplicate` | Work overlaps another in-flight or merged chunk |
+| `stale-claim` | Claim expired before submission; chunk re-released |
+
+Maintainer must pick one code. "Mixed reasons" → pick the dominant cause; appeal can re-categorize.
+
+### 4. Active-cap derivation — per review-profile, not global
+
+**Decision:** the global `review_capacity / avg_chunk_review` straw-man is too coarse. The derivation operates per chunk review profile (Proposal #10):
+
+```
+active_cap = sum_over_profiles(
+    floor(profile_review_capacity_hours / p75_review_hours_for_profile)
+), capped by ready_shelf_size
+```
+
+Adjustments are asymmetric: `active_cap` may be raised only after the maintainer-side review backlog has stayed low for ≥2 consecutive weeks; reductions take effect immediately on backlog growth.
+
+This means v0.4's `.tasktorrent.yaml` schema needs to evolve to declare per-profile review capacity rather than a single `review_capacity_hours_per_week` number. Captured as a v0.5 change (current shorthand stays usable in v0.4 for simple consumers).
+
+### Implications for v0.4 implementation
+
+- Trust ledger work (Gap 1 implementation): per-consumer `.tasktorrent/contributors.yaml` schema is hard-coded; cross-repo registry deferred to v0.5+.
+- T0 → T1 default needs an extra gate: **zero safety / source-policy violations** (regardless of rejection count). Documents-only / low-risk chunks count at half-weight, OR the threshold can be set higher (e.g., 5) per-consumer.
+- Cost fields land in chunk-spec + `_contribution_meta.yaml` schemas as optional in v0.4.
+- Rejection-code vocabulary lands in maintainer docs (no validator support needed for v0.4; comment-template is enough).
 
 ---
 
