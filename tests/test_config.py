@@ -83,3 +83,114 @@ def test_load_from_disk(tmp_path: Path) -> None:
 def test_load_missing_file_raises(tmp_path: Path) -> None:
     with pytest.raises(ConsumerConfigError):
         load_consumer_config(tmp_path)
+
+
+# --- Strict validation (per PR #19 owner review) ---
+
+def test_invalid_active_cap_mode_rejected() -> None:
+    with pytest.raises(ConsumerConfigError, match="active_cap.mode"):
+        parse_consumer_config(
+            {"version": "v0.4", "consumer_name": "x", "active_cap": {"mode": "bogus"}}
+        )
+
+
+def test_active_cap_derived_requires_both_inputs() -> None:
+    with pytest.raises(ConsumerConfigError, match="derived"):
+        parse_consumer_config(
+            {
+                "version": "v0.4",
+                "consumer_name": "x",
+                "active_cap": {"mode": "derived", "review_capacity_hours_per_week": 40},
+            }
+        )
+
+
+def test_active_cap_int_zero_rejected() -> None:
+    with pytest.raises(ConsumerConfigError, match="positive"):
+        parse_consumer_config(
+            {"version": "v0.4", "consumer_name": "x", "active_cap": 0}
+        )
+
+
+def test_active_cap_negative_rejected() -> None:
+    with pytest.raises(ConsumerConfigError):
+        parse_consumer_config(
+            {"version": "v0.4", "consumer_name": "x", "active_cap": -3}
+        )
+
+
+def test_active_cap_non_dict_non_int_rejected() -> None:
+    with pytest.raises(ConsumerConfigError):
+        parse_consumer_config(
+            {"version": "v0.4", "consumer_name": "x", "active_cap": "ten"}
+        )
+
+
+def test_active_cap_fixed_zero_rejected() -> None:
+    with pytest.raises(ConsumerConfigError, match="active_cap.fixed"):
+        parse_consumer_config(
+            {
+                "version": "v0.4",
+                "consumer_name": "x",
+                "active_cap": {"mode": "fixed", "fixed": 0},
+            }
+        )
+
+
+def test_active_cap_avg_review_hours_negative_rejected() -> None:
+    with pytest.raises(ConsumerConfigError, match="avg_chunk_review_hours"):
+        parse_consumer_config(
+            {
+                "version": "v0.4",
+                "consumer_name": "x",
+                "active_cap": {
+                    "mode": "derived",
+                    "review_capacity_hours_per_week": 40,
+                    "avg_chunk_review_hours": -1,
+                },
+            }
+        )
+
+
+def test_trust_threshold_negative_rejected() -> None:
+    with pytest.raises(ConsumerConfigError, match="merged_chunks"):
+        parse_consumer_config(
+            {
+                "version": "v0.4",
+                "consumer_name": "x",
+                "trust_tier_thresholds": {"T0_to_T1": {"merged_chunks": -1}},
+            }
+        )
+
+
+def test_trust_window_zero_rejected() -> None:
+    with pytest.raises(ConsumerConfigError, match="rejections_window_days"):
+        parse_consumer_config(
+            {
+                "version": "v0.4",
+                "consumer_name": "x",
+                "trust_tier_thresholds": {"T0_to_T1": {"rejections_window_days": 0}},
+            }
+        )
+
+
+def test_volume_gate_zero_rejected() -> None:
+    with pytest.raises(ConsumerConfigError, match="bundle_size_mb"):
+        parse_consumer_config(
+            {
+                "version": "v0.4",
+                "consumer_name": "x",
+                "volume_gates": {"bundle_size_mb": 0},
+            }
+        )
+
+
+def test_volume_gate_negative_entity_count_rejected() -> None:
+    with pytest.raises(ConsumerConfigError, match="entity_count"):
+        parse_consumer_config(
+            {
+                "version": "v0.4",
+                "consumer_name": "x",
+                "volume_gates": {"entity_count": -100},
+            }
+        )

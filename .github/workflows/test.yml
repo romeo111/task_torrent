@@ -27,5 +27,7 @@ jobs:
         run: pytest tests/ -v
 
       - name: Lint OpenOnco chunks (non-blocking smoke)
-        # Existing chunks pre-date Proposals #1 + #19; this surfaces gaps without failing CI.
+        # Per owner decision 2026-04-28: prefer version-aware exemptions.
+        # Pre-v0.4 chunks predate Economic Profile + claim_method; surface
+        # gaps without failing CI. Once OpenOnco backfills, flip to blocking.
         run: python -m tasktorrent.lint_chunk_spec --all chunks/openonco/ || true
