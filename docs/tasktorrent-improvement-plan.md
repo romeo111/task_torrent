@@ -135,6 +135,25 @@ Plus 4 lexical near-misses (e.g. PAPILLON → CHRYSALIS).
 **What:** `pip install -e .` errored with "Multiple top-level packages discovered" because `contributions/` (added by TaskTorrent bootstrap) is a sibling of the actual Python package. KB validator CI broke. Fix: explicit `[tool.setuptools.packages.find]` include/exclude in `pyproject.toml`.
 **Drives:** Proposal #17 (TaskTorrent bootstrap should ship pyproject patch / mention this in onboarding doc).
 
+### L-19 — claim coordination has invisible-window risk
+**When:** Pilot wave 5 question, post-citation-verify-v2.
+**What:** Current claim model has gaps:
+- **Open contributor flow** (formal): comment on `[Chunk]` issue → maintainer assigns → assignee field is the lock. Race window between comment and assign.
+- **Trusted-agent flow** (Codex): push branch directly. Branch on origin = lock. But invisible window between local-work-start and first-push (could be hours).
+- **Cross-chunk manifest overlap**: two chunks with different IDs but overlapping entity manifests aren't auto-detected at issue-open time. `check_manifest_overlap.py` exists but isn't wired to issue-open hook.
+
+**Risks:**
+- Two trusted agents both start same chunk locally without push → produce duplicate work.
+- Stale claim (14+ days no activity) blocks slot indefinitely.
+- Maintainer assigns same chunk to two open contributors during race window.
+
+**Drives:** Proposal #19 (claim-coordination hardening):
+- (a) **WIP-branch-first** for trusted agents — push minimal/empty branch immediately at start.
+- (b) **Auto-release stale claims** — issue with `assignee` + no commits in 14 days → bot drops assignee.
+- (c) **Cross-chunk manifest overlap check at issue-open** — `check_manifest_overlap.py` runs against ALL active chunks.
+- (d) **`claim_method` declared in chunk-spec** — `formal-issue` | `trusted-agent-wip-branch-first`.
+- (e) **24h assignment SLA** for formal flow — auto-release if maintainer doesn't assign within 24h.
+
 ### L-18 — high-volume contribution can break unrelated CI gates (bundle size)
 **When:** OpenOnco pilot post-wave 4, applying 399 BMA upsert.
 **What:** OpenOnco's `test_engine_bundle_*` tests cap engine bundle at 3MB. Phase 3-N's BMA reconstruction (37 BMAs × ~250 lines each) plus contributor's full 399-BMA upsert pushed the bundle over the limit, failing 5 pre-existing tests. The contribution itself was correct; the side-effect of cumulative volume hit a project-side budget that wasn't surfaced as a chunk-spec acceptance criterion.
@@ -191,6 +210,8 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 
 **#17 pyproject setuptools-find patch** in TaskTorrent bootstrap onboarding doc — when adding `contributions/` at top-level, projects need to update their build config.
 
+**#19 Claim-coordination hardening** — WIP-branch-first for trusted agents; auto-release stale claims after 14 days; cross-chunk manifest overlap check at issue-open; explicit `claim_method` in chunk-spec; 24h assignment SLA for formal flow. See L-19 sub-proposals (a)-(e).
+
 **#18 Chunk volume-impact declaration.** Chunk specs that mutate hosted content at scale (bulk upsert, mass entity creation, rebuild of references) should declare expected `volume_impact` (bundle-size delta, entity-count delta, render-budget delta). Maintainer-side apply step runs project's volume gates BEFORE writing to hosted; surfaces budget breaks as actionable warnings rather than as silent CI failures on the next unrelated PR. OpenOnco's bundle-size budget (3MB) was unrelated to chunk safety but blocked the apply PR — a `volume_impact` declaration would have caught it at apply-time.
 
 ---
@@ -207,6 +228,7 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 | 2026-04-28 | L-16 (reverify templates) | reverify_bma_civic + reverify_citation_replace_source written as maintainer infra |
 | 2026-04-28 | L-17 (setuptools flat-layout) | KB validator CI broke on PR #22 due to `contributions/` at top-level |
 | 2026-04-28 | L-18 (volume-impact declaration) | Bundle-size 3MB budget broke after BMA upsert apply (cumulative Phase 3-N + 399 BMA) |
+| 2026-04-28 | L-19 (claim coordination) | Maintainer raised parallel-work risk; gap analysis surfaced 5 mitigations |
 
 When new lessons land, append a row + add the L-N section above + update Tier proposals as needed.
 
