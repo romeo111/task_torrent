@@ -114,6 +114,10 @@ Plus `task_manifest.txt`, `_contribution_meta.yaml`.
 - `applicable` Indication invents a `recommended_regimen` not attested by source.
 - Recommendation wording in `rationale` or `notes`.
 
+## Claim Method
+
+`trusted-agent-wip-branch-first` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1.

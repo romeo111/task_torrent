@@ -124,6 +124,10 @@ findings:
 - High false-negative rate (`acceptable` tag on text with clear clinical drift).
 - Suggested corrections introduce new clinical claims.
 
+## Claim Method
+
+`trusted-agent-wip-branch-first` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1.

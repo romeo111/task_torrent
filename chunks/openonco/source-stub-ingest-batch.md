@@ -113,6 +113,10 @@ Maintainer reads ~10 random stubs:
 - Missing attribution where source requires it.
 - Stub references `id` that already exists on `main`.
 
+## Claim Method
+
+`trusted-agent-wip-branch-first` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1.

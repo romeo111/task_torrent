@@ -147,6 +147,10 @@ Plus `task_manifest.txt`, `_contribution_meta.yaml`.
 - High-confidence `class_change` without rationale.
 - Hosted-content edits (this is report-only).
 
+## Claim Method
+
+`formal-issue` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1 (full review for application step).

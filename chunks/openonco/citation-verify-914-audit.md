@@ -125,6 +125,10 @@ The report's findings drive a separate, maintainer-led set of edits to hosted co
 - Rows checking triples not in the audit's 914 (out-of-manifest).
 - Claim text rewritten inside `rationale`.
 
+## Claim Method
+
+`trusted-agent-wip-branch-first` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1.

@@ -14,6 +14,7 @@ In the MVP, every Chunk spec must include:
 - Manifest (entities, files, or rows in scope)
 - Allowed sources
 - Output format (sidecar paths, report shape)
+- **Claim Method** (NEW — see §"Claim Method" below)
 - Safety checklist
 - Acceptance criteria (machine-checkable + semantic)
 - Rejection criteria
@@ -85,3 +86,36 @@ A "shelf" is just a filtered query (`label:civic-evidence label:status-active`).
 - **Queued chunks** have a chunk spec in `chunks/<project>/` but no open issue. They appear on the shelf but are not yet claimable.
 
 Maintainers cap active count to fit review throughput. Default for OpenOnco pilot: 5 active chunks. See `openonco-pilot-workflow.md`.
+
+## Claim Method
+
+How does a contributor announce they're working on a chunk so two contributors don't duplicate work? Each chunk-spec declares one of two `claim_method` values.
+
+### `formal-issue` (default for open contributors)
+
+1. Contributor finds an open `[Chunk]` issue with `status-active` label and no `assignee`.
+2. Comments: `I'd like to take this chunk.`
+3. Maintainer assigns the issue (within 24h SLA — auto-released otherwise).
+4. `assignee` field on the issue is the visible lock — other contributors see the issue is taken.
+5. Contributor branches `tasktorrent/<chunk-id>` and submits PR.
+
+### `trusted-agent-wip-branch-first` (for pre-authorized contributor agents)
+
+1. Maintainer pre-authorizes the contributor (e.g. their own Codex or a known partner agent). No formal issue-claim ceremony.
+2. Contributor **immediately pushes a minimal/empty WIP commit** to `tasktorrent/<chunk-id>` on origin BEFORE doing significant local work. This branch on origin = the visible lock.
+3. Contributor completes work locally; force-push or new commits to same branch.
+4. Opens PR when done.
+
+The WIP-branch-first rule prevents the "invisible window" between local-work-start and first-push from causing two trusted agents to duplicate the chunk.
+
+### Anti-pattern: claim without announcement
+
+Working on a chunk locally for hours/days without (a) issue assignment, or (b) a WIP branch on origin = invisible work that risks duplication. Both `claim_method` paths exist specifically to make claim visible.
+
+### Stale-claim auto-release
+
+A chunk-task issue with `assignee` set + no commits to `tasktorrent/<chunk-id>` for 14 days = stale. Maintainer (or bot) drops the assignee + relabels the issue `status-active`. Stale claims unblock the slot.
+
+### Cross-chunk manifest overlap
+
+Before opening a new chunk-task issue, maintainer runs `check_manifest_overlap.py` against all currently-active chunks. Manifest overlap blocks the open. Without this check, two chunks with different IDs but overlapping entity scope can collide at integration.

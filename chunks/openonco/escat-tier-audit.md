@@ -161,6 +161,10 @@ Plus `task_manifest.txt`, `_contribution_meta.yaml`.
 - Recommendation wording in `verified_rationale`.
 - PR includes hosted content edits (this is report-only).
 
+## Claim Method
+
+`formal-issue` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1 (10% sample).

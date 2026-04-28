@@ -229,6 +229,7 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 | 2026-04-28 | L-17 (setuptools flat-layout) | KB validator CI broke on PR #22 due to `contributions/` at top-level |
 | 2026-04-28 | L-18 (volume-impact declaration) | Bundle-size 3MB budget broke after BMA upsert apply (cumulative Phase 3-N + 399 BMA) |
 | 2026-04-28 | L-19 (claim coordination) | Maintainer raised parallel-work risk; gap analysis surfaced 5 mitigations |
+| 2026-04-28 | L-19 implementation in flight | (a)+(d) docs/schema landed via this branch; (b)+(c)+(e) in cancer-autoresearch PR |
 
 When new lessons land, append a row + add the L-N section above + update Tier proposals as needed.
 

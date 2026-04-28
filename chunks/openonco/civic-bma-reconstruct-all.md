@@ -124,6 +124,10 @@ One sidecar YAML per BMA. Schema in `skills/biomarker-extraction.md`. Plus `task
 - Sidecar references a non-existent `SRC-CIVIC-EID-*` (impossible if matcher was used; possible if the contributor invented EIDs).
 - Recommendation wording in any field.
 
+## Claim Method
+
+`trusted-agent-wip-branch-first` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1, at PR merge.

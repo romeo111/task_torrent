@@ -147,6 +147,10 @@ Maintainer reads ~10 random stubs, confirms:
 - Stubbing for a false positive (e.g., a `SRC-CROSS-FLT3-AML` stub that doesn't correspond to a real RCT).
 - Hosting mode proposed by contributor.
 
+## Claim Method
+
+`formal-issue` — see `docs/chunk-system.md` §"Claim Method".
+
 ## Reviewer
 
 - Maintainer: 1 (sample-verify license + filter accuracy).
