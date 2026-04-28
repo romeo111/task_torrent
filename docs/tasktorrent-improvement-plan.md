@@ -293,6 +293,7 @@ When new lessons land, append a row + add the L-N section above + update Tier pr
 - **Not OpenOnco-specific.** Each lesson is generalized to apply to any TaskTorrent project.
 - **Not a contract.** TaskTorrent owner picks adoption + ordering.
 - **Not a substitute for the frozen retrospective docs.** `improvements-from-openonco-pilot.md` and `owner-request-from-openonco-pilot.md` are the timestamped initial reports. This doc is the living plan that builds on them.
+- **Structural protocol additions live in a sibling doc:** `docs/protocol-v0.4-design.md` covers trust model, schema-evolution discipline, and consumer-onboarding template. That doc proposes layers above the core; this doc captures lessons from running the core.
 
 ---
 
