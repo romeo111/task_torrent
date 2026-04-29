@@ -139,3 +139,44 @@ A row that:
 - A row checking a `(entity, claim, source)` triple not listed in the manifest.
 - Rewriting the claim text inside `rationale`.
 - `support_status: broken_link` without an `accessed` date or any check evidence.
+
+## Automated verifier (downstream)
+
+After your contribution PR opens, the consumer repo runs an automated
+citation-grounding verifier on every sidecar. Reference impl:
+[`cancer-autoresearch/scripts/tasktorrent/verify_citations.py`](https://github.com/romeo111/OpenOnco/blob/master/scripts/tasktorrent/verify_citations.py).
+
+Three layers run automatically:
+
+| Layer | Blocking? | What |
+|---|---|---|
+| Structural | yes | Every cited `SRC-*` must exist on master or be stubbed in your chunk dir. CIViC EIDs validated against snapshot. |
+| Title-substring | yes | When the claim mentions `trial XYZ` / `study XYZ`, that name must appear in the cited source's title/notes. |
+| Semantic (optional) | yes when enabled | Claude API scores grounding 0-1. Fails only on confident-disagreement (`grounded=false AND confidence≥0.7`). |
+
+The verifier is **canonical adjudicator** for the cited-source ↔ claim
+relationship. Anthropic Citations API is the underlying grounding model;
+[CoVe](https://arxiv.org/abs/2309.11495) (Chain-of-Verification) is the
+fallback pattern when Citations API is unavailable. Two-agent
+disagreement on a claim → flag for maintainer review, never auto-merge.
+
+If the verifier fails on a row you believe is correct:
+
+1. Don't bypass — fix the underlying mismatch.
+2. If the cited source genuinely supports the claim but the verifier
+   disagrees: submit the row with `support_status: supported` and add
+   `notes_for_reviewer: "verifier disagreement; please re-check —
+   <evidence>"`. Maintainer adjudicates.
+3. If the verifier flags a structural problem (unknown `SRC-*`, missing
+   EID), fix the citation; don't ship a sidecar that fails structural.
+
+## Pre-flight before submitting
+
+Run the verifier locally before opening your PR:
+
+```bash
+python -m scripts.tasktorrent.verify_citations <chunk-id>
+```
+
+Last line shows `N/N sidecars passed`. If it doesn't, your PR will fail
+CI. Fix and re-run. **Do not** submit a PR with verifier failures.
