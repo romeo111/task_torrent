@@ -1,0 +1,6 @@
+/* Static fallback styles — Tailwind via CDN handles most layout.
+   This file exists so install.sh and the page itself can ship without
+   relying on a build step.
+
+   Empty by design. Customize if Tailwind CDN is later replaced with
+   a baked stylesheet. */

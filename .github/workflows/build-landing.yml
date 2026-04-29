@@ -1,0 +1,81 @@
+name: Build landing data + deploy GitHub Pages
+
+# Generates landing/metrics.json + landing/chunks.json from registered
+# consumers' GitHub state, then publishes the entire landing/ dir to
+# GitHub Pages.
+#
+# Triggers:
+#   - Hourly cron (baseline)
+#   - workflow_dispatch (manual)
+#   - repository_dispatch with type 'consumer-update' (near-real-time;
+#     consumer repos opt-in by firing this dispatch — see
+#     docs/consumer-onboarding.md)
+#   - push to main (so frontend changes deploy immediately)
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [consumer-update]
+  push:
+    branches: [main]
+    paths:
+      - "landing/**"
+      - "consumers.yaml"
+      - "scripts/build_landing_data.py"
+      - ".github/workflows/build-landing.yml"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      claimable_count: ${{ steps.summarize.outputs.claimable }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install pyyaml
+
+      - name: Build metrics.json + chunks.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/build_landing_data.py
+
+      - name: Summarize
+        id: summarize
+        run: |
+          if [ -f landing/chunks.json ]; then
+            count=$(python -c "import json; print(len(json.load(open('landing/chunks.json')).get('claimable', [])))")
+            echo "claimable=$count" >> "$GITHUB_OUTPUT"
+            echo "Claimable chunks: $count"
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: landing/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

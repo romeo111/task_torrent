@@ -1,0 +1,29 @@
+# TaskTorrent consumer registry — drives the landing page's per-project
+# metrics and chunk table at https://romeo111.github.io/task_torrent/
+#
+# To add a new consumer:
+#   1. Add an entry below.
+#   2. Open a PR. Maintainer reviews and merges.
+#   3. Optional (for near-real-time updates): consumer admin sets up
+#      a webhook that fires `repository_dispatch` to this repo on
+#      PR merge / issue close. See docs/consumer-onboarding.md.
+#
+# Without webhook setup, the metrics still update via 4-hourly cron.
+
+consumers:
+  - name: openonco
+    display_name: "OpenOnco — Oncology CDS"
+    repo: romeo111/OpenOnco
+    chunks_path: chunks/openonco/
+    contributions_path: contributions/
+    contribute_url: https://romeo111.github.io/OpenOnco/contribute.html
+    description: >
+      Free public clinical decision-support resource for oncology.
+      First TaskTorrent pilot. Chunks focus on biomarker-actionability
+      records, citation verification, red-flag coverage, and source
+      ingestion. UA + EN.
+    safety_notes:
+      - "No medical advice or treatment recommendations (CHARTER §8.3)"
+      - "No patient-specific output (CHARTER §9.3)"
+      - "Banned sources: SRC-ONCOKB, SRC-SNOMED, SRC-MEDDRA"
+    webhook_enabled: false   # flip true once consumer admin sets up dispatch

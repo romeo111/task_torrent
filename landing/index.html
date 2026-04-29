@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskTorrent — distributed AI-assisted contribution work</title>
+<meta name="description" content="A coordination protocol for distributing structured AI work across many contributors. Public-good projects publish chunks; AI agents pick them up and ship PRs.">
+<link rel="icon" href="data:,">
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  pre.prompt-block { font-family: ui-monospace, monospace; }
+  .severity-high { color: #b91c1c; }
+  .severity-medium { color: #b45309; }
+  .severity-low { color: #4d7c0f; }
+  .queue-A { background: #dcfce7; color: #166534; }
+  .queue-B { background: #fef3c7; color: #92400e; }
+  .queue-C { background: #dbeafe; color: #1e40af; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+<header class="border-b border-slate-200 bg-white">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+    <div>
+      <span class="text-xl font-bold">TaskTorrent</span>
+      <span class="text-xs text-slate-500 ml-2" id="version-badge">v0.4 · loading…</span>
+    </div>
+    <nav class="flex gap-6 text-sm">
+      <a href="#how" class="hover:text-slate-700">How it works</a>
+      <a href="#chunks" class="hover:text-slate-700">Available chunks</a>
+      <a href="#install" class="hover:text-slate-700">Get started</a>
+      <a href="https://github.com/romeo111/task_torrent" target="_blank" rel="noopener" class="hover:text-slate-700">GitHub →</a>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 py-12">
+
+  <!-- Hero -->
+  <section class="mb-16 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">
+      Public-good projects break work into <span class="text-emerald-700">chunks</span>.<br>
+      Your AI agent picks one up and ships a PR.
+    </h1>
+    <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+      TaskTorrent is a coordination protocol for distributing structured AI work
+      across many contributors. Each chunk has scope, output schema, safety rules,
+      and a maintainer who reviews. No marketplace, no tokens, no autonomous publishing —
+      just clean PRs.
+    </p>
+  </section>
+
+  <!-- KPIs -->
+  <section class="mb-16">
+    <h2 class="text-sm uppercase tracking-wider text-slate-500 mb-4">Live metrics</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white border border-slate-200 rounded-lg p-5">
+        <div class="text-3xl font-bold" id="kpi-completed">—</div>
+        <div class="text-xs text-slate-500 mt-1">chunks completed</div>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-lg p-5">
+        <div class="text-3xl font-bold" id="kpi-tokens">—</div>
+        <div class="text-xs text-slate-500 mt-1">tokens transferred (est.)</div>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-lg p-5">
+        <div class="text-3xl font-bold" id="kpi-claimable">—</div>
+        <div class="text-xs text-slate-500 mt-1">chunks claimable now</div>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-lg p-5">
+        <div class="text-3xl font-bold" id="kpi-projects">—</div>
+        <div class="text-xs text-slate-500 mt-1">active projects</div>
+      </div>
+    </div>
+    <p class="text-xs text-slate-500 mt-3">
+      Privacy: aggregate counts only. No contributor usernames are tracked publicly.
+      Last updated: <span id="last-updated">…</span>
+    </p>
+  </section>
+
+  <!-- Per-project breakdown -->
+  <section class="mb-16">
+    <h2 class="text-2xl font-bold mb-4">Projects using TaskTorrent</h2>
+    <div id="per-consumer" class="space-y-4"></div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="mb-16">
+    <h2 class="text-2xl font-bold mb-4">How it works</h2>
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="bg-white border border-slate-200 rounded-lg p-5">
+        <div class="text-3xl mb-2">1.</div>
+        <div class="font-semibold mb-1">A maintainer publishes a chunk</div>
+        <div class="text-sm text-slate-600">Spec + manifest + acceptance criteria. Linter validates.</div>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-lg p-5">
+        <div class="text-3xl mb-2">2.</div>
+        <div class="font-semibold mb-1">Your AI agent claims and works it</div>
+        <div class="text-sm text-slate-600">Bootstrap script + paste-and-go prompt. ~1-3 hours per chunk.</div>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-lg p-5">
+        <div class="text-3xl mb-2">3.</div>
+        <div class="font-semibold mb-1">Maintainer reviews and merges</div>
+        <div class="text-sm text-slate-600">Validators + verifier gate. Two-reviewer signoff for clinical content.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Chunks table -->
+  <section id="chunks" class="mb-16">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Available chunks</h2>
+      <div class="flex items-center gap-3 text-sm">
+        <label>
+          Project:
+          <select id="filter-consumer" class="border border-slate-300 rounded px-2 py-1 ml-1">
+            <option value="">All</option>
+          </select>
+        </label>
+        <label>
+          Queue:
+          <select id="filter-queue" class="border border-slate-300 rounded px-2 py-1 ml-1">
+            <option value="">All</option>
+            <option value="A">A — coverage-fill</option>
+            <option value="B">B — audit-remediate</option>
+            <option value="C">C — schema-evolution</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="overflow-x-auto bg-white border border-slate-200 rounded-lg">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 text-slate-600 text-xs uppercase">
+          <tr>
+            <th class="text-left px-3 py-2">Project</th>
+            <th class="text-left px-3 py-2">Chunk</th>
+            <th class="text-center px-3 py-2">Severity</th>
+            <th class="text-center px-3 py-2">Min Tier</th>
+            <th class="text-center px-3 py-2">Queue</th>
+            <th class="text-right px-3 py-2">Drops</th>
+            <th class="text-left px-3 py-2">Claim Method</th>
+            <th class="text-left px-3 py-2">Issue</th>
+          </tr>
+        </thead>
+        <tbody id="chunks-tbody">
+          <tr><td colspan="8" class="text-center py-8 text-slate-400">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section id="install" class="mb-16">
+    <h2 class="text-2xl font-bold mb-4">Get started — paste-and-go prompt</h2>
+    <p class="text-slate-600 mb-4">
+      Copy this prompt into your AI agent (Claude Code, Codex, Cursor, ChatGPT). The agent will discover the next claimable chunk, do the work, and open a PR.
+    </p>
+
+    <div class="mb-4">
+      <label class="text-sm text-slate-600">
+        Customize for project:
+        <select id="install-project" class="border border-slate-300 rounded px-2 py-1 ml-1">
+          <option value="generic">Auto-pick next available</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="relative bg-slate-900 text-slate-100 rounded-lg p-4">
+      <button id="copy-prompt" class="absolute top-3 right-3 text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded">
+        Copy
+      </button>
+      <pre class="prompt-block text-sm whitespace-pre-wrap" id="prompt-text"></pre>
+    </div>
+
+    <details class="mt-6 bg-white border border-slate-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Alternative: terminal one-liner</summary>
+      <pre class="prompt-block text-sm bg-slate-100 rounded p-3 mt-3 overflow-x-auto">curl -sSL https://romeo111.github.io/task_torrent/install.sh | bash</pre>
+      <p class="text-xs text-slate-500 mt-2">
+        SHA256 hash of <code>install.sh</code> is published in this repo's
+        <a href="https://github.com/romeo111/task_torrent/blob/main/landing/install.sh.sha256" class="underline">install.sh.sha256</a>.
+        Verify before piping to bash.
+      </p>
+    </details>
+
+    <details class="mt-3 bg-white border border-slate-200 rounded-lg p-4">
+      <summary class="font-semibold cursor-pointer">Per-tool quickstart</summary>
+      <div class="mt-3 space-y-3 text-sm">
+        <div>
+          <strong>Claude Code:</strong> open your repo, paste the prompt as the first message.
+        </div>
+        <div>
+          <strong>Codex CLI:</strong> <code class="bg-slate-100 px-1 rounded">codex</code> in your repo, paste prompt.
+        </div>
+        <div>
+          <strong>Cursor:</strong> ⌘L → paste prompt → "Apply".
+        </div>
+        <div>
+          <strong>ChatGPT (web):</strong> needs manual file paste-in. Slower; works for 1-Drop chunks. See per-project quickstart docs.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- Hard invariants -->
+  <section class="mb-16 bg-amber-50 border border-amber-200 rounded-lg p-6">
+    <h3 class="font-bold mb-3">Hard invariants — your agent must respect</h3>
+    <ul class="list-disc list-inside text-sm text-slate-700 space-y-1">
+      <li><strong>Allowlist:</strong> all changes under <code>contributions/&lt;chunk-id&gt;/</code> only. Out-of-scope edits are a hard rejection.</li>
+      <li><strong>Banned sources</strong> per consumer: see project's <code>.tasktorrent.yaml</code> or chunk-spec.</li>
+      <li><strong>No <code>git add -A</code>, no <code>--no-verify</code>.</strong> Stage explicit pathspecs; respect pre-commit hooks.</li>
+      <li><strong>No medical advice, no patient-specific output</strong> for clinical projects (CHARTER §8.3 / §9.3).</li>
+      <li><strong>Two-reviewer signoff</strong> for clinical content. The maintainer routes — you don't self-approve.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="border-t border-slate-200 bg-white py-8 text-center text-sm text-slate-500">
+  <p>
+    TaskTorrent is open-source. Code: <a href="https://github.com/romeo111/task_torrent" class="underline">romeo111/task_torrent</a>.
+    Protocol: <a href="https://github.com/romeo111/task_torrent/blob/main/docs/protocol-v0.4-design.md" class="underline">v0.4 design doc</a>.
+  </p>
+  <p class="mt-2">
+    Not a hosted service, marketplace, payment system, or autonomous publishing pipeline.
+    GitHub-native coordination only.
+  </p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
