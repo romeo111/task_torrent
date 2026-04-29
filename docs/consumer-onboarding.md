@@ -4,10 +4,10 @@ A "consumer" is any repo that uses TaskTorrent to coordinate distributed AI work
 
 This doc covers two steps:
 
-1. **Mandatory:** register your repo in `consumers.yaml` so it appears on the [TaskTorrent landing page](https://romeo111.github.io/task_torrent/) and gets included in the 4-hourly metrics build.
-2. **Optional but recommended:** set up a webhook so your repo's events (PR merged, issue closed) trigger a near-real-time landing-page rebuild instead of waiting up to 4 hours for the next cron tick.
+1. **Mandatory + active:** register your repo in `consumers.yaml` so it appears on the [TaskTorrent landing page](https://romeo111.github.io/task_torrent/) and gets included in the 4-hourly metrics build.
+2. **Proposal only — DO NOT enable yet** (as of 2026-04-29): a webhook flow that triggers near-real-time landing-page rebuilds. Documented for design review while parallel chunk-execution work stabilizes. **Maintainer will announce in CHANGELOG when this path is open for opt-in.**
 
-Step 1 takes ~5 minutes. Step 2 takes ~15 minutes.
+Step 1 takes ~5 minutes. Step 2 stays as a planning doc until further notice.
 
 ---
 
@@ -43,6 +43,8 @@ If your repo doesn't have these conventions yet, the build degrades to "complete
 ---
 
 ## Step 2 — Webhook for near-real-time updates (optional)
+
+> ⚠️ **PROPOSAL — DO NOT ENABLE YET (as of 2026-04-29).** The webhook path is documented as a v0.5+ enhancement, not a v0.4 deliverable. While parallel chunk-execution work is in flight in OpenOnco, **do not configure webhooks in any consumer repo** — the cron baseline is intentionally the only active path. The webhook listener in this repo's `build-landing.yml` is dormant: it accepts `repository_dispatch` events but nobody is firing them. Re-enable this section's instructions only after the maintainer announces "webhook flow is open" in CHANGELOG.
 
 Without webhook setup, the landing page updates every 4 hours via cron. With webhook setup, it updates within ~30 seconds of a PR merge or issue close in your repo.
 
