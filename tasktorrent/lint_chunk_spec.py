@@ -59,6 +59,15 @@ REQUIRED_SECTIONS = (
     "Claim Method",
 )
 
+# Sections that v0.5 will make required. v0.4 emits WARNING when absent
+# so consumers can backfill on their own schedule per the two-release
+# deprecation discipline (`docs/protocol-v0.4-design.md` Gap 2).
+SOFT_REQUIRED_SECTIONS_V0_5 = (
+    "Severity",
+    "Min Contributor Tier",
+    "Queue",
+)
+
 VALID_STATUS = {
     "queued",
     "status-active",
@@ -76,6 +85,31 @@ VALID_BREAK_EVEN_TESTS = {"PASS", "MARGINAL", "FAIL"}
 VALID_COMPUTE_PROFILES = {"mechanical", "llm-essential", "mixed"}
 
 VALID_VERIFICATION_METHODS = {"computational", "sample", "full-expert", "none"}
+
+VALID_SEVERITY = {"low", "medium", "high"}
+
+VALID_MIN_TIER = {"new", "established", "trusted"}
+
+VALID_QUEUE = {"A", "B", "C"}
+
+# Topic labels that signal the chunk includes citation work and therefore
+# should declare a Verifier Threshold (per Proposal #23).
+CITATION_TOPIC_LABELS = {
+    "citation-verify",
+    "citation-verification",
+    "source-ingest",
+    "metadata-classification",
+}
+
+# A claim that the Mission section references kb-coverage-matrix is
+# satisfied by a substring match against any of these section names from
+# the OpenOnco coverage matrix (per Proposal #25).
+KB_MATRIX_REFERENCE_RE = re.compile(
+    r"kb-coverage-matrix\.md\s*[>›:]\s*"
+    r"(Per-disease coverage matrix|Quality scores|Coverage gaps|"
+    r"ESCAT tier distribution|Top-level KPIs)\b",
+    re.IGNORECASE,
+)
 
 PLACEHOLDER_MARKERS = (
     "<entity_id_",
@@ -203,6 +237,19 @@ def lint_chunk_spec(path: Path) -> LintResult:
             )
         )
 
+    # 4b. Mission references kb-coverage-matrix cell (Proposal #25, warning in v0.4)
+    if "Mission" in sections and not KB_MATRIX_REFERENCE_RE.search(sections["Mission"]):
+        result.findings.append(
+            LintFinding(
+                "warning",
+                "Mission",
+                "Mission should reference a kb-coverage-matrix cell "
+                "(e.g. `kb-coverage-matrix.md > Per-disease coverage matrix > "
+                "DIS-XXX > BMA from 0 to >=3`). Without it, chunk progress is "
+                "unmeasurable. See `docs/protocol-v0.4-design.md` Proposal #25.",
+            )
+        )
+
     # 5. Economic Profile parses + has required fields
     econ_break_even: str | None = None
     econ_compute_profile: str | None = None
@@ -319,6 +366,74 @@ def lint_chunk_spec(path: Path) -> LintResult:
                 "warning",
                 "Allowed Sources",
                 "allowed-sources section is suspiciously short; declare allowed sources explicitly",
+            )
+        )
+
+    # 9. v0.5 soft-required fields (Severity, Min Contributor Tier, Queue)
+    # WARNING in v0.4; planned to become ERROR in v0.5.
+    for soft_section in SOFT_REQUIRED_SECTIONS_V0_5:
+        if soft_section not in sections:
+            result.findings.append(
+                LintFinding(
+                    "warning",
+                    soft_section,
+                    f"section missing — soft-required in v0.4, will become "
+                    f"required-error in v0.5. See `docs/protocol-v0.4-design.md` "
+                    f"Proposals #22/#26.",
+                )
+            )
+
+    # 9a. Severity value validation (when present)
+    if "Severity" in sections:
+        sev = _extract_inline_value(sections["Severity"])
+        if sev and sev.lower() not in VALID_SEVERITY:
+            result.findings.append(
+                LintFinding(
+                    "error",
+                    "Severity",
+                    f"invalid value `{sev}`; expected one of {sorted(VALID_SEVERITY)}",
+                )
+            )
+
+    # 9b. Min Contributor Tier value validation (when present)
+    if "Min Contributor Tier" in sections:
+        tier = _extract_inline_value(sections["Min Contributor Tier"])
+        if tier and tier.lower() not in VALID_MIN_TIER:
+            result.findings.append(
+                LintFinding(
+                    "error",
+                    "Min Contributor Tier",
+                    f"invalid value `{tier}`; expected one of {sorted(VALID_MIN_TIER)}",
+                )
+            )
+
+    # 9c. Queue value validation (when present)
+    if "Queue" in sections:
+        q = _extract_inline_value(sections["Queue"])
+        if q and q.upper() not in VALID_QUEUE:
+            result.findings.append(
+                LintFinding(
+                    "error",
+                    "Queue",
+                    f"invalid value `{q}`; expected one of {sorted(VALID_QUEUE)} "
+                    f"(A=Coverage-fill, B=Audit-remediate, C=Schema-evolution)",
+                )
+            )
+
+    # 10. Verifier Threshold conditional (Proposal #23)
+    # If Topic Labels signals a citation chunk, Verifier Threshold should be set.
+    is_citation_chunk = False
+    if "Topic Labels" in sections:
+        labels = [t.lower() for t in re.findall(r"`([^`\n]+)`", sections["Topic Labels"])]
+        is_citation_chunk = any(t in CITATION_TOPIC_LABELS for t in labels)
+    if is_citation_chunk and "Verifier Threshold" not in sections:
+        result.findings.append(
+            LintFinding(
+                "warning",
+                "Verifier Threshold",
+                "citation-related chunk should declare a `## Verifier Threshold` "
+                "(e.g. `>=85% claims pass Anthropic Citations API grounding`). "
+                "Default 85% applies if absent. See Proposal #23.",
             )
         )
 

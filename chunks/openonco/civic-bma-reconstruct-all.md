@@ -4,6 +4,29 @@
 
 `queued` (proposed first active chunk)
 
+## Economic Profile
+
+```yaml
+compute_profile: mechanical
+verification_method: computational
+break_even_test: PASS
+output_type: entity-sidecar
+backfilled_retroactively: true
+backfilled_date: "2026-04-29"
+```
+
+## Queue
+
+`C`
+
+## Min Contributor Tier
+
+`trusted`
+
+## Severity
+
+`medium`
+
 ## Topic Labels
 
 `civic-evidence`, `mechanical+judgment`, `pilot-active`
@@ -12,6 +35,9 @@
 
 For all 399 OpenOnco BMA files flagged `actionability_review_required: true`, reconstruct each BMA's `evidence_sources` block from the local CIViC snapshot, drop legacy `SRC-ONCOKB` entries, and clear `actionability_review_required: false` only when the reconstruction is mechanically defensible. Untouched: `escat_tier`, `evidence_summary`, `regulatory_approval`, `recommended_combinations`, `contraindicated_monotherapy`, `primary_sources`.
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Quality scores > BMA with CIViC evidence_sources` — schema evolution from OncoKB-derived metadata to CIViC `evidence_sources` block.
 ## Drop Estimate
 
 ~12 Drops (~1.2M tokens). 399 BMA × ~3k tokens average per BMA (read existing file, query CIViC, build EvidenceSourceRef entries, judgment, write sidecar, notes_for_reviewer).

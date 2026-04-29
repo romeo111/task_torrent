@@ -28,7 +28,19 @@ VALID_CHUNK_SPEC = """# Chunk: example
 
 ## Mission
 
-This is a non-trivial mission statement that explains the chunk's purpose in enough words to pass the length check.
+This chunk advances `kb-coverage-matrix.md > Per-disease coverage matrix > DIS-EXAMPLE > BMA` from 0 to ≥3 by adding actionability records for hot-spot variants. Mission is at least forty characters.
+
+## Severity
+
+`medium`
+
+## Min Contributor Tier
+
+`established`
+
+## Queue
+
+`A`
 
 ## Economic Profile
 
@@ -89,7 +101,7 @@ def test_valid_spec_passes(tmp_path: Path) -> None:
 
 
 def test_missing_required_section(tmp_path: Path) -> None:
-    spec = VALID_CHUNK_SPEC.replace("## Mission\n\nThis is a non-trivial mission", "")
+    spec = VALID_CHUNK_SPEC.replace("## Mission\n\nThis chunk advances", "")
     p = write(tmp_path, "no_mission.md", spec)
     result = lint_chunk_spec(p)
     assert not result.passed
@@ -175,10 +187,12 @@ def test_invalid_compute_profile(tmp_path: Path) -> None:
 
 
 def test_short_mission_rejected(tmp_path: Path) -> None:
-    spec = VALID_CHUNK_SPEC.replace(
-        "This is a non-trivial mission statement that explains the chunk's purpose in enough words to pass the length check.",
-        "Do stuff.",
+    long_mission = (
+        "This chunk advances `kb-coverage-matrix.md > Per-disease coverage matrix > "
+        "DIS-EXAMPLE > BMA` from 0 to ≥3 by adding actionability records for "
+        "hot-spot variants. Mission is at least forty characters."
     )
+    spec = VALID_CHUNK_SPEC.replace(long_mission, "Do stuff.")
     p = write(tmp_path, "short.md", spec)
     result = lint_chunk_spec(p)
     assert not result.passed
@@ -231,6 +245,123 @@ def test_extract_inline_value_bare() -> None:
 
 def test_extract_inline_value_multiword_returns_none() -> None:
     assert _extract_inline_value("This is a multi-word body with no clear value.") is None
+
+
+# --- v0.5 soft-required fields (Severity / Min Contributor Tier / Queue) ---
+
+def _strip_section(spec: str, heading: str) -> str:
+    """Remove a `## <heading>` block and its body up to next `## ` heading."""
+    import re as _re
+    pattern = _re.compile(rf"^## {_re.escape(heading)}\b.*?(?=^## |\Z)", _re.MULTILINE | _re.DOTALL)
+    return pattern.sub("", spec)
+
+
+def test_missing_severity_warns_not_errors(tmp_path: Path) -> None:
+    spec = _strip_section(VALID_CHUNK_SPEC, "Severity")
+    p = write(tmp_path, "no_sev.md", spec)
+    result = lint_chunk_spec(p)
+    assert result.passed  # warning only
+    assert any(f.section == "Severity" for f in result.warnings)
+
+
+def test_missing_min_tier_warns_not_errors(tmp_path: Path) -> None:
+    spec = _strip_section(VALID_CHUNK_SPEC, "Min Contributor Tier")
+    p = write(tmp_path, "no_tier.md", spec)
+    result = lint_chunk_spec(p)
+    assert result.passed
+    assert any(f.section == "Min Contributor Tier" for f in result.warnings)
+
+
+def test_missing_queue_warns_not_errors(tmp_path: Path) -> None:
+    spec = _strip_section(VALID_CHUNK_SPEC, "Queue")
+    p = write(tmp_path, "no_q.md", spec)
+    result = lint_chunk_spec(p)
+    assert result.passed
+    assert any(f.section == "Queue" for f in result.warnings)
+
+
+def test_invalid_severity_rejected(tmp_path: Path) -> None:
+    spec = VALID_CHUNK_SPEC.replace("`medium`", "`extreme`")
+    p = write(tmp_path, "bad_sev.md", spec)
+    result = lint_chunk_spec(p)
+    assert not result.passed
+    assert any(f.section == "Severity" for f in result.errors)
+
+
+def test_invalid_min_tier_rejected(tmp_path: Path) -> None:
+    spec = VALID_CHUNK_SPEC.replace("`established`", "`elite`")
+    p = write(tmp_path, "bad_tier.md", spec)
+    result = lint_chunk_spec(p)
+    assert not result.passed
+    assert any(f.section == "Min Contributor Tier" for f in result.errors)
+
+
+def test_invalid_queue_rejected(tmp_path: Path) -> None:
+    spec = VALID_CHUNK_SPEC.replace("`A`", "`X`")
+    p = write(tmp_path, "bad_q.md", spec)
+    result = lint_chunk_spec(p)
+    assert not result.passed
+    assert any(f.section == "Queue" for f in result.errors)
+
+
+# --- Mission references kb-coverage-matrix (Proposal #25) ---
+
+def test_mission_without_matrix_ref_warns(tmp_path: Path) -> None:
+    spec = VALID_CHUNK_SPEC.replace(
+        "This chunk advances `kb-coverage-matrix.md > Per-disease coverage matrix > "
+        "DIS-EXAMPLE > BMA` from 0 to ≥3 by adding actionability records for "
+        "hot-spot variants. Mission is at least forty characters.",
+        "Just describes the chunk in some prose without referencing the matrix in any way at all.",
+    )
+    p = write(tmp_path, "no_mat_ref.md", spec)
+    result = lint_chunk_spec(p)
+    assert result.passed  # warning only
+    assert any(
+        f.section == "Mission" and "kb-coverage-matrix" in f.message
+        for f in result.warnings
+    )
+
+
+def test_mission_with_matrix_ref_clean(tmp_path: Path) -> None:
+    p = write(tmp_path, "with_ref.md", VALID_CHUNK_SPEC)
+    result = lint_chunk_spec(p)
+    matrix_warnings = [
+        f for f in result.warnings
+        if f.section == "Mission" and "kb-coverage-matrix" in f.message
+    ]
+    assert matrix_warnings == []
+
+
+# --- Verifier Threshold conditional (Proposal #23) ---
+
+def test_citation_chunk_without_verifier_threshold_warns(tmp_path: Path) -> None:
+    spec = VALID_CHUNK_SPEC.replace("`example`", "`citation-verify`, `mechanical+judgment`")
+    p = write(tmp_path, "cite.md", spec)
+    result = lint_chunk_spec(p)
+    assert result.passed  # warning only
+    assert any(f.section == "Verifier Threshold" for f in result.warnings)
+
+
+def test_non_citation_chunk_no_threshold_warning(tmp_path: Path) -> None:
+    """A regular chunk without citation topic labels should NOT warn about threshold."""
+    p = write(tmp_path, "regular.md", VALID_CHUNK_SPEC)
+    result = lint_chunk_spec(p)
+    threshold_warnings = [f for f in result.warnings if f.section == "Verifier Threshold"]
+    assert threshold_warnings == []
+
+
+def test_citation_chunk_with_verifier_threshold_clean(tmp_path: Path) -> None:
+    spec = VALID_CHUNK_SPEC.replace(
+        "`example`",
+        "`citation-verify`",
+    ).replace(
+        "## Claim Method",
+        "## Verifier Threshold\n\n≥85% claims pass Anthropic Citations API grounding.\n\n## Claim Method",
+    )
+    p = write(tmp_path, "cite_ok.md", spec)
+    result = lint_chunk_spec(p)
+    threshold_warnings = [f for f in result.warnings if f.section == "Verifier Threshold"]
+    assert threshold_warnings == []
 
 
 # --- Integration: run on real OpenOnco chunk specs ---

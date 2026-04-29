@@ -2,7 +2,19 @@
 
 ## Status
 
-`queued`
+`withdrawn`
+
+## Queue
+
+`B`
+
+## Min Contributor Tier
+
+`new`
+
+## Severity
+
+`low`
 
 ## Topic Labels
 
@@ -14,6 +26,9 @@ For ~216 hosted `Drug` entities, propose normalization of free-text `drug_class`
 
 Report-only chunk: produces `drug_class_normalization_report.yaml` with per-Drug suggested controlled-vocab value. Maintainer applies suggestions per-row (no auto-apply per L-15 anti-pattern: contributor produces suggestions, maintainer reviews+applies).
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Top-level KPIs > Drugs` — normalizes drug_class string formatting (cleanup, no clinical risk).
 ## Economic Profile
 
 ```yaml
@@ -31,11 +46,16 @@ script_alternative:
     — different drugs in same class). Pure scripts produce
     over-collapsed clusters; LLM separates clinically distinct subclasses.
 
-verification_method: full-maintainer-review
+verification_method: full-expert
 verification_cost:
   maintainer_hours: 4    # 100% review of suggestions before apply
   expert_hours: 0
   expert_specialty: ""
+
+# Retroactive 2026-04-29: chunk withdrawn — actual violations found = 0
+# (216 drugs × drug_class strings already canonical). MARGINAL retroactively → FAIL.
+# See L-20 / Proposal #20.
+expected_violations: 0
 
 break_even_test: MARGINAL
 break_even_rationale: >
