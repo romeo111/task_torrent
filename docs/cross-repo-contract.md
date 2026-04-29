@@ -136,11 +136,11 @@ Consumers declare their own banned-sources list in the issue template's `## Disa
 
 The `validate_contributions.py` reference implementation reads the consumer's banned list from chunk-spec / config + applies a hard gate. New consumers customize via `.tasktorrent.yaml.banned_sources` (when adopted).
 
-## Versioning contract (v0.4: hybrid observability-only)
+## Versioning contract (v0.4: first public release)
 
-- task_torrent **does not** tag semver releases as of v0.4.
-- Consumer repos **do not** require `.tasktorrent.yaml` version pin.
-- Sidecars **may** include optional `_contribution.tasktorrent_version` (commit-hash style, e.g. `2026-04-29-abc1234`) for post-hoc drift trace.
+- task_torrent v0.4.0 is the first tagged public release.
+- Consumer repos **do not** require `.tasktorrent.yaml` version pin in v0.4.
+- Sidecars **may** include optional `_contribution.tasktorrent_version` (tag or commit-hash style, e.g. `v0.4.0` or `2026-04-29-abc1234`) for post-hoc drift trace.
 - Breaking changes ride a two-release deprecation window per `protocol-v0.4-design.md` Gap 2: vN warn → vN+1 error → vN+2 remove.
 - Each breaking-change release ships a `MIGRATION.md` block in the changelog.
 
