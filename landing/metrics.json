@@ -1,0 +1,30 @@
+{
+  "schema_version": "1",
+  "last_updated": "2026-04-29T09:29:18Z",
+  "totals": {
+    "chunks_completed": 2,
+    "chunks_active": 0,
+    "chunks_claimable": 0,
+    "tokens_estimated": 16200000,
+    "tokens_actual": 0,
+    "contributors_unique_global_estimate": 3,
+    "sidecars_count": 12
+  },
+  "per_consumer": [
+    {
+      "name": "openonco",
+      "display_name": "OpenOnco — Oncology CDS",
+      "repo": "romeo111/OpenOnco",
+      "contribute_url": "https://romeo111.github.io/OpenOnco/contribute.html",
+      "description": "Free public clinical decision-support resource for oncology. First TaskTorrent pilot. Chunks focus on biomarker-actionability records, citation verification, red-flag coverage, and source ingestion. UA + EN.",
+      "chunks_completed": 2,
+      "chunks_active": 0,
+      "chunks_claimable": 0,
+      "tokens_estimated": 16200000,
+      "tokens_actual": 0,
+      "contributors_unique": 3,
+      "sidecars_count": 12,
+      "last_completed_at": "2026-04-28T19:59:00Z"
+    }
+  ]
+}
