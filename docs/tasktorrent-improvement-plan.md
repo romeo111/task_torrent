@@ -208,6 +208,30 @@ Plus 4 lexical near-misses (e.g. PAPILLON → CHRYSALIS).
 
 **Cost:** one new `_contribution_meta.yaml` field, one consumer-side config file, git tags on task_torrent, release notes discipline. No new infrastructure. Effort ~half-day.
 
+### L-22 — onboarding-kit landing observation: contributor-side scripts must self-contain Python detection
+**When:** 2026-04-29, while writing `bootstrap_contributor.sh` in cancer-autoresearch (PR #31).
+**What:** Initial implementation tried `python` first, then `python3`. On Windows + WSL combinations the default `python` is often 3.8 (per OpenOnco's CLAUDE.md note). On bare Windows, `python` may be a Microsoft Store stub that errors. The script must probe a list including `py -3.12`, `py -3.11`, `py -3.10`, `py -3` — Windows Python launcher — and use a bash array (not a string) to handle multi-token launchers.
+
+**Risk:** silent failure on contributor's first run if their Python detection is over-narrow. Contributor abandons before the first chunk.
+
+**Drives:** Proposal #22b (multi-platform Python detection in onboarding scripts; bash array for command tokens). Reference impl: `cancer-autoresearch/scripts/tasktorrent/bootstrap_contributor.sh`.
+
+### L-23 — citation-verifier semantic-check needs graceful degradation in forks
+**When:** 2026-04-29, while wiring `verify_citations.py` CI workflow in cancer-autoresearch (PR #32).
+**What:** Forks of OpenOnco — anyone who clones to test contributing — don't have the `ANTHROPIC_API_KEY` repo secret. If the verifier hard-requires it, every fork's first PR fails CI for a reason that's nothing to do with the contributor's work. Onboarding cliff.
+
+**Pattern:** any maintainer-side optional check that depends on a secret must be gracefully optional in CI. The structural (no-secret) check is mandatory; semantic (secret-required) is opt-in.
+
+**Drives:** Proposal #23b (every secret-dependent CI check must have a no-op path when secret is absent + must say so explicitly in workflow output, not silently skip). Reference impl: `cancer-autoresearch/.github/workflows/citation-verify.yml` `if: env.ANTHROPIC_API_KEY != ''` guard.
+
+### L-24 — backfill-plus-flip-blocking is one PR, not two
+**When:** 2026-04-29, while adding new soft-required fields to lint_chunk_spec.py (PR #22).
+**What:** Initial plan was: PR1 = add new fields as warn-only; PR2 (later) = backfill chunks; PR3 (eventually) = flip warn → error. In practice this generates a stale-warnings period where every CI run prints noise. Better: one PR adds the rules + backfills the chunks + flips smoke-lint to blocking, all atomic.
+
+**Pattern:** backfill is cheap relative to the schema change; cleanup arithmetic favors atomic delivery. Don't ship "warn-only that everyone learns to ignore."
+
+**Drives:** Proposal #24b (revise the deprecation discipline (Gap 2 of `protocol-v0.4-design.md`) for soft-required fields specifically: warn-now / error-vN+1 timing applies for **breaking** changes, but for **additive** ones — like new sections that have non-empty defaults — backfill-and-flip-in-one-PR is preferred).
+
 ---
 
 ## Proposed system changes
@@ -282,6 +306,9 @@ Numbered to match lesson IDs. Tier ordering: Tier 1 = ship within 1 week, Tier 2
 | 2026-04-28 | L-19 implementation in flight | (a)+(d) docs/schema landed via this branch; (b)+(c)+(e) in cancer-autoresearch PR |
 | 2026-04-28 | L-20 (pre-flight upstream-audit threshold) | drug-class-normalization chunk found 0 actionable normalizations on 216 Drugs (data already clean); MARGINAL retroactively → FAIL |
 | 2026-04-28 | L-21 (cross-repo version pinning) | OpenOnco maintainer flagged that task_torrent rules + consumer validator have no version stamp; `claim_method` schema bump (L-19 a+d) had no version signal — drift would have been silent across multiple consumers |
+| 2026-04-29 | L-22 (multi-platform Python detection) | bootstrap_contributor.sh dev observation — Windows `python` often 3.8; need py-launcher fallback chain with bash-array for multi-token launchers |
+| 2026-04-29 | L-23 (graceful secret degradation) | verify_citations CI workflow — forks without ANTHROPIC_API_KEY would fail every first PR; structural mandatory + semantic opt-in pattern |
+| 2026-04-29 | L-24 (backfill-and-flip atomic) | linter v0.5 fields landing — atomic add-rules + backfill-chunks + flip-blocking outperforms the warn-only-then-error two-PR approach for additive (non-breaking) schema changes |
 
 When new lessons land, append a row + add the L-N section above + update Tier proposals as needed.
 
