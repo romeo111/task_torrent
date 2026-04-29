@@ -26,8 +26,10 @@ jobs:
       - name: Run tests
         run: pytest tests/ -v
 
-      - name: Lint OpenOnco chunks (non-blocking smoke)
-        # Per owner decision 2026-04-28: prefer version-aware exemptions.
-        # Pre-v0.4 chunks predate Economic Profile + claim_method; surface
-        # gaps without failing CI. Once OpenOnco backfills, flip to blocking.
-        run: python -m tasktorrent.lint_chunk_spec --all chunks/openonco/ || true
+      - name: Lint OpenOnco chunks (now blocking — backfill complete 2026-04-29)
+        # All 12 OpenOnco chunks backfilled with v0.4 + soft-required v0.5
+        # fields per scripts/backfill_v0_5_fields.py. Linter is now a hard
+        # gate: any new chunk must pass before status-active promotion.
+        env:
+          PYTHONIOENCODING: utf-8
+        run: python -m tasktorrent.lint_chunk_spec --all chunks/openonco/

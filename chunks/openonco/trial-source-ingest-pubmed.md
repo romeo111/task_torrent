@@ -4,6 +4,22 @@
 
 `queued`
 
+## Verifier Threshold
+
+>=85% claims pass Anthropic Citations API grounding (default).
+
+## Queue
+
+`A`
+
+## Min Contributor Tier
+
+`established`
+
+## Severity
+
+`medium`
+
 ## Topic Labels
 
 `source-ingest`, `metadata-classification`, `pubmed-fetch`
@@ -14,6 +30,9 @@ Ingest pivotal-trial Source entities for the unique RCTs identified by `citation
 
 The trial-extraction list (`cancer-autoresearch/contributions/citation-semantic-verify-v2/trials-needing-source-ingest.md`) names 47 unique trial-name candidates. **At least some are false positives** (Codex labeled generic words like "CROSS"/"PARADIGM" as trial names where v1 audit had no clear trial). This chunk's first sub-task is filtering real trials from false positives BEFORE PubMed lookup.
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Top-level KPIs > Sources` — ingests pivotal-trial Source entities for un-stubbed RCT references.
 ## Economic Profile
 
 ```yaml

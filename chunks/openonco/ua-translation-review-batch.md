@@ -4,6 +4,29 @@
 
 `queued`
 
+## Economic Profile
+
+```yaml
+compute_profile: llm-essential
+verification_method: sample
+break_even_test: PASS
+output_type: report-only
+backfilled_retroactively: true
+backfilled_date: "2026-04-29"
+```
+
+## Queue
+
+`B`
+
+## Min Contributor Tier
+
+`established`
+
+## Severity
+
+`medium`
+
 ## Topic Labels
 
 `ua-translate`, `bilingual-review`, `report-only`
@@ -14,6 +37,9 @@ Review the ~1251 `*_ua` fields drafted by prior runs (most carry `ukrainian_draf
 
 OpenOnco specs are in Ukrainian. Many entities have an English `evidence_summary` and a `evidence_summary_ua` companion that's a draft translation. Per `specs/CLINICAL_CONTENT_STANDARDS.md`, UA fields require Ukrainian-fluent clinician sign-off — but a contributor with strong UA + clinical reading can do the first pass.
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Quality scores > BMA UA-signed-off` — reviews 1858 Ukrainian-translation findings across the KB.
 ## Drop Estimate
 
 ~12 Drops (~1.2M tokens). 1251 fields × ~1k tokens (read EN + UA, judge, write rationale + correction).

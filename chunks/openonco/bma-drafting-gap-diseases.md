@@ -4,6 +4,29 @@
 
 `queued`
 
+## Economic Profile
+
+```yaml
+compute_profile: mixed
+verification_method: full-expert
+break_even_test: PASS
+output_type: entity-sidecar
+backfilled_retroactively: true
+backfilled_date: "2026-04-29"
+```
+
+## Queue
+
+`A`
+
+## Min Contributor Tier
+
+`trusted`
+
+## Severity
+
+`high`
+
 ## Topic Labels
 
 `evidence-draft`, `claim-bearing`, `coverage-gap`
@@ -14,6 +37,9 @@ For diseases with documented BMA coverage gaps (top candidates: PDAC, cholangioc
 
 This is the "fill the holes" complement to `civic-bma-reconstruct-all` — that chunk fixes existing flagged BMAs; this chunk drafts BMAs for `(biomarker, variant, disease)` triples that have no entity yet.
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Per-disease coverage matrix > Coverage gaps > Diseases with thin BMA` — fills BMA records for rare-disease subtypes currently at 0 or 1-2 entries.
 ## Drop Estimate
 
 ~15 Drops (~1.5M tokens). ~80 new BMA candidates × ~15k tokens per draft (search CIViC + read multiple guideline sections + synthesize evidence_summary + map ESCAT + draft regulatory_approval + write notes_for_reviewer + handle BIO-* if needed).

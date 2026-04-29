@@ -4,6 +4,29 @@
 
 `queued`
 
+## Economic Profile
+
+```yaml
+compute_profile: mixed
+verification_method: full-expert
+break_even_test: PASS
+output_type: entity-sidecar
+backfilled_retroactively: true
+backfilled_date: "2026-04-29"
+```
+
+## Queue
+
+`A`
+
+## Min Contributor Tier
+
+`established`
+
+## Severity
+
+`medium`
+
 ## Topic Labels
 
 `evidence-draft`, `coverage-gap`, `claim-bearing`
@@ -14,6 +37,9 @@ For each `(disease, redflag)` cell empty in the 65-disease coverage matrix (`can
 
 The 65-disease coverage matrix is the canonical "what's missing" report from prior audit. Many cells are intentionally empty (redflag doesn't apply); the chunk drafts the explicit `not_applicable` declaration with rationale, OR drafts the linkage when applicable.
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Per-disease coverage matrix > RF` — fills the 5-type RF matrix for diseases with partial coverage.
 ## Drop Estimate
 
 ~15 Drops (~1.5M tokens). 65 diseases × ~30 redflags × ~800 tokens average per cell judgment + sidecar.

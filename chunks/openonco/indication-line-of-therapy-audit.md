@@ -4,6 +4,18 @@
 
 `queued`
 
+## Queue
+
+`B`
+
+## Min Contributor Tier
+
+`trusted`
+
+## Severity
+
+`high`
+
 ## Topic Labels
 
 `audit`, `claim-bearing-review`, `indication-consistency`
@@ -14,6 +26,9 @@ For ~250 hosted `Indication` (IND-*) entities, audit whether `applicable_to.line
 
 Report-only audit. No hosted-content edits. Drives maintainer-led IND-* corrections via standard CHARTER §6.1 flow.
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Quality scores > Indications with NCCN category` — audits cited line-of-therapy evidence against the actual cited Source content.
 ## Economic Profile
 
 ```yaml

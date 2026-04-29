@@ -4,6 +4,18 @@
 
 `queued`
 
+## Queue
+
+`B`
+
+## Min Contributor Tier
+
+`trusted`
+
+## Severity
+
+`high`
+
 ## Topic Labels
 
 `audit`, `claim-bearing-review`, `escat`
@@ -14,6 +26,9 @@ Audit `escat_tier` field across the 399 hosted `BiomarkerActionability` (BMA) en
 
 Output: `audit-report.yaml` with per-BMA assessment. **Report only — does not edit hosted content.** Findings drive subsequent maintainer-led BMA escat_tier corrections via the standard CHARTER §6.1 two-Co-Lead flow.
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > ESCAT tier distribution` — audits the 100% nominal ESCAT-tier coverage for actual semantic correctness (B2 subset projects ~10% overclaim risk).
 ## Economic Profile
 
 ```yaml

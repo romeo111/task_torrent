@@ -4,6 +4,33 @@
 
 `queued` (proposed second active chunk)
 
+## Verifier Threshold
+
+>=85% claims pass Anthropic Citations API grounding (default).
+
+## Economic Profile
+
+```yaml
+compute_profile: llm-essential
+verification_method: sample
+break_even_test: PASS
+output_type: report-only
+backfilled_retroactively: true
+backfilled_date: "2026-04-29"
+```
+
+## Queue
+
+`B`
+
+## Min Contributor Tier
+
+`established`
+
+## Severity
+
+`medium`
+
 ## Topic Labels
 
 `citation-verify`, `semantic-NLU`, `pilot-active`
@@ -12,6 +39,9 @@
 
 Verify support for all 914 `(entity, claim, source)` findings listed in `cancer-autoresearch/docs/reviews/citation-verification-2026-04-27.md`. Output: a single structured `citation-report.yaml` with one row per finding — `support_status`, `rationale`, `suggested_action`, source quote/locator. **No edits to hosted content.**
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Quality scores > Sources current_as_of <365d` — surfaces stale + broken citations across 464 entities.
 ## Drop Estimate
 
 ~10 Drops (~1.0M tokens). 914 rows × ~1.1k tokens per row average (read source section, judge support, write rationale with locator).

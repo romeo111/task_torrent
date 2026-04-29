@@ -4,6 +4,22 @@
 
 `queued` (proposed; supersedes citation-verify-914-audit which under-delivered scope)
 
+## Verifier Threshold
+
+>=85% claims pass Anthropic Citations API grounding (default).
+
+## Queue
+
+`B`
+
+## Min Contributor Tier
+
+`established`
+
+## Severity
+
+`medium`
+
 ## Topic Labels
 
 `citation-verify`, `semantic-NLU`, `replaces-prior-chunk`
@@ -12,6 +28,9 @@
 
 For the 914 `(entity, claim, source)` findings already structured in `contributions/citation-verify-914-audit/citation-report.yaml` (PR #15), perform the **actual semantic source-by-source verification** that the prior chunk's scope-note explicitly skipped (`scope_note: It does not claim source-level verification for rows where the audit did not provide a concrete SRC-* source to resolve`). For each finding, fetch the cited source, read the relevant section, and replace `support_status: unclear` with a real verdict (`supported` / `unsupported` / `unclear` after-investigation / `broken_link` / `access_blocked`).
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Quality scores > BMA with CIViC evidence_sources` — improves citation grounding via semantic re-verification of v1 audit findings.
 ## Why a v2
 
 The prior chunk (`citation-verify-914-audit`, merged via cancer-autoresearch PR #15) structured an existing audit into a machine-readable report. It did NOT actually read the cited sources — `support_status: unclear` was assigned to all 914 rows by definition. This is a useful triage matrix but does not deliver verification.

@@ -4,6 +4,29 @@
 
 `queued`
 
+## Economic Profile
+
+```yaml
+compute_profile: llm-essential
+verification_method: full-expert
+break_even_test: PASS
+output_type: report-only
+backfilled_retroactively: true
+backfilled_date: "2026-04-29"
+```
+
+## Queue
+
+`B`
+
+## Min Contributor Tier
+
+`trusted`
+
+## Severity
+
+`high`
+
 ## Topic Labels
 
 `audit`, `semantic-NLU`, `report-only`
@@ -14,6 +37,9 @@ Scan all claim-bearing free-text fields across BMA, Indication, Drug, RedFlag en
 
 OpenOnco's CHARTER §8.3 forbids LLM-as-clinical-decision-maker; the rule engine emits recommendations from declarative knowledge. Claim-bearing fields drift toward recommendation language under multi-agent drafting. This chunk is the systematic sweep.
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Quality scores > BMA UA-signed-off` — fixes recommendation wording on claim-bearing fields where 229 critical issues need signoff.
 ## Drop Estimate
 
 ~10 Drops (~1.0M tokens). ~2000 entity files × ~500 tokens average per file scan + ~50 finding rows × ~2k tokens each for rewording suggestion.

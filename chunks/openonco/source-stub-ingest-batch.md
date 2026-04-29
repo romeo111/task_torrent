@@ -4,6 +4,33 @@
 
 `queued`
 
+## Verifier Threshold
+
+>=85% claims pass Anthropic Citations API grounding (default).
+
+## Economic Profile
+
+```yaml
+compute_profile: mixed
+verification_method: sample
+break_even_test: PASS
+output_type: entity-sidecar
+backfilled_retroactively: true
+backfilled_date: "2026-04-29"
+```
+
+## Queue
+
+`A`
+
+## Min Contributor Tier
+
+`new`
+
+## Severity
+
+`low`
+
 ## Topic Labels
 
 `source-ingest`, `metadata-only`
@@ -14,6 +41,9 @@ For known source-ingest TODOs (14 listed in `cancer-autoresearch/docs/reviews/bm
 
 This chunk does NOT promote sources to hosted content — that's a separate maintainer-driven path with H1–H5 hosting justification. Output is stub drafts only.
 
+
+
+**KB coverage:** Advances `kb-coverage-matrix.md > Top-level KPIs > Sources` — ingests SRC-* stubs for cited but un-stubbed sources.
 ## Drop Estimate
 
 ~10 Drops (~1.0M tokens). ~30–50 source candidates × ~25k tokens per stub (read source page, extract metadata, classify license, fill SOURCE_INGESTION_SPEC fields, write attribution + restrictions block).
