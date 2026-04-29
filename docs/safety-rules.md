@@ -46,6 +46,35 @@ Paywalled full-text journal articles: abstract-only support is acceptable when t
 
 All AI-generated outputs require maintainer review before publication or merge. A pull request, file, or report is a draft until maintainers approve it.
 
+## Citation Grounding Verification
+
+For consumer repos that ship clinical content, every contributor PR that touches
+sidecars MUST pass an automated citation-grounding verifier before maintainer
+review. Reference implementation:
+[`cancer-autoresearch/scripts/tasktorrent/verify_citations.py`](https://github.com/romeo111/OpenOnco/blob/master/scripts/tasktorrent/verify_citations.py)
++ [`citation-verify` workflow](https://github.com/romeo111/OpenOnco/blob/master/.github/workflows/citation-verify.yml).
+
+The verifier is **obligatory pre-merge gate** for OpenOnco-style consumers. It runs
+three layers:
+
+1. **Structural** (always blocking): every cited `SRC-*` exists on master OR is
+   stubbed in the chunk dir; every CIViC EID matches the snapshot.
+2. **Title-substring** (always blocking): when a claim mentions `trial XYZ` /
+   `study XYZ`, the trial name must appear in at least one cited source's
+   title or notes. Lexical-matching against arbitrary `SRC-*` IDs without
+   title verification has produced false positives in production
+   (see `docs/tasktorrent-improvement-plan.md` L-13).
+3. **Semantic** (opt-in): Claude API scores grounding 0-1; fails only on
+   `grounded=false AND confidence ≥ 0.7`. Requires `ANTHROPIC_API_KEY`
+   secret. Forks without the key skip this layer gracefully — never
+   block on missing secrets.
+
+The semantic check is the canonical adjudicator for ambiguous cases.
+Two-agent disagreement on a claim → flag for maintainer review, never
+auto-merge.
+
+Skill spec: [`skills/citation-verification.md`](../skills/citation-verification.md).
+
 ## Rejection Rules
 
 Maintainers should reject or request changes when an output:
@@ -55,5 +84,6 @@ Maintainers should reject or request changes when an output:
 - Contains patient-specific guidance
 - Makes clinical claims without source links
 - Includes fake or unverifiable citations
+- Fails the citation grounding verifier (any layer)
 - Exceeds the assigned chunk scope
 - Rewrites unrelated content
