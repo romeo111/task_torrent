@@ -9,7 +9,17 @@
     {
       "name": "openonco-contributor",
       "source": "./plugins/openonco-contributor",
-      "description": "OpenOnco TaskTorrent contributor — sidecar drafts, citation verification, biomarker/drug evidence mapping, chunk readiness review. Not medical advice. Does not edit hosted clinical content or process PHI."
+      "description": "OpenOnco TaskTorrent contributor — sidecar drafts, citation verification, biomarker/drug evidence mapping, chunk readiness review. Not medical advice. Does not edit hosted clinical content or process PHI.",
+      "category": "research",
+      "tags": [
+        "openonco",
+        "tasktorrent",
+        "oncology",
+        "citation-verification",
+        "evidence-review",
+        "biomarker",
+        "open-source"
+      ]
     }
   ]
 }
