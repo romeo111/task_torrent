@@ -75,6 +75,28 @@ translation review, structured evidence mapping, and schema-safe sidecar data
 work. Clinical content still requires OpenOnco maintainer and clinical lead
 review.
 
+## OpenOnco Claude Plugin Plans
+
+TaskTorrent is planning two separate Claude plugin tracks for OpenOnco:
+
+- **OpenOnco TaskTorrent Contributor**: a public-first plugin for volunteers
+  who want to donate AI-agent time to citation verification, source-stub
+  cleanup, biomarker evidence sidecars, and chunk readiness review.
+- **OpenOnco Clinical Evidence Review Support**: a later, stricter plugin for
+  clinicians and maintainers reviewing evidence provenance, citation support,
+  and sidecar submissions. This track needs a stronger privacy posture and a
+  hard no-PHI boundary before any directory submission.
+
+The contributor plugin is the recommended first submission because it is
+sidecar-only, review-gated, and not patient-specific. The clinical-review plugin
+should remain separate so it can carry tighter privacy, support, refusal, and
+human-review requirements.
+
+Planning docs:
+
+- [OpenOnco contributor plugin plan](docs/openonco-contributor-plugin-plan.md)
+- [OpenOnco clinical-review privacy/compliance plan](docs/openonco-clinical-review-privacy-compliance-plan.md)
+
 ## How TaskTorrent Works
 
 1. A project publishes chunk specs under `chunks/<project>/`.
@@ -155,6 +177,8 @@ Commands:
 - [OpenOnco first case](docs/openonco-first-case.md)
 - [OpenOnco pilot workflow](docs/openonco-pilot-workflow.md)
 - [OpenOnco chunk shelf](chunks/openonco/)
+- [OpenOnco contributor plugin plan](docs/openonco-contributor-plugin-plan.md)
+- [OpenOnco clinical-review privacy/compliance plan](docs/openonco-clinical-review-privacy-compliance-plan.md)
 - [Safety rules](docs/safety-rules.md)
 - [Cross-repo contract](docs/cross-repo-contract.md)
 - [Protocol v0.4 design](docs/protocol-v0.4-design.md)
