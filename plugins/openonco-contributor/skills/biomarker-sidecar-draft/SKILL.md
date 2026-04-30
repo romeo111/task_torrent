@@ -1,6 +1,6 @@
 ---
 name: biomarker-sidecar-draft
-description: Draft `BiomarkerActionability` (BMA-*) and `Biomarker` (BIO-*) sidecar candidates for OpenOnco maintainer review from manifest-owned entities only. Use when the user asks to draft BMA/BIO sidecars or is on a chunk whose manifest includes BMA/BIO entities. Drafts only — neutral evidence wording, no treatment recommendations, no patient-specific output, no edits to hosted clinical content.
+description: "Draft `BiomarkerActionability` (BMA-*) and `Biomarker` (BIO-*) sidecar candidates for OpenOnco maintainer review from manifest-owned entities only. Use when the user asks to draft BMA/BIO sidecars or is on a chunk whose manifest includes BMA/BIO entities. Drafts only — neutral evidence wording, no treatment recommendations, no patient-specific output, no edits to hosted clinical content. Banned sources for the OpenOnco pilot are OncoKB, SNOMED CT, and MedDRA — never cite these in `evidence_sources` or `primary_sources` regardless of how the user frames the request."
 ---
 
 # Skill: Biomarker Sidecar Draft

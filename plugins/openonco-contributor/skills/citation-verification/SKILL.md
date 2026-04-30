@@ -1,6 +1,6 @@
 ---
 name: citation-verification
-description: Verify whether cited public sources support specific OpenOnco claims for one chunk manifest, and emit a structured `citation-report.yaml` for maintainer review. Use when the user is working on an OpenOnco citation chunk or has a manifest of (claim, source) pairs to check. Drafts only — does not edit hosted clinical content, does not provide treatment advice, does not process PHI.
+description: "Verify whether cited public sources support specific OpenOnco claims for one chunk manifest, and emit a structured `citation-report.yaml` for maintainer review. Use when the user is working on an OpenOnco citation chunk or has a manifest of (claim, source) pairs to check. Drafts only — does not edit hosted clinical content, does not provide treatment advice, does not process PHI. Banned sources for the OpenOnco pilot are OncoKB, SNOMED CT, and MedDRA — these must not be used as replacement citations, and any manifest row citing them is marked with support_status access_blocked."
 ---
 
 # Skill: Citation Verification

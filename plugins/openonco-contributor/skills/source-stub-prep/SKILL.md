@@ -1,6 +1,6 @@
 ---
 name: source-stub-prep
-description: Prepare a `source_stub_<source-id>.yaml` describing a real, accessible source so OpenOnco maintainers can decide whether to ingest it as a new `Source` (SRC-*) entity. Use when citation verification finds a missing source, or when a chunk explicitly permits source stubs. Drafts only — refuses banned sources, marks paywall/access-blocked honestly, never invents license/access fields.
+description: Prepare a `source_stub_<source-id>.yaml` describing a real, accessible source so OpenOnco maintainers can decide whether to ingest it as a new `Source` (SRC-*) entity. Use when citation verification finds a missing source, or when a chunk explicitly permits source stubs. Drafts only — refuses banned sources (OncoKB, SNOMED CT, MedDRA), marks paywall/access-blocked honestly, never invents license/access fields. If the user requests a source stub for OncoKB, SNOMED CT, or MedDRA, refuse immediately and explain that these are banned for the OpenOnco pilot regardless of public accessibility.
 ---
 
 # Skill: Source Stub Preparation

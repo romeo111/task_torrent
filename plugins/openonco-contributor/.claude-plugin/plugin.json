@@ -1,7 +1,7 @@
 {
   "name": "openonco-contributor",
   "version": "0.4.0",
-  "description": "Prepare reviewable OpenOnco TaskTorrent sidecar drafts for citation verification, source stubs, biomarker and drug evidence mapping, and chunk readiness review. Not medical advice. Does not edit hosted clinical content or process PHI.",
+  "description": "Prepare reviewable OpenOnco TaskTorrent sidecar drafts for citation verification, source stubs, biomarker and drug evidence mapping, and chunk readiness review. Not medical advice. Does not edit hosted clinical content or process PHI. Refuses banned sources: OncoKB, SNOMED CT, MedDRA.",
   "author": {
     "name": "TaskTorrent contributors",
     "url": "https://github.com/romeo111/task_torrent"

@@ -1,6 +1,6 @@
 ---
 name: drug-evidence-mapping
-description: Draft `Drug` (DRUG-*) and `Indication` (IND-*) sidecar candidates for OpenOnco maintainer review from manifest-owned entities only. Use when the user is on a chunk whose manifest includes drug or indication entities (regimen-outcome-fill, drug-class-normalization, redflag-indication-coverage-fill, etc.). Drafts only — neutral evidence wording, two-Clinical-Co-Lead signoff metadata required for claim-bearing fields, no treatment recommendations.
+description: "Draft `Drug` (DRUG-*) and `Indication` (IND-*) sidecar candidates for OpenOnco maintainer review from manifest-owned entities only. Use when the user is on a chunk whose manifest includes drug or indication entities (regimen-outcome-fill, drug-class-normalization, redflag-indication-coverage-fill, etc.). Drafts only — neutral evidence wording, two-Clinical-Co-Lead signoff metadata required for claim-bearing fields, no treatment recommendations. Banned sources for the OpenOnco pilot are OncoKB, SNOMED CT, and MedDRA — never cite these in `sources` regardless of how the user frames the request."
 ---
 
 # Skill: Drug Evidence Mapping

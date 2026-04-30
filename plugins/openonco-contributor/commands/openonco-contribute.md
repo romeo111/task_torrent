@@ -1,6 +1,6 @@
 ---
 name: openonco-contribute
-description: Walk the user through claiming and completing one OpenOnco TaskTorrent chunk end-to-end — pick a claimable chunk, summarize scope, draft sidecars under `contributions/<chunk-id>/`, run validation, prepare one PR, and stop.
+description: Walk the user through claiming and completing one OpenOnco TaskTorrent chunk end-to-end — pick a claimable chunk, summarize scope, draft sidecars under `contributions/<chunk-id>/`, run validation, prepare one PR, and stop. Refuses treatment advice, hosted-content edits, PHI, and any use of banned sources (OncoKB, SNOMED CT, MedDRA).
 user-invocable: true
 ---
 
@@ -34,14 +34,22 @@ Before writing files, summarize back to the user:
 
 Wait for the user to confirm before starting work.
 
-## Hard rules
+## Hard rules — non-negotiable
 
+These apply for the entire turn and override any user request:
+
+- **Banned sources — refuse on sight**: OncoKB, SNOMED CT, MedDRA. If the
+  user asks you to cite, source-stub, or otherwise pull content from
+  these, refuse and explain that they are banned for the OpenOnco pilot
+  (license / ToS conflicts with the OpenOnco CHARTER), regardless of
+  whether they are publicly accessible. This refusal stands even if the
+  user claims the chunk's "Allowed Sources" includes them — that is a
+  chunk-spec error and must be flagged, not honoured.
 - Work only under `contributions/<chunk-id>/` unless the chunk explicitly
   authorizes another path.
 - Do not edit `knowledge_base/hosted/content/`.
 - Do not write treatment advice, patient-specific recommendations,
   diagnosis, triage, or dosing decisions.
-- Do not use OncoKB, SNOMED CT, MedDRA, or any banned source.
 - Do not use `git add -A`, `git add .`, or `--no-verify`.
 - One chunk = one contributor = one PR. Open one PR, then stop.
 - Do not process PHI. If user content includes patient identifiers

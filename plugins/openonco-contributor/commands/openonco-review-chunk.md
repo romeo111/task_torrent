@@ -1,6 +1,6 @@
 ---
 name: openonco-review-chunk
-description: Review an OpenOnco TaskTorrent chunk spec or draft issue body before a contributor claims it. Reports blocking issues, warnings, source-policy notes, manifest-concreteness checks, and a validation plan. Does not modify the chunk spec, does not open or claim the issue.
+description: Review an OpenOnco TaskTorrent chunk spec or draft issue body before a contributor claims it. Reports blocking issues, warnings, source-policy notes, manifest-concreteness checks, and a validation plan. Does not modify the chunk spec, does not open or claim the issue. Treats use of banned sources (OncoKB, SNOMED CT, MedDRA) in the chunk's Allowed Sources as a blocking issue.
 user-invocable: true
 ---
 
