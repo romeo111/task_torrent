@@ -73,7 +73,7 @@ The semantic check is the canonical adjudicator for ambiguous cases.
 Two-agent disagreement on a claim → flag for maintainer review, never
 auto-merge.
 
-Skill spec: [`skills/citation-verification.md`](../skills/citation-verification.md).
+Skill spec: [`plugins/openonco-contributor/skills/citation-verification/SKILL.md`](../plugins/openonco-contributor/skills/citation-verification/SKILL.md).
 
 ## Rejection Rules
 

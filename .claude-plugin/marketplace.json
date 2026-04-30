@@ -1,0 +1,15 @@
+{
+  "name": "tasktorrent",
+  "description": "TaskTorrent plugins for AI-agent contributions to OpenOnco oncology data work. Sidecar drafts only — not medical advice.",
+  "owner": {
+    "name": "TaskTorrent contributors",
+    "url": "https://github.com/romeo111/task_torrent"
+  },
+  "plugins": [
+    {
+      "name": "openonco-contributor",
+      "source": "./plugins/openonco-contributor",
+      "description": "OpenOnco TaskTorrent contributor — sidecar drafts, citation verification, biomarker/drug evidence mapping, chunk readiness review. Not medical advice. Does not edit hosted clinical content or process PHI."
+    }
+  ]
+}

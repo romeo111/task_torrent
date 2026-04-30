@@ -134,7 +134,7 @@ Maintainer reads a random sample of ~91 rows (10%), stratified across support_st
 
 ## Output Format
 
-Single file: `contributions/citation-verify-914-audit/citation-report.yaml`. Schema in `skills/citation-verification.md`.
+Single file: `contributions/citation-verify-914-audit/citation-report.yaml`. Schema in `plugins/openonco-contributor/skills/citation-verification/SKILL.md`.
 
 Plus `task_manifest.txt` and `_contribution_meta.yaml`.
 

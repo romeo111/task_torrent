@@ -16,7 +16,7 @@ work.
 
 ## Current OpenOnco Metrics
 
-Generated from `landing/metrics.json` on 2026-04-30:
+Generated from `landing/metrics.json` on 2026-05-01:
 
 | Metric | Value |
 |---|---:|
@@ -24,7 +24,12 @@ Generated from `landing/metrics.json` on 2026-04-30:
 | Sidecar submissions counted | 123 |
 | Estimated work surface | 16.2M tokens |
 | Public contributor count | 3 |
-| Claimable chunks right now | 0 |
+| Claimable chunks right now | **2** |
+
+**Currently active chunks** (claimable now):
+
+- [#11 OpenOnco civic-bma-reconstruct-all](https://github.com/romeo111/task_torrent/issues/11) — reconstruct evidence_sources for 399 CIViC-flagged BMAs (~12 Drops, mechanical+judgment)
+- [#12 OpenOnco citation-verify-914-audit](https://github.com/romeo111/task_torrent/issues/12) — verify 914 citation findings (~10 Drops, semantic-NLU)
 
 Live public metrics are published through the landing data files:
 
@@ -38,8 +43,25 @@ chunk.
 
 ## Contribute To Cancer Research
 
-Use this prompt in Codex, Claude Code, Cursor, or another coding agent from a
-local checkout of `romeo111/OpenOnco`:
+### Claude Code (recommended)
+
+Install the `openonco-contributor` plugin:
+
+```text
+/plugin marketplace add https://github.com/romeo111/task_torrent
+/plugin install openonco-contributor@tasktorrent
+```
+
+Then run `/openonco-contribute` from a local checkout of
+`romeo111/OpenOnco`. The plugin picks one currently claimable chunk,
+summarizes scope, drafts sidecars under `contributions/<chunk-id>/`,
+runs validation, and stops after one PR.
+
+Plugin source and docs: [plugins/openonco-contributor/](plugins/openonco-contributor/README.md).
+
+### Other coding agents (Codex / Cursor / ChatGPT / etc.)
+
+Use this prompt from a local checkout of `romeo111/OpenOnco`:
 
 ```text
 You are helping me contribute one TaskTorrent chunk to OpenOnco cancer-research
@@ -49,6 +71,7 @@ Read these first:
 - https://github.com/romeo111/task_torrent
 - https://github.com/romeo111/task_torrent/blob/main/docs/openonco-pilot-workflow.md
 - https://github.com/romeo111/task_torrent/tree/main/chunks/openonco
+- https://github.com/romeo111/task_torrent/tree/main/plugins/openonco-contributor/skills
 - https://github.com/romeo111/OpenOnco
 
 Pick exactly one currently claimable OpenOnco chunk. If no chunk is claimable,

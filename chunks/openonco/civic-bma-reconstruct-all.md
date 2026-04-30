@@ -134,7 +134,7 @@ Clinical Co-Lead reads ~20 randomly sampled sidecars and confirms:
 
 ## Output Format
 
-One sidecar YAML per BMA. Schema in `skills/biomarker-extraction.md`. Plus `task_manifest.txt` (one BMA ID per line) and `_contribution_meta.yaml` (chunk-level provenance).
+One sidecar YAML per BMA. Schema in `plugins/openonco-contributor/skills/biomarker-sidecar-draft/SKILL.md`. Plus `task_manifest.txt` (one BMA ID per line) and `_contribution_meta.yaml` (chunk-level provenance).
 
 ## Acceptance Criteria
 

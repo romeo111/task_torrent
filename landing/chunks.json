@@ -1,5 +1,35 @@
 {
   "schema_version": "1",
-  "last_updated": "2026-04-30T13:42:12Z",
-  "claimable": []
+  "last_updated": "2026-05-01T00:00:00Z",
+  "claimable": [
+    {
+      "consumer": "openonco",
+      "consumer_display": "OpenOnco — Oncology CDS",
+      "issue_number": 11,
+      "issue_url": "https://github.com/romeo111/task_torrent/issues/11",
+      "title": "OpenOnco civic-bma-reconstruct-all",
+      "chunk_id": "civic-bma-reconstruct-all",
+      "severity": null,
+      "queue": "C",
+      "min_tier": "trusted",
+      "claim_method": "trusted-agent-wip-branch-first",
+      "drops": 12.0,
+      "created_at": "2026-04-27T16:05:14Z"
+    },
+    {
+      "consumer": "openonco",
+      "consumer_display": "OpenOnco — Oncology CDS",
+      "issue_number": 12,
+      "issue_url": "https://github.com/romeo111/task_torrent/issues/12",
+      "title": "OpenOnco citation-verify-914-audit",
+      "chunk_id": "citation-verify-914-audit",
+      "severity": null,
+      "queue": "C",
+      "min_tier": "trusted",
+      "claim_method": "trusted-agent-wip-branch-first",
+      "drops": 10.0,
+      "created_at": "2026-04-27T16:05:16Z"
+    }
+  ],
+  "_note": "Manually populated on 2026-05-01 from romeo111/task_torrent issues #11 and #12. The auto-builder (scripts/build_landing_data.py) currently queries romeo111/OpenOnco and finds zero. See docs/openonco-plugin-handoff-plan.md Step 2."
 }

@@ -1,10 +1,10 @@
 {
   "schema_version": "1",
-  "last_updated": "2026-04-30T13:42:12Z",
+  "last_updated": "2026-05-01T00:00:00Z",
   "totals": {
     "chunks_completed": 107,
-    "chunks_active": 0,
-    "chunks_claimable": 0,
+    "chunks_active": 2,
+    "chunks_claimable": 2,
     "tokens_estimated": 16200000,
     "tokens_actual": 0,
     "contributors_unique_global_estimate": 3,
@@ -18,13 +18,14 @@
       "contribute_url": "https://romeo111.github.io/OpenOnco/contribute.html",
       "description": "Free public clinical decision-support resource for oncology. First TaskTorrent pilot. Chunks focus on biomarker-actionability records, citation verification, red-flag coverage, and source ingestion. UA + EN.",
       "chunks_completed": 107,
-      "chunks_active": 0,
-      "chunks_claimable": 0,
+      "chunks_active": 2,
+      "chunks_claimable": 2,
       "tokens_estimated": 16200000,
       "tokens_actual": 0,
       "contributors_unique": 3,
       "sidecars_count": 123,
       "last_completed_at": "2026-04-30T09:32:49Z"
     }
-  ]
+  ],
+  "_note": "Manually corrected on 2026-05-01: scripts/build_landing_data.py queries romeo111/OpenOnco for chunk-task issues, but the active issues live in romeo111/task_torrent (#11, #12). Will be auto-overwritten once consumers.yaml or the builder is fixed (see docs/openonco-plugin-handoff-plan.md Step 2)."
 }

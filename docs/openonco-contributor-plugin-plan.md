@@ -10,11 +10,13 @@ Target plugin:
 plugins/openonco-contributor/
 ```
 
-Working name:
+Plugin name (manifest `name` field):
 
 ```text
-openonco-tasktorrent-contributor
+openonco-contributor
 ```
+
+Initial version: `0.4.0` (matches the TaskTorrent v0.4 protocol the plugin targets).
 
 ## Goal
 
@@ -68,18 +70,22 @@ Reasons:
 ## Directory Layout
 
 ```text
+.claude-plugin/
+  marketplace.json                          # repo-root marketplace listing
 plugins/openonco-contributor/
   .claude-plugin/
     plugin.json
   skills/
     citation-verification/
-      SKILL.md
-    source-stub-prep/
-      SKILL.md
+      SKILL.md                              # migrated from skills/citation-verification.md
     biomarker-sidecar-draft/
-      SKILL.md
+      SKILL.md                              # migrated+renamed from skills/biomarker-extraction.md
+    drug-evidence-mapping/
+      SKILL.md                              # migrated from skills/drug-evidence-mapping.md
+    source-stub-prep/
+      SKILL.md                              # net-new; format extracted from citation-verification
     chunk-readiness-review/
-      SKILL.md
+      SKILL.md                              # net-new; sources its checks from tasktorrent/lint_chunk_spec.py
   commands/
     openonco-contribute.md
     openonco-review-chunk.md
@@ -88,12 +94,122 @@ plugins/openonco-contributor/
   PRIVACY.md
   SECURITY.md
   SUPPORT.md
-  LICENSE
+  LICENSE                                   # MIT, copied from repo root
   README.md
 ```
 
 No MCP server is needed for v1. No hooks are needed for v1. No installer script
 should be exposed as the primary plugin path.
+
+The repo also requires a top-level `LICENSE` file (MIT) — none currently exists.
+Add it before submission.
+
+## Dependency Strategy
+
+The v1 contributor plugin should have no plugin dependencies.
+
+Reason:
+
+- Fewer dependencies make Anthropic directory review simpler.
+- The plugin can bundle all behavior-critical instructions locally.
+- There is no shared MCP server or shared safety plugin that must be installed
+  for v1.
+
+If later versions split shared safety rules, OpenOnco schemas, or TaskTorrent
+utilities into separate Claude plugins, dependency versions must be constrained
+in `.claude-plugin/plugin.json`. Claude Code resolves plugin dependencies
+automatically, and unconstrained dependencies track the latest available
+version. That is risky for high-stakes contribution workflows because an
+upstream plugin can change behavior without warning.
+
+Use explicit semver ranges:
+
+```json
+{
+  "name": "openonco-contributor",
+  "version": "0.5.0",
+  "dependencies": [
+    { "name": "tasktorrent-core", "version": "~0.4.0" },
+    { "name": "openonco-source-policy", "version": "~0.4.0" }
+  ]
+}
+```
+
+These dependency plugins (`tasktorrent-core`, `openonco-source-policy`) do not
+exist today. They are aspirational v2+ split points, listed here only to fix
+the policy when/if shared plugins ever ship. v1 has no plugin dependencies.
+
+Rules:
+
+1. Prefer no dependencies in v1.
+2. If dependencies are introduced, pin them with `~` ranges until integration
+   tests prove a wider range is safe.
+3. Do not use cross-marketplace dependencies unless the root marketplace
+   explicitly allowlists the target marketplace.
+4. Tag every plugin release with Claude's required convention:
+   `{plugin-name}--v{version}`.
+5. Use `claude plugin tag --push` for releases when possible.
+6. Before widening a dependency range, run the OpenOnco unsafe-prompt tests and
+   chunk workflow tests.
+7. Document dependency errors and recovery in `SETUP.md`, including
+   `claude plugin list --json`, `/doctor`, `/plugin`, and `claude plugin prune`.
+
+Release gates once dependencies exist:
+
+```bash
+claude plugin validate plugins/openonco-contributor
+claude plugin tag --dry-run
+claude plugin list --json
+```
+
+## Marketplace Listing
+
+For users to install the plugin via `/plugin install openonco-contributor@<repo>`,
+the repo needs a marketplace file at `.claude-plugin/marketplace.json` (repo
+root, not plugin root):
+
+```json
+{
+  "name": "tasktorrent",
+  "owner": { "name": "TaskTorrent contributors", "url": "https://github.com/romeo111/task_torrent" },
+  "plugins": [
+    {
+      "name": "openonco-contributor",
+      "source": "./plugins/openonco-contributor",
+      "description": "OpenOnco TaskTorrent contributor — sidecar drafts, citation verification, chunk readiness review. Not medical advice."
+    }
+  ]
+}
+```
+
+When the clinical-review plugin is added later, it lands as a second entry in
+the same `plugins[]` array.
+
+## Migration From Repo-Level Skills
+
+Today the repo has three skill files at `skills/` that the existing
+README contributor prompt loads via plain markdown:
+
+| Existing path | Action | New path |
+|---|---|---|
+| `skills/citation-verification.md` | move | `plugins/openonco-contributor/skills/citation-verification/SKILL.md` |
+| `skills/biomarker-extraction.md` | move + rename | `plugins/openonco-contributor/skills/biomarker-sidecar-draft/SKILL.md` |
+| `skills/drug-evidence-mapping.md` | move | `plugins/openonco-contributor/skills/drug-evidence-mapping/SKILL.md` |
+
+Migration rules:
+
+1. The plugin version becomes the canonical copy. Repo-level files are
+   removed in the same commit.
+2. README's "Contribute To Cancer Research" prompt links to plugin install
+   instead of pasting raw skill content.
+3. SKILL.md frontmatter (YAML) is added on migration:
+   ```yaml
+   ---
+   name: <skill-name>
+   description: <one-line trigger description>
+   ---
+   ```
+4. Body content is preserved verbatim except for path-relative links.
 
 ## Plugin Manifest
 
@@ -101,8 +217,9 @@ Draft `plugins/openonco-contributor/.claude-plugin/plugin.json`:
 
 ```json
 {
-  "name": "openonco-tasktorrent-contributor",
-  "description": "Prepare reviewable OpenOnco TaskTorrent sidecar drafts for citation verification, source stubs, biomarker evidence mapping, and chunk readiness review. Does not provide medical advice or edit hosted clinical content.",
+  "name": "openonco-contributor",
+  "version": "0.4.0",
+  "description": "Prepare reviewable OpenOnco TaskTorrent sidecar drafts for citation verification, source stubs, biomarker and drug evidence mapping, and chunk readiness review. Not medical advice. Does not edit hosted clinical content or process PHI.",
   "author": {
     "name": "TaskTorrent contributors",
     "url": "https://github.com/romeo111/task_torrent"
@@ -121,9 +238,13 @@ Draft `plugins/openonco-contributor/.claude-plugin/plugin.json`:
 }
 ```
 
-Leave `version` unset during early iteration so Claude Code can use the git
-commit SHA as the update identity. Add semantic versioning only once releases
-are intentionally managed.
+Initial release is `0.4.0` to match the TaskTorrent v0.4 protocol the plugin
+targets. Bump to `0.5.0` when the protocol bumps; bump to `1.0.0` only after
+the plugin has been listed publicly and observed in real contributor use for
+at least one wave.
+
+The literal phrase **"Not medical advice"** appears in the description so it
+is visible in any directory listing without expanding the plugin card.
 
 ## Core Safety Contract
 
@@ -172,12 +293,41 @@ Allowed outputs:
 
 - `contributions/<chunk-id>/source_stub_<source-id>.yaml`
 
+The source stub YAML schema is the one already documented in
+`skills/citation-verification.md` §"Source Stub" (extracted into the new
+`source-stub-prep` skill on migration). License classification is a
+review gate, not a formality (see `SOURCE_INGESTION_SPEC.md` §8/§20 in the
+consumer repo).
+
 Required checks:
 
 - source is real and reachable
 - license/access fields are not guessed
 - source is allowed for the chunk
 - banned sources are not proposed
+
+### Drug & Indication Sidecar Drafting
+
+Purpose:
+
+- Draft `Drug` (DRUG-*) and `Indication` (IND-*) entity sidecars with full
+  provenance, neutral wording, and explicit two-Clinical-Co-Lead signoff
+  metadata.
+
+Allowed outputs:
+
+- `contributions/<chunk-id>/drug_<drug>.yaml`
+- `contributions/<chunk-id>/ind_<indication>.yaml`
+- `contributions/<chunk-id>/task_manifest.txt`
+
+Required constraints:
+
+- one entity per file
+- every target entity is in the manifest
+- every claim traces to allowed sources
+- neutral evidence wording only
+- no treatment recommendation language
+- claim-bearing fields require `requires_clinical_co_lead_signoff: true`
 
 ### Biomarker Sidecar Drafting
 
@@ -307,6 +457,32 @@ Quality gates:
 - no free-text URLs in source fields where `SRC-*` IDs are required
 - validation command is reported
 
+### `drug-evidence-mapping/SKILL.md`
+
+Trigger:
+
+- user asks to draft DRUG-* / IND-* sidecars
+- chunk manifest includes drug or indication entities
+- user is on a regimen-outcome-fill, drug-class-normalization, or
+  redflag-indication-coverage-fill chunk
+
+Core behavior:
+
+- draft only manifest-owned entities
+- preserve schema shape (`knowledge_base/schemas/drug.py`,
+  `knowledge_base/schemas/indication.py`)
+- use neutral evidence language
+- cite existing `SRC-*` IDs or permitted source stubs
+- mark every claim-bearing field with `requires_clinical_co_lead_signoff: true`
+- include `_contribution` metadata
+
+Quality gates:
+
+- no recommendation wording (no "preferred", "first-line", "should")
+- no invented entity IDs outside the manifest
+- no free-text URLs in source fields where `SRC-*` IDs are required
+- two-Clinical-Co-Lead signoff gate present on every claim-bearing field
+
 ### `chunk-readiness-review/SKILL.md`
 
 Trigger:
@@ -316,7 +492,9 @@ Trigger:
 
 Core behavior:
 
-- compare chunk to TaskTorrent v0.4 required sections
+- compare chunk to TaskTorrent v0.4 required sections — source of truth is
+  `tasktorrent/lint_chunk_spec.py` `REQUIRED_SECTIONS` and the linter's
+  validation behavior, not a hand-maintained list
 - check source policy
 - check manifest concreteness
 - check sidecar output path
@@ -502,17 +680,49 @@ The contributor plugin is ready to submit when:
 - privacy/security/support docs exist
 - examples cover safe and unsafe requests
 - no MCP server or shell installer is needed
+- no plugin dependencies exist, or every dependency has a tested semver range
 - README clearly says this is not medical advice
 - OpenOnco linter gate passes
 
 ## First Implementation Slice
 
-1. Add plugin skeleton.
-2. Convert current `skills/citation-verification.md` into
-   `skills/citation-verification/SKILL.md`.
-3. Create source-stub and chunk-readiness skills.
-4. Create command files.
-5. Add legal/support docs.
-6. Run `claude plugin validate`.
-7. Iterate until validation passes.
+Concrete file-by-file work order:
 
+1. Add `LICENSE` (MIT) at repo root.
+2. Add `.claude-plugin/marketplace.json` at repo root.
+3. Create `plugins/openonco-contributor/.claude-plugin/plugin.json`
+   with `name=openonco-contributor`, `version=0.4.0`, MIT license,
+   description containing "Not medical advice".
+4. Migrate three existing skills into plugin structure:
+   - `skills/citation-verification.md` →
+     `plugins/openonco-contributor/skills/citation-verification/SKILL.md`
+   - `skills/biomarker-extraction.md` (renamed) →
+     `plugins/openonco-contributor/skills/biomarker-sidecar-draft/SKILL.md`
+   - `skills/drug-evidence-mapping.md` →
+     `plugins/openonco-contributor/skills/drug-evidence-mapping/SKILL.md`
+   Add YAML frontmatter (`name`, `description`) on each.
+   Delete the originals at `skills/`.
+5. Create `plugins/openonco-contributor/skills/source-stub-prep/SKILL.md`
+   (extract source stub schema from current `skills/citation-verification.md`).
+6. Create `plugins/openonco-contributor/skills/chunk-readiness-review/SKILL.md`
+   sourcing checks from `tasktorrent/lint_chunk_spec.py`.
+7. Create command files:
+   - `plugins/openonco-contributor/commands/openonco-contribute.md`
+   - `plugins/openonco-contributor/commands/openonco-review-chunk.md`
+   Both with frontmatter `description:` and `user-invocable: true`.
+8. Create plugin docs:
+   - `plugins/openonco-contributor/SETUP.md`
+   - `plugins/openonco-contributor/EXAMPLES.md` (≥3 safe + ≥2 unsafe + 1
+     between-wave example)
+   - `plugins/openonco-contributor/PRIVACY.md`
+   - `plugins/openonco-contributor/SECURITY.md`
+   - `plugins/openonco-contributor/SUPPORT.md`
+   - `plugins/openonco-contributor/README.md`
+   - `plugins/openonco-contributor/LICENSE` (copy of repo-root MIT)
+9. Update repo `README.md` "How to contribute" section to point at the
+   plugin install path instead of pasting raw skill content.
+10. Run `claude plugin validate plugins/openonco-contributor`.
+11. Run repo tests:
+    - `python -m tasktorrent.lint_chunk_spec --all chunks/openonco/`
+    - `python -m pytest tests/test_lint_chunk_spec.py tests/test_openonco_job.py -q`
+12. Iterate until validation and tests pass.
