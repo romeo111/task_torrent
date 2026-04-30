@@ -9,6 +9,7 @@ import pytest
 from tasktorrent.lint_chunk_spec import (
     LintFinding,
     extract_yaml_block,
+    find_chunk_specs,
     has_placeholder,
     lint_chunk_spec,
     parse_sections,
@@ -364,16 +365,24 @@ def test_citation_chunk_with_verifier_threshold_clean(tmp_path: Path) -> None:
     assert threshold_warnings == []
 
 
-# --- Integration: run on real OpenOnco chunk specs ---
+# --- Integration: mirror the CI OpenOnco hard gate ---
 
-def test_lint_real_openonco_chunks_smoke() -> None:
-    """Real chunks may have warnings but should not crash the linter."""
+def test_lint_real_openonco_chunks_pass_without_warnings() -> None:
+    """OpenOnco chunks are a blocking CI gate, so tests should fail on drift."""
     chunks_dir = Path(__file__).parent.parent / "chunks" / "openonco"
     if not chunks_dir.is_dir():
         pytest.skip("openonco chunks not present")
-    for md in chunks_dir.glob("*.md"):
-        if md.name.lower() in ("readme.md", "_example.md"):
-            continue
+
+    chunk_specs = find_chunk_specs([chunks_dir])
+    assert len(chunk_specs) >= 30
+
+    dirty: list[str] = []
+    for md in chunk_specs:
         result = lint_chunk_spec(md)
-        # Smoke: linter doesn't blow up
-        assert isinstance(result.findings, list)
+        if result.errors or result.warnings:
+            findings = "; ".join(
+                f"{f.severity}:{f.section or '<file>'}:{f.message}" for f in result.findings
+            )
+            dirty.append(f"{md.name}: {findings}")
+
+    assert dirty == []

@@ -29,3 +29,12 @@ exclude = ["tests*", "OpenOnco_*", "pytest_tmp_*", "chunks*", "skills*", "docs*"
 
 [tool.setuptools.package-data]
 tasktorrent = ["_scaffold/*", "_scaffold/**/*"]
+
+[tool.pytest.ini_options]
+norecursedirs = [
+    ".*",
+    "build",
+    "dist",
+    "pytest-cache-files-*",
+    "pytest_tmp_*",
+]

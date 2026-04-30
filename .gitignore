@@ -6,6 +6,9 @@ __pycache__/
 build/
 dist/
 .pytest_cache/
+pytest-cache-files-*/
+.codex_tmp/
+.codex_pytest_*/
 .coverage
 htmlcov/
 
