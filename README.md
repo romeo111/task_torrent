@@ -16,20 +16,20 @@ work.
 
 ## Current OpenOnco Metrics
 
-Generated from `landing/metrics.json` on 2026-05-01:
+Live counts and the full claimable-chunks list are on the
+[TaskTorrent landing page](https://romeo111.github.io/task_torrent/),
+regenerated every 4 hours from registered consumer repos. Headline metrics:
 
-| Metric | Value |
-|---|---:|
-| Completed chunks | 107 |
-| Sidecar submissions counted | 123 |
-| Estimated work surface | 16.2M tokens |
-| Public contributor count | 3 |
-| Claimable chunks right now | **2** |
+- Completed chunks (cumulative): see landing
+- Sidecar submissions counted (lifetime): see landing
+- Claimable chunks right now: see landing
+- Estimated work surface: ~16M tokens
 
-**Currently active chunks** (claimable now):
-
-- [#11 OpenOnco civic-bma-reconstruct-all](https://github.com/romeo111/task_torrent/issues/11) — reconstruct evidence_sources for 399 CIViC-flagged BMAs (~12 Drops, mechanical+judgment)
-- [#12 OpenOnco citation-verify-914-audit](https://github.com/romeo111/task_torrent/issues/12) — verify 914 citation findings (~10 Drops, semantic-NLU)
+Active chunks may live in either `romeo111/task_torrent` or the
+consumer repo (`romeo111/OpenOnco`), depending on the wave. The
+landing page merges both. To filter directly on GitHub:
+[chunk-task + status-active in task_torrent](https://github.com/romeo111/task_torrent/issues?q=is%3Aopen+label%3Achunk-task+label%3Astatus-active)
+or [in OpenOnco](https://github.com/romeo111/OpenOnco/issues?q=is%3Aopen+label%3Achunk-task+label%3Astatus-active).
 
 Live public metrics are published through the landing data files:
 

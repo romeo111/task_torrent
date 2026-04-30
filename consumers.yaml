@@ -14,6 +14,12 @@ consumers:
   - name: openonco
     display_name: "OpenOnco — Oncology CDS"
     repo: romeo111/OpenOnco
+    # Chunk-task issues are filed in two repos: historically in OpenOnco
+    # (waves 1-4, ~107 closed), now in task_torrent (wave 5+). The builder
+    # queries both and merges.
+    chunk_issues_repos:
+      - romeo111/task_torrent
+      - romeo111/OpenOnco
     chunks_path: chunks/openonco/
     contributions_path: contributions/
     contribute_url: https://romeo111.github.io/OpenOnco/contribute.html
