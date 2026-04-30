@@ -66,7 +66,15 @@ def gh_api(path: str, fields: list[str] | None = None) -> object:
 
 
 def gh_paginated(path: str) -> list:
-    """Fetch all pages from a paginated GitHub API endpoint via gh CLI."""
+    """Fetch all pages from a paginated GitHub API endpoint via gh CLI.
+
+    `gh api --paginate` concatenates JSON arrays back-to-back: `[...][...]`.
+    A naive `re.split(r"\\]\\s*\\[", text)` split is unsafe because issue
+    bodies often contain Markdown checkboxes like `- [ ]\\n- [ ]` whose
+    `]\\n[` substring also matches the page-boundary pattern. Instead we
+    walk the string with a depth counter that respects JSON string escapes,
+    and yield each top-level array as a complete unit.
+    """
     cmd = ["gh", "api", "--paginate", path]
     try:
         res = subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=False,
@@ -76,32 +84,48 @@ def gh_paginated(path: str) -> list:
     if res.returncode != 0:
         print(f"WARN: gh api --paginate {path} failed: {res.stderr.strip()[:200]}", file=sys.stderr)
         return []
-    out: list = []
-    # gh's --paginate emits concatenated JSON arrays; split by `][`.
     text = res.stdout.strip()
     if not text:
         return []
-    if text.startswith("["):
-        # Concatenated arrays look like `[...][...]` — split safely
-        parts = re.split(r"\]\s*\[", text)
-        for i, p in enumerate(parts):
-            if i > 0:
-                p = "[" + p
-            if i < len(parts) - 1:
-                p = p + "]"
-            try:
-                arr = json.loads(p)
-                if isinstance(arr, list):
-                    out.extend(arr)
-            except json.JSONDecodeError:
-                continue
-    else:
+    if not text.startswith("["):
+        # Single object response, not an array — try a direct parse.
         try:
             obj = json.loads(text)
-            if isinstance(obj, list):
-                out = obj
+            return obj if isinstance(obj, list) else []
         except json.JSONDecodeError:
-            pass
+            return []
+
+    out: list = []
+    depth = 0
+    in_string = False
+    escape = False
+    start = 0
+    for i, ch in enumerate(text):
+        if escape:
+            escape = False
+            continue
+        if in_string:
+            if ch == "\\":
+                escape = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+            continue
+        if ch == "[":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == "]":
+            depth -= 1
+            if depth == 0:
+                try:
+                    arr = json.loads(text[start:i + 1])
+                    if isinstance(arr, list):
+                        out.extend(arr)
+                except json.JSONDecodeError:
+                    pass
     return out
 
 
@@ -195,7 +219,17 @@ def fetch_consumer_stats(consumer: dict) -> tuple[ConsumerStats, list[dict]]:
         description=consumer.get("description", "").strip(),
     )
 
-    issues = gh_paginated(f"repos/{consumer['repo']}/issues?labels=chunk-task&state=all&per_page=100")
+    # Chunk-task issues may be split across multiple repos. Historically OpenOnco
+    # filed chunk issues in its own repo; from wave 5+ they live in
+    # romeo111/task_torrent (the protocol repo). Allow consumers.yaml to declare
+    # the full list of repos where chunk-task issues may be filed via
+    # `chunk_issues_repos` (a list). Default falls back to the consumer's own
+    # `repo` field for backwards compatibility.
+    issues_repos = consumer.get("chunk_issues_repos") or [consumer["repo"]]
+    issues: list = []
+    for issues_repo in issues_repos:
+        page = gh_paginated(f"repos/{issues_repo}/issues?labels=chunk-task&state=all&per_page=100")
+        issues.extend(page)
     if not issues:
         return stats, []
 
