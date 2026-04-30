@@ -1,0 +1,20 @@
+{
+  "name": "openonco-contributor",
+  "version": "0.4.0",
+  "description": "Prepare reviewable OpenOnco TaskTorrent sidecar drafts for citation verification, source stubs, biomarker and drug evidence mapping, and chunk readiness review. Not medical advice. Does not edit hosted clinical content or process PHI.",
+  "author": {
+    "name": "TaskTorrent contributors",
+    "url": "https://github.com/romeo111/task_torrent"
+  },
+  "homepage": "https://github.com/romeo111/task_torrent",
+  "repository": "https://github.com/romeo111/task_torrent",
+  "license": "MIT",
+  "keywords": [
+    "openonco",
+    "tasktorrent",
+    "oncology",
+    "citation-verification",
+    "evidence-review",
+    "open-source"
+  ]
+}

@@ -1,4 +1,9 @@
-# Skill: Biomarker Extraction
+---
+name: biomarker-sidecar-draft
+description: Draft `BiomarkerActionability` (BMA-*) and `Biomarker` (BIO-*) sidecar candidates for OpenOnco maintainer review from manifest-owned entities only. Use when the user asks to draft BMA/BIO sidecars or is on a chunk whose manifest includes BMA/BIO entities. Drafts only — neutral evidence wording, no treatment recommendations, no patient-specific output, no edits to hosted clinical content.
+---
+
+# Skill: Biomarker Sidecar Draft
 
 ## Purpose
 
@@ -131,7 +136,7 @@ notes: ""
 
 - BMA: `BMA-{biomarker}-{variant?}-{disease}` (e.g. `BMA-BRAF-V600E-CRC`).
 - Biomarker: `BIO-{gene}-{variant?}` (e.g. `BIO-EGFR-T790M`, `BIO-KRAS-G12C`, `BIO-ALK-FUSION`).
-- Source: pre-existing `SRC-*` entity. Do not invent. If the source you need has no `SRC-*` entry yet, submit a separate `source_stub.yaml` (see `skills/citation-verification.md` for the source-stub template) and set `_contribution.notes_for_reviewer` to flag the dependency.
+- Source: pre-existing `SRC-*` entity. Do not invent. If the source you need has no `SRC-*` entry yet, file a `source_stub.yaml` using the `source-stub-prep` skill in this plugin and set `_contribution.notes_for_reviewer` to flag the dependency.
 - Disease: pre-existing `DIS-*` entity. Look up; do not invent.
 
 ## Rules

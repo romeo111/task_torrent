@@ -1,3 +1,8 @@
+---
+name: drug-evidence-mapping
+description: Draft `Drug` (DRUG-*) and `Indication` (IND-*) sidecar candidates for OpenOnco maintainer review from manifest-owned entities only. Use when the user is on a chunk whose manifest includes drug or indication entities (regimen-outcome-fill, drug-class-normalization, redflag-indication-coverage-fill, etc.). Drafts only — neutral evidence wording, two-Clinical-Co-Lead signoff metadata required for claim-bearing fields, no treatment recommendations.
+---
+
 # Skill: Drug Evidence Mapping
 
 ## Purpose
@@ -138,7 +143,7 @@ notes: ""
 - Drug: `DRUG-{INN}` uppercase (e.g. `DRUG-OSIMERTINIB`).
 - Indication: `IND-{disease}-{line}-{biomarker_or_subset}-{regimen}`. Match neighboring IND-* files in the same disease for naming style.
 - Regimen: `REG-*` — pre-existing entity. Do not draft new Regimens in the pilot; surface them as `_contribution.notes_for_reviewer: "needs new REG-*"`.
-- Source: pre-existing `SRC-*`. Do not invent. File `source_stub.yaml` if needed.
+- Source: pre-existing `SRC-*`. Do not invent. File `source_stub.yaml` if needed (use the `source-stub-prep` skill in this plugin).
 
 ## Rules
 

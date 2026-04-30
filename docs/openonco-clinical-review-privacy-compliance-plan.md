@@ -105,6 +105,80 @@ plugins/openonco-clinical-review/
 No remote MCP server in v1. No backend. No analytics. No automatic export of
 review content.
 
+## Dependency Strategy
+
+The v1 clinical-review plugin should have no plugin dependencies.
+
+Reason:
+
+- This plugin has the stricter privacy and no-PHI boundary.
+- A dependency update that changes refusal, PHI screening, or source-policy
+  behavior would be high risk.
+- Anthropic directory review is easier when all safety-critical instructions
+  are bundled locally.
+
+If later versions depend on shared plugins, dependency versions must be
+constrained in `.claude-plugin/plugin.json`. Claude Code can auto-install
+plugin dependencies, and without a version constraint those dependencies track
+latest. For clinical-review workflows, latest-by-default is not acceptable
+because a breaking upstream change could weaken PHI refusal or source-review
+behavior.
+
+Use narrow semver constraints:
+
+```json
+{
+  "name": "openonco-clinical-review",
+  "version": "1.1.0",
+  "dependencies": [
+    { "name": "openonco-phi-screening", "version": "~1.0.0" },
+    { "name": "openonco-source-policy", "version": "~1.0.0" }
+  ]
+}
+```
+
+Rules:
+
+1. Prefer no dependencies in v1.
+2. If dependencies are introduced, keep PHI screening and refusal behavior in
+   this plugin too; do not rely entirely on an external dependency for safety.
+3. Use `~` ranges for safety-sensitive dependencies.
+4. Do not allow cross-marketplace dependencies unless the root marketplace
+   explicitly allowlists the target marketplace and the maintainer has reviewed
+   that source.
+5. Tag every release with Claude's dependency-resolution convention:
+   `{plugin-name}--v{version}`.
+6. Use `claude plugin tag --push` where possible so validation and tag naming
+   stay aligned.
+7. Re-run unsafe-prompt tests before every dependency range change.
+8. Document resolution failures in `SETUP.md`, including
+   `dependency-unsatisfied`, `range-conflict`,
+   `dependency-version-unsatisfied`, and `no-matching-tag`.
+9. Include `claude plugin prune` guidance for users who uninstall dependent
+   plugins and want to remove orphaned auto-installed dependencies.
+
+Release gates once dependencies exist:
+
+```bash
+claude plugin validate plugins/openonco-clinical-review
+claude plugin tag --dry-run
+claude plugin list --json
+```
+
+## Marketplace Listing
+
+When the clinical-review plugin ships, it joins the existing
+`.claude-plugin/marketplace.json` from the contributor plugin as a second
+`plugins[]` entry:
+
+```json
+{
+  "name": "openonco-clinical-review",
+  "source": "./plugins/openonco-clinical-review",
+  "description": "OpenOnco Clinical Evidence Review Support — citation/provenance review for clinicians and maintainers. Not medical advice. No PHI."
+}
+```
+
 ## Plugin Manifest
 
 Draft `plugins/openonco-clinical-review/.claude-plugin/plugin.json`:
@@ -312,7 +386,21 @@ Purpose:
 
 - Detect and refuse requests containing patient-specific information.
 
-This skill should activate whenever user content includes:
+Implementation note:
+
+Claude skills activate via description match by the model, not via regex on
+user input. So PHI screening cannot rely on the trigger phrase list alone.
+v1 implementation must use **bundled gates inside every other skill**: each
+skill's SKILL.md begins with a "STOP before processing if user input matches
+any of the following patterns" section listing the phrases below. The
+`phi-screening` SKILL.md is the canonical copy; the other skills include the
+same gate verbatim so refusal does not depend on which skill activated.
+
+When a hooks-based plugin variant ships in a later version, this gate moves
+to a `UserPromptSubmit` hook running a deterministic regex pre-filter. v1
+does not ship hooks.
+
+Trigger phrases (bundled into every skill's STOP gate):
 
 - "my patient"
 - "a patient has"
@@ -388,6 +476,11 @@ _review_meta:
   publication_approval: false
   requires_human_review: true
 ```
+
+`_review_meta` is plugin-introduced output convention, not a field on the
+existing OpenOnco/TaskTorrent sidecar schemas. It lives at the top level of
+review output files alongside `_contribution`. Coordinate with consumer-repo
+maintainers before promoting it into a schema-validated field.
 
 ## Human Review Gates
 
@@ -551,6 +644,8 @@ The clinical-review plugin is ready only when:
 - `SUPPORT.md` exists
 - unsafe examples demonstrate refusal behavior
 - plugin validates locally
+- no plugin dependencies exist, or every dependency has a tested narrow semver
+  range
 - no MCP backend is bundled
 - no patient data workflow is advertised
 - no "doctor treatment assistant" framing remains
@@ -577,4 +672,3 @@ Submit `openonco-tasktorrent-contributor` first. Build
 `openonco-clinical-review` only after the contributor plugin is stable and the
 OpenOnco maintainers agree that the privacy and no-PHI boundaries are strong
 enough for directory exposure.
-

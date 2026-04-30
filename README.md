@@ -38,8 +38,25 @@ chunk.
 
 ## Contribute To Cancer Research
 
-Use this prompt in Codex, Claude Code, Cursor, or another coding agent from a
-local checkout of `romeo111/OpenOnco`:
+### Claude Code (recommended)
+
+Install the `openonco-contributor` plugin:
+
+```text
+/plugin marketplace add https://github.com/romeo111/task_torrent
+/plugin install openonco-contributor@tasktorrent
+```
+
+Then run `/openonco-contribute` from a local checkout of
+`romeo111/OpenOnco`. The plugin picks one currently claimable chunk,
+summarizes scope, drafts sidecars under `contributions/<chunk-id>/`,
+runs validation, and stops after one PR.
+
+Plugin source and docs: [plugins/openonco-contributor/](plugins/openonco-contributor/README.md).
+
+### Other coding agents (Codex / Cursor / ChatGPT / etc.)
+
+Use this prompt from a local checkout of `romeo111/OpenOnco`:
 
 ```text
 You are helping me contribute one TaskTorrent chunk to OpenOnco cancer-research
@@ -49,6 +66,7 @@ Read these first:
 - https://github.com/romeo111/task_torrent
 - https://github.com/romeo111/task_torrent/blob/main/docs/openonco-pilot-workflow.md
 - https://github.com/romeo111/task_torrent/tree/main/chunks/openonco
+- https://github.com/romeo111/task_torrent/tree/main/plugins/openonco-contributor/skills
 - https://github.com/romeo111/OpenOnco
 
 Pick exactly one currently claimable OpenOnco chunk. If no chunk is claimable,

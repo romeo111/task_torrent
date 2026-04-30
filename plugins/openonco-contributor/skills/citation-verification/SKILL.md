@@ -1,3 +1,8 @@
+---
+name: citation-verification
+description: Verify whether cited public sources support specific OpenOnco claims for one chunk manifest, and emit a structured `citation-report.yaml` for maintainer review. Use when the user is working on an OpenOnco citation chunk or has a manifest of (claim, source) pairs to check. Drafts only — does not edit hosted clinical content, does not provide treatment advice, does not process PHI.
+---
+
 # Skill: Citation Verification
 
 ## Purpose
@@ -72,45 +77,11 @@ rows:
 - **revise_claim** — claim wording overstates what the source attests; suggest narrower wording in `rationale`. Do not rewrite clinical content directly.
 - **replace_source** — claim is supportable but the cited source does not support it; propose a different existing `SRC-*` ID in `suggested_replacement_source_id`. Do not propose a URL or a new source here.
 - **maintainer_review** — uncertain or politically sensitive (controversy entries, off-label, ESCAT-borderline). Default when in doubt.
-- **source_stub_needed** — claim is supportable but no existing `SRC-*` exists for the appropriate source. File a separate `source_stub.yaml` (template below).
+- **source_stub_needed** — claim is supportable but no existing `SRC-*` exists for the appropriate source. File a separate `source_stub.yaml` (see the `source-stub-prep` skill in this plugin).
 
 ## Source Stub (when proposing a new Source)
 
-Submit to `contributions/<chunk-id>/source_stub_<proposed_id>.yaml`. Maintainers ingest source stubs through the separate `SOURCE_INGESTION_SPEC.md` §8/§20 review flow — license classification is a gate, not a formality.
-
-```yaml
-_contribution:
-
-  chunk_id: <chunk>
-  contributor: github-username
-  target_action: new
-  target_entity_id: SRC-CIVIC-EID-12345
-  ai_tool: <tool>
-  notes_for_reviewer: >
-    Source needed by row c1-007. License: CC0 (CIViC). No hosting needed
-    (HostingMode.REFERENCED).
-
-# Source payload — fields match knowledge_base/schemas/source.py
-id: SRC-CIVIC-EID-12345
-source_type: molecular_kb
-title: "CIViC Evidence Item EID12345"
-url: "https://civicdb.org/evidence/12345"
-access_level: open_access
-hosting_mode: referenced
-license:
-  spdx_id: "CC0-1.0"
-  url: "https://creativecommons.org/publicdomain/zero/1.0/"
-commercial_use_allowed: true
-redistribution_allowed: true
-modifications_allowed: true
-attribution:
-  required: true
-  text: "Griffith Lab — CIViC (https://civicdb.org)"
-relates_to_diseases: ["DIS-NSCLC"]
-notes: "Evidence Item 12345 attests EGFR T790M sensitivity to osimertinib."
-last_verified: "YYYY-MM-DD"
-verifier: "github-username"
-```
+Use the `source-stub-prep` skill in this plugin. It owns the source stub schema and license-classification rules. Submit stubs to `contributions/<chunk-id>/source_stub_<proposed_id>.yaml`. Maintainers ingest source stubs through the separate `SOURCE_INGESTION_SPEC.md` §8/§20 review flow — license classification is a gate, not a formality.
 
 For paywalled or restricted sources, do not file a stub speculatively — flag `support_status: access_blocked` instead and let the maintainer decide.
 
