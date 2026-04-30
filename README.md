@@ -16,7 +16,7 @@ work.
 
 ## Current OpenOnco Metrics
 
-Generated from `landing/metrics.json` on 2026-04-30:
+Generated from `landing/metrics.json` on 2026-05-01:
 
 | Metric | Value |
 |---|---:|
@@ -24,7 +24,12 @@ Generated from `landing/metrics.json` on 2026-04-30:
 | Sidecar submissions counted | 123 |
 | Estimated work surface | 16.2M tokens |
 | Public contributor count | 3 |
-| Claimable chunks right now | 0 |
+| Claimable chunks right now | **2** |
+
+**Currently active chunks** (claimable now):
+
+- [#11 OpenOnco civic-bma-reconstruct-all](https://github.com/romeo111/task_torrent/issues/11) — reconstruct evidence_sources for 399 CIViC-flagged BMAs (~12 Drops, mechanical+judgment)
+- [#12 OpenOnco citation-verify-914-audit](https://github.com/romeo111/task_torrent/issues/12) — verify 914 citation findings (~10 Drops, semantic-NLU)
 
 Live public metrics are published through the landing data files:
 
