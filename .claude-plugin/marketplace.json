@@ -1,5 +1,6 @@
 {
   "name": "tasktorrent",
+  "description": "TaskTorrent plugins for AI-agent contributions to OpenOnco oncology data work. Sidecar drafts only — not medical advice.",
   "owner": {
     "name": "TaskTorrent contributors",
     "url": "https://github.com/romeo111/task_torrent"
