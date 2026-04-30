@@ -1,64 +1,79 @@
 # TaskTorrent
 
-TaskTorrent is a coordination protocol for turning spare AI-agent capacity into
-reviewable open-source work.
+TaskTorrent is a GitHub-native protocol for turning AI-agent time into
+reviewable open-source pull requests.
 
-It helps a maintainer split a project into **Chunks**: scoped tasks with a
-manifest, allowed sources, output format, safety rules, and acceptance criteria.
-Contributors run those chunks with their own AI tools and submit pull requests.
-Maintainers stay in control because every output is reviewed before it is
-merged.
+The first pilot is cancer-research data work for
+[OpenOnco](https://github.com/romeo111/OpenOnco), a free oncology clinical
+decision-support knowledge base. TaskTorrent breaks that work into **Chunks**:
+small, scoped tasks with a manifest, allowed sources, output format, safety
+rules, and acceptance criteria. Contributors use their own AI tools to complete
+one chunk at a time. Maintainers review every output before it is merged.
 
-## v0.4 First Release
+TaskTorrent is not a marketplace, token system, payment system, hosted bot, or
+autonomous publishing pipeline. It is a coordination layer for human-reviewed
+work.
 
-v0.4 is the first public TaskTorrent release. It is intentionally small:
+## Current OpenOnco Metrics
 
-- a reusable Chunk specification
-- a cross-repo contract for consumer projects and contributor agents
-- OpenOnco pilot chunks
-- safety and review rules for high-stakes domains
-- a lightweight linter and scaffold for projects that want code support
-- a zero-code onboarding path for people who only want to prompt their agent
+Generated from `landing/metrics.json` on 2026-04-30:
 
-The release is not a hosted service, token system, marketplace, or autonomous
-publishing bot. It is a GitHub-native protocol for organizing AI-assisted work
-that still ends in human review.
+| Metric | Value |
+|---|---:|
+| Completed chunks | 107 |
+| Sidecar submissions counted | 123 |
+| Estimated work surface | 16.2M tokens |
+| Public contributor count | 3 |
+| Claimable chunks right now | 0 |
 
-## Install TaskTorrent With Zero Code
+Live public metrics are published through the landing data files:
 
-You do not need to install a package to use TaskTorrent. The simplest install is
-to give your coding or research agent this prompt inside your project:
+- [landing/metrics.json](landing/metrics.json)
+- [landing/chunks.json](landing/chunks.json)
+- [TaskTorrent landing page](https://romeo111.github.io/task_torrent/)
+
+If claimable chunks are `0`, OpenOnco is between active waves. You can still
+read the shelf, prepare your environment, or ask the maintainer to open the next
+chunk.
+
+## Contribute To Cancer Research
+
+Use this prompt in Codex, Claude Code, Cursor, or another coding agent from a
+local checkout of `romeo111/OpenOnco`:
 
 ```text
-You are helping me adopt TaskTorrent for this repository.
+You are helping me contribute one TaskTorrent chunk to OpenOnco cancer-research
+data work.
 
-Read https://github.com/romeo111/task_torrent and use its v0.4 README,
-docs/cross-repo-contract.md, docs/chunk-system.md, and relevant examples in
-chunks/openonco/ as the protocol reference.
+Read these first:
+- https://github.com/romeo111/task_torrent
+- https://github.com/romeo111/task_torrent/blob/main/docs/openonco-pilot-workflow.md
+- https://github.com/romeo111/task_torrent/tree/main/chunks/openonco
+- https://github.com/romeo111/OpenOnco
 
-Do not write production code yet. First, propose a TaskTorrent integration plan
-for this repository:
+Pick exactly one currently claimable OpenOnco chunk. If no chunk is claimable,
+stop and report that the shelf is between waves.
 
-1. Identify 5-10 useful chunks of work that are safe for AI-assisted
-   contributors.
-2. For each chunk, define mission, manifest, allowed sources, disallowed
-   sources, output format, acceptance criteria, rejection criteria, required
-   skill, claim method, and Drop estimate.
-3. Mark any safety boundaries or maintainer-review requirements.
-4. Recommend which chunks should be opened first as GitHub issues.
-5. Produce the first chunk spec in TaskTorrent v0.4 format.
+Before writing files, summarize:
+1. the chunk ID and GitHub issue,
+2. the manifest you will own,
+3. allowed sources and banned sources,
+4. output path under contributions/<chunk-id>/,
+5. validation commands you will run.
 
-Keep every chunk reviewable as one issue, one contributor, one branch, and one
-pull request.
+Rules:
+- Work only under contributions/<chunk-id>/ unless the chunk explicitly says
+  otherwise.
+- Do not write treatment advice or patient-specific recommendations.
+- Do not use OncoKB, SNOMED CT, MedDRA, or any banned source in the chunk.
+- Do not use git add -A, git add ., or --no-verify.
+- Open one pull request for one chunk, then stop.
 ```
 
-That is enough to start planning. If you later want local checks, install the
-optional tooling:
-
-```bash
-pip install -e .
-python -m tasktorrent.lint_chunk_spec --all chunks/
-```
+The safest first contributions are citation verification, source-stub cleanup,
+translation review, structured evidence mapping, and schema-safe sidecar data
+work. Clinical content still requires OpenOnco maintainer and clinical lead
+review.
 
 ## How TaskTorrent Works
 
@@ -69,12 +84,12 @@ python -m tasktorrent.lint_chunk_spec --all chunks/
 5. CI and maintainers verify the output.
 6. The maintainer merges, rejects, or asks for revision.
 
-The basic rule is: **one chunk = one contributor = one PR = one reviewable unit
-of work**.
+The rule is: **one chunk = one contributor = one PR = one reviewable unit of
+work**.
 
 ## What Is A Chunk?
 
-A Chunk is a single, complete, LLM-essential task. A good chunk has:
+A Chunk is a complete LLM-assisted task. A good chunk has:
 
 - a stable chunk ID
 - a concrete manifest of entities or files
@@ -86,71 +101,48 @@ A Chunk is a single, complete, LLM-essential task. A good chunk has:
 - a claim method
 - a Drop estimate
 
-Chunks are grouped by GitHub labels and folders, not by heavyweight project
+Chunks are grouped by folders and GitHub labels, not by heavyweight project
 management layers.
 
 ## What Is A Drop?
 
-A Drop is an approximate measure of AI work capacity. In this repository, 1 Drop
-means about 100k tokens of structured AI-assisted work.
+A Drop is an approximate planning measure for AI work capacity. In this repo,
+1 Drop means about 100k tokens of structured AI-assisted work.
 
-A Drop is not money, crypto, a credit, a reward, or a transferable asset. It is
-only a planning estimate that helps maintainers size and compare chunks.
+A Drop is not money, crypto, credit, a reward, or a transferable asset. It is
+only a sizing estimate.
 
-## First Work: OpenOnco
+## Maintainer Quickstart
 
-OpenOnco is the first TaskTorrent pilot. It is a strong first case because the
-work is valuable, structured, citation-sensitive, and review-heavy.
+You do not need to install anything to start planning. Give your coding agent
+this prompt inside your project:
 
-The OpenOnco chunks focus on:
+```text
+You are helping me adopt TaskTorrent for this repository.
 
-- biomarker evidence reconstruction
-- drug evidence drafting
-- citation verification
-- Ukrainian translation review
-- source-stub ingestion
-- dataset normalization
-- safety and red-flag coverage
+Read https://github.com/romeo111/task_torrent and use its README,
+docs/cross-repo-contract.md, docs/chunk-system.md, and chunks/openonco/
+examples as the protocol reference.
 
-OpenOnco also tests the parts of TaskTorrent that matter most: sidecar output,
-source policy, reviewer routing, active-chunk limits, and output-based
-verification. Its safety boundary is strict: TaskTorrent chunks must not produce
-medical advice, treatment recommendations, or patient-specific outputs.
+Do not write production code yet. First, propose a TaskTorrent integration plan:
 
-Start here:
+1. Identify 5-10 useful chunks that are safe for AI-assisted contributors.
+2. For each chunk, define mission, manifest, allowed sources, disallowed
+   sources, output format, acceptance criteria, rejection criteria, required
+   skill, claim method, and Drop estimate.
+3. Mark safety boundaries and maintainer-review requirements.
+4. Recommend which chunks should open first as GitHub issues.
+5. Produce the first chunk spec in TaskTorrent v0.4 format.
 
-- [OpenOnco first case](docs/openonco-first-case.md)
-- [OpenOnco pilot workflow](docs/openonco-pilot-workflow.md)
-- [OpenOnco chunk shelf](chunks/openonco/)
+Keep every chunk reviewable as one issue, one contributor, one branch, and one
+pull request.
+```
 
-## Help Wanted
-
-TaskTorrent needs two kinds of help.
-
-If you maintain an open-source or public-interest project, try integrating
-TaskTorrent. Ask your agent to draft a chunk shelf, open one small chunk as a
-GitHub issue, and see whether the review loop works for your project.
-
-If you want to contribute to OpenOnco, start by reading the OpenOnco pilot docs
-and pick work that matches your skills: citation checking, structured data
-cleanup, translation review, evidence mapping, or documentation.
-
-Useful integrations include:
-
-- project-specific chunk shelves
-- issue templates for active chunks
-- CI checks using the chunk-spec linter
-- contributor quickstart docs
-- sidecar validators for consumer repositories
-- examples from domains outside oncology
-
-## Optional Tooling
-
-TaskTorrent v0.4 includes a lightweight Python package for projects that want
-local validation:
+Optional local tooling:
 
 ```bash
-pip install -e .
+pip install -e ".[dev]"
+python -m tasktorrent.lint_chunk_spec --all chunks/
 ```
 
 Commands:
@@ -158,29 +150,20 @@ Commands:
 - `tasktorrent-lint <chunk-spec.md>` validates a chunk spec.
 - `tasktorrent-init <consumer-name>` scaffolds a basic consumer integration.
 
-Run the linter against all chunks:
+## OpenOnco References
 
-```bash
-python -m tasktorrent.lint_chunk_spec --all chunks/
-```
-
-The tooling is useful, but it is not the product. The core product is the
-protocol: clear chunks, safe boundaries, isolated outputs, and maintainer
-review.
-
-## Core Documents
-
-- [Product vision](docs/product-vision.md)
-- [Chunk system](docs/chunk-system.md)
+- [OpenOnco first case](docs/openonco-first-case.md)
+- [OpenOnco pilot workflow](docs/openonco-pilot-workflow.md)
+- [OpenOnco chunk shelf](chunks/openonco/)
+- [Safety rules](docs/safety-rules.md)
 - [Cross-repo contract](docs/cross-repo-contract.md)
 - [Protocol v0.4 design](docs/protocol-v0.4-design.md)
-- [Safety rules](docs/safety-rules.md)
-- [OpenOnco pilot workflow](docs/openonco-pilot-workflow.md)
 
-## Project Boundary
+## Repository Boundary
 
-This repository contains the TaskTorrent protocol, docs, chunk specs, skill
-specs, GitHub templates, and optional linter/scaffold tooling.
+This repository contains the TaskTorrent protocol, docs, OpenOnco chunk specs,
+skill specs, GitHub templates, landing data, and optional linter/scaffold
+tooling.
 
-It does not contain a production web app, autonomous publication pipeline,
-payment mechanism, token economy, or replacement for maintainer review.
+It does not contain OpenOnco production data, a hosted service, autonomous merge
+logic, or a replacement for maintainer review.
