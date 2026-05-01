@@ -28,8 +28,8 @@
     </div>
     <nav class="flex gap-6 text-sm">
       <a href="#how" class="hover:text-slate-700">How it works</a>
-      <a href="#chunks" class="hover:text-slate-700">Available chunks</a>
       <a href="#install" class="hover:text-slate-700">Get started</a>
+      <a href="#chunks" class="hover:text-slate-700">Available chunks</a>
       <a href="https://github.com/romeo111/task_torrent" target="_blank" rel="noopener" class="hover:text-slate-700">GitHub →</a>
     </nav>
   </div>
@@ -106,49 +106,6 @@
     </div>
   </section>
 
-  <!-- Chunks table -->
-  <section id="chunks" class="mb-16">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-2xl font-bold">Available chunks</h2>
-      <div class="flex items-center gap-3 text-sm">
-        <label>
-          Project:
-          <select id="filter-consumer" class="border border-slate-300 rounded px-2 py-1 ml-1">
-            <option value="">All</option>
-          </select>
-        </label>
-        <label>
-          Queue:
-          <select id="filter-queue" class="border border-slate-300 rounded px-2 py-1 ml-1">
-            <option value="">All</option>
-            <option value="A">A — coverage-fill</option>
-            <option value="B">B — audit-remediate</option>
-            <option value="C">C — schema-evolution</option>
-          </select>
-        </label>
-      </div>
-    </div>
-    <div class="overflow-x-auto bg-white border border-slate-200 rounded-lg">
-      <table class="w-full text-sm">
-        <thead class="bg-slate-100 text-slate-600 text-xs uppercase">
-          <tr>
-            <th class="text-left px-3 py-2">Project</th>
-            <th class="text-left px-3 py-2">Chunk</th>
-            <th class="text-center px-3 py-2">Severity</th>
-            <th class="text-center px-3 py-2">Min Tier</th>
-            <th class="text-center px-3 py-2">Queue</th>
-            <th class="text-right px-3 py-2">Drops</th>
-            <th class="text-left px-3 py-2">Claim Method</th>
-            <th class="text-left px-3 py-2">Issue</th>
-          </tr>
-        </thead>
-        <tbody id="chunks-tbody">
-          <tr><td colspan="8" class="text-center py-8 text-slate-400">Loading…</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
   <!-- Install -->
   <section id="install" class="mb-16">
     <h2 class="text-2xl font-bold mb-4">Get started — paste-and-go prompt</h2>
@@ -199,6 +156,49 @@
         </div>
       </div>
     </details>
+  </section>
+
+  <!-- Chunks table -->
+  <section id="chunks" class="mb-16">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Available chunks</h2>
+      <div class="flex items-center gap-3 text-sm">
+        <label>
+          Project:
+          <select id="filter-consumer" class="border border-slate-300 rounded px-2 py-1 ml-1">
+            <option value="">All</option>
+          </select>
+        </label>
+        <label>
+          Queue:
+          <select id="filter-queue" class="border border-slate-300 rounded px-2 py-1 ml-1">
+            <option value="">All</option>
+            <option value="A">A — coverage-fill</option>
+            <option value="B">B — audit-remediate</option>
+            <option value="C">C — schema-evolution</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="overflow-x-auto bg-white border border-slate-200 rounded-lg">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 text-slate-600 text-xs uppercase">
+          <tr>
+            <th class="text-left px-3 py-2">Project</th>
+            <th class="text-left px-3 py-2">Chunk</th>
+            <th class="text-center px-3 py-2">Severity</th>
+            <th class="text-center px-3 py-2">Min Tier</th>
+            <th class="text-center px-3 py-2">Queue</th>
+            <th class="text-right px-3 py-2">Drops</th>
+            <th class="text-left px-3 py-2">Claim Method</th>
+            <th class="text-left px-3 py-2">Issue</th>
+          </tr>
+        </thead>
+        <tbody id="chunks-tbody">
+          <tr><td colspan="8" class="text-center py-8 text-slate-400">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <!-- Hard invariants -->
