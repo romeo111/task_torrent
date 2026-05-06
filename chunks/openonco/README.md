@@ -20,6 +20,45 @@ At most **10 chunks** carry `status: active` (open `[Chunk]` issues) at any time
 
 Total: ~84 Drops across 7 chunks.
 
+## 2026-05-06 Expansion Shelf (300 Drops)
+
+30 queued pieces, each sized at ~10 Drops (~1.0M tokens). These are intentionally queued; promote at most 10 to `status-active` at a time after manifest concretization and overlap checks.
+
+| Chunk | Status | Drops | Topic |
+|---|---|---:|---|
+| [`openonco-shelf-zero-bma-apl-2026-05-06`](openonco-shelf-zero-bma-apl-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-atll-2026-05-06`](openonco-shelf-zero-bma-atll-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-chondrosarcoma-2026-05-06`](openonco-shelf-zero-bma-chondrosarcoma-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-eatl-2026-05-06`](openonco-shelf-zero-bma-eatl-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-lgg-2026-05-06`](openonco-shelf-zero-bma-lgg-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-hnscc-2026-05-06`](openonco-shelf-zero-bma-hnscc-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-hstcl-2026-05-06`](openonco-shelf-zero-bma-hstcl-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-imt-2026-05-06`](openonco-shelf-zero-bma-imt-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-mf-sezary-2026-05-06`](openonco-shelf-zero-bma-mf-sezary-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-mpnst-2026-05-06`](openonco-shelf-zero-bma-mpnst-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-nk-t-nasal-2026-05-06`](openonco-shelf-zero-bma-nk-t-nasal-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-pmbcl-2026-05-06`](openonco-shelf-zero-bma-pmbcl-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-ptcl-nos-2026-05-06`](openonco-shelf-zero-bma-ptcl-nos-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-zero-bma-t-pll-2026-05-06`](openonco-shelf-zero-bma-t-pll-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-thin-bma-burkitt-hcl-hcv-mzl-2026-05-06`](openonco-shelf-thin-bma-burkitt-hcl-hcv-mzl-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-thin-bma-chl-ifs-mastocytosis-2026-05-06`](openonco-shelf-thin-bma-chl-ifs-mastocytosis-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-thin-bma-nlpbl-mzl-pcnsl-2026-05-06`](openonco-shelf-thin-bma-nlpbl-mzl-pcnsl-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-thin-bma-ptld-pv-sclc-2026-05-06`](openonco-shelf-thin-bma-ptld-pv-sclc-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-thin-bma-splenic-mzl-thyroid-atc-2026-05-06`](openonco-shelf-thin-bma-splenic-mzl-thyroid-atc-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-thin-bma-aitl-alcl-cervical-2026-05-06`](openonco-shelf-thin-bma-aitl-alcl-cervical-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-thin-bma-et-hgbl-mtc-2026-05-06`](openonco-shelf-thin-bma-et-hgbl-mtc-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-thin-bma-pmf-salivary-t-all-2026-05-06`](openonco-shelf-thin-bma-pmf-salivary-t-all-2026-05-06.md) | queued | ~10 | bma-drafting, coverage-gap |
+| [`openonco-shelf-bma-civic-evidence-gap-wave3-a-2026-05-06`](openonco-shelf-bma-civic-evidence-gap-wave3-a-2026-05-06.md) | queued | ~10 | civic-evidence, citation-verify |
+| [`openonco-shelf-bma-civic-evidence-gap-wave3-b-2026-05-06`](openonco-shelf-bma-civic-evidence-gap-wave3-b-2026-05-06.md) | queued | ~10 | civic-evidence, citation-verify |
+| [`openonco-shelf-bma-civic-evidence-gap-wave3-c-2026-05-06`](openonco-shelf-bma-civic-evidence-gap-wave3-c-2026-05-06.md) | queued | ~10 | civic-evidence, citation-verify |
+| [`openonco-shelf-bma-ua-signoff-prep-wave3-a-2026-05-06`](openonco-shelf-bma-ua-signoff-prep-wave3-a-2026-05-06.md) | queued | ~10 | ua-translate, clinical-review |
+| [`openonco-shelf-bma-ua-signoff-prep-wave3-b-2026-05-06`](openonco-shelf-bma-ua-signoff-prep-wave3-b-2026-05-06.md) | queued | ~10 | ua-translate, clinical-review |
+| [`openonco-shelf-source-license-recency-wave3-a-2026-05-06`](openonco-shelf-source-license-recency-wave3-a-2026-05-06.md) | queued | ~10 | source-ingest, recency |
+| [`openonco-shelf-drug-ua-nszu-access-wave3-a-2026-05-06`](openonco-shelf-drug-ua-nszu-access-wave3-a-2026-05-06.md) | queued | ~10 | access-audit, ua-context |
+| [`openonco-shelf-regimen-evidence-source-trace-wave3-a-2026-05-06`](openonco-shelf-regimen-evidence-source-trace-wave3-a-2026-05-06.md) | queued | ~10 | citation-verify, regimen-audit |
+
+Total: ~300 Drops across 30 queued pieces.
+
 ## How to promote a queued chunk to active
 
 1. Confirm a slot is free (current active count < 2).
