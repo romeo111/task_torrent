@@ -6,7 +6,7 @@ This directory holds chunk specs for the OpenOnco pilot. Each chunk is one concr
 
 At most **10 chunks** carry `status: active` (open `[Chunk]` issues) at any time during the pilot. (Raised from initial 2 after the first wave validated the pipeline.)
 
-## Current shelf (~70 Drops total)
+## Current shelf (~92 Drops total)
 
 | Chunk | Status | Drops | Topic |
 |---|---|---:|---|
@@ -17,8 +17,14 @@ At most **10 chunks** carry `status: active` (open `[Chunk]` issues) at any time
 | [`redflag-indication-coverage-fill`](redflag-indication-coverage-fill.md) | queued | ~15 | evidence-draft, claim-bearing |
 | [`bma-drafting-gap-diseases`](bma-drafting-gap-diseases.md) | queued | ~15 | evidence-draft, claim-bearing |
 | [`source-stub-ingest-batch`](source-stub-ingest-batch.md) | queued | ~10 | source-ingest, metadata-only |
+| [`algo-branch-wiring-ovarian-2l`](algo-branch-wiring-ovarian-2l.md) | queued | ~1 | mechanical-rewrite, engine-wiring, algorithm-branch |
+| [`algo-branch-wiring-breast-1l`](algo-branch-wiring-breast-1l.md) | queued | ~1 | mechanical-rewrite, engine-wiring, algorithm-branch |
+| [`algo-branch-wiring-esoph-metastatic-1l`](algo-branch-wiring-esoph-metastatic-1l.md) | queued | ~1 | mechanical-rewrite, engine-wiring, algorithm-branch |
+| [`workup-thyroid-papillary`](workup-thyroid-papillary.md) | queued | ~1 | evidence-draft, coverage-gap, diagnostic-workup |
+| [`hereditary-brca-carrier-surveillance`](hereditary-brca-carrier-surveillance.md) | queued | ~1.5 | evidence-draft, coverage-gap, prevention, hereditary |
+| [`prevention-regimen-authoring-wave1`](prevention-regimen-authoring-wave1.md) | queued | ~2-3 | evidence-draft, coverage-gap, prevention |
 
-Total: ~84 Drops across 7 chunks.
+Total: ~92 Drops across 13 chunks.
 
 ## How to promote a queued chunk to active
 
