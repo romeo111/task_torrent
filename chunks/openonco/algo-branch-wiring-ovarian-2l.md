@@ -32,6 +32,8 @@ produce the target indications instead of falling through to
 
 ## Mission
 
+**KB coverage:** Advances `kb-coverage-matrix.md > Per-disease coverage matrix > DIS-OVARIAN > Algorithm branches reachable` — turns 6 prose-only branches on `ALGO-OVARIAN-2L` into structured `finding:` clauses so the dependent `IND-*` entries become reachable.
+
 Wire `ALGO-OVARIAN-2L` so the **6 currently-unreached `IND-*`
 entries** referenced from its decision tree become routable.
 

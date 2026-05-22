@@ -31,6 +31,8 @@ algorithm wiring.
 
 ## Mission
 
+**KB coverage:** Advances `kb-coverage-matrix.md > Per-disease coverage matrix > DIS-THYROID-PAPILLARY > Workup entity` — fills the zero-Workup gap for the smallest of 5 source-available zero-RF diseases.
+
 Author the missing `Workup` entity for `DIS-THYROID-PAPILLARY`.
 
 Per the 2026-04-27 redflag-indication audit

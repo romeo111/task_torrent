@@ -30,6 +30,8 @@ Mechanical translation of prose `condition:` strings to structured
 
 ## Mission
 
+**KB coverage:** Advances `kb-coverage-matrix.md > Per-disease coverage matrix > DIS-BREAST > Algorithm branches reachable` — turns 5 prose-only branches on `ALGO-BREAST-1L` into structured `finding:` clauses so the dependent `IND-*` entries become reachable.
+
 Wire `ALGO-BREAST-1L` so the **5 currently-unreached `IND-*`
 entries** referenced from its decision tree become routable.
 

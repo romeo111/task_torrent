@@ -31,6 +31,8 @@ gap explicitly listed in the OpenOnco roadmap.
 
 ## Mission
 
+**KB coverage:** Advances `kb-coverage-matrix.md > Per-disease coverage matrix > DIS-BREAST-HBOC > Confirmed-carrier surveillance` — fills the post-test-positive surveillance pathway for confirmed BRCA1/2 germline carriers (v0.2-B continuation).
+
 The v0.2-B hereditary pilot (commit `f252a24e5d`) shipped the
 pedigree-suspicion RF + the genetic-counseling / decline-testing
 tracks for BRCA / HBOC, but stopped short of the post-test-positive
@@ -67,7 +69,7 @@ prevention-side).
 
 ## Drop Estimate
 
-~1.5 Drops (~150K tokens). 1 RF + 2 Indications + (optional)
+~2 Drops (~200K tokens). 1 RF + 2 Indications + (optional)
 algorithm step extension + tests.
 
 ## Required Skill

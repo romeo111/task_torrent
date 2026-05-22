@@ -31,6 +31,8 @@ review + Clinical Co-Lead spot-check.
 
 ## Mission
 
+**KB coverage:** Advances `kb-coverage-matrix.md > Coverage gaps > Prevention regimens missing` — authors 6 named `Regimen` entities currently absent, which unblocks 6 v0.2-A prevention `Indication` records sitting on `recommended_regimen: null` placeholders.
+
 Author the 6 prevention `Regimen` entities explicitly named in the
 v0.2-A authoring backlog
 ([commit `a66f47760b` follow-up](https://github.com/romeo111/cancer-autoresearch/commit/a66f47760b)):

@@ -21,7 +21,7 @@ At most **10 chunks** carry `status: active` (open `[Chunk]` issues) at any time
 | [`algo-branch-wiring-breast-1l`](algo-branch-wiring-breast-1l.md) | queued | ~1 | mechanical-rewrite, engine-wiring, algorithm-branch |
 | [`algo-branch-wiring-esoph-metastatic-1l`](algo-branch-wiring-esoph-metastatic-1l.md) | queued | ~1 | mechanical-rewrite, engine-wiring, algorithm-branch |
 | [`workup-thyroid-papillary`](workup-thyroid-papillary.md) | queued | ~1 | evidence-draft, coverage-gap, diagnostic-workup |
-| [`hereditary-brca-carrier-surveillance`](hereditary-brca-carrier-surveillance.md) | queued | ~1.5 | evidence-draft, coverage-gap, prevention, hereditary |
+| [`hereditary-brca-carrier-surveillance`](hereditary-brca-carrier-surveillance.md) | queued | ~2 | evidence-draft, coverage-gap, prevention, hereditary |
 | [`prevention-regimen-authoring-wave1`](prevention-regimen-authoring-wave1.md) | queued | ~2-3 | evidence-draft, coverage-gap, prevention |
 
 Total: ~92 Drops across 13 chunks.

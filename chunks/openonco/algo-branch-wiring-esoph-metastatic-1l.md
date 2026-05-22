@@ -29,6 +29,8 @@ Mechanical translation of prose `condition:` strings to structured
 
 ## Mission
 
+**KB coverage:** Advances `kb-coverage-matrix.md > Per-disease coverage matrix > DIS-ESOPHAGEAL > Algorithm branches reachable` — turns 5 prose-only branches on `ALGO-ESOPH-METASTATIC-1L` into structured `finding:` clauses so the dependent `IND-*` entries become reachable.
+
 Wire `ALGO-ESOPH-METASTATIC-1L` so the **5 currently-unreached
 `IND-*` entries** referenced from its decision tree become routable.
 
